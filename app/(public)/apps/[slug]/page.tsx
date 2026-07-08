@@ -14,11 +14,9 @@ import {
   query,
   where,
   getDocs,
-  addDoc,
   doc,
   setDoc,
   updateDoc,
-  deleteDoc,
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
@@ -160,6 +158,7 @@ export default function AppDetailPage({
         updatedAt: myReview ? now : undefined,
       };
 
+      const reviewId = `${user.uid}_${slug}`;
       let updatedReviews: Review[];
       if (myReview) {
         await updateDoc(doc(db, "reviews", myReview.id), reviewData);
@@ -170,12 +169,12 @@ export default function AppDetailPage({
         );
         toast.success("Ulasan berhasil diperbarui!");
       } else {
-        const docRef = await addDoc(collection(db, "reviews"), {
+        await setDoc(doc(db, "reviews", reviewId), {
           ...reviewData,
           createdAt: now,
         });
         updatedReviews = [
-          { id: docRef.id, ...reviewData, createdAt: null } as Review,
+          { id: reviewId, ...reviewData, createdAt: null } as Review,
           ...reviews,
         ];
         toast.success("Ulasan berhasil ditambahkan!");
@@ -195,30 +194,6 @@ export default function AppDetailPage({
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const cleanupDuplicates = async () => {
-    if (!user) return;
-    const q = query(collection(db, "reviews"), where("appSlug", "==", slug));
-    const snap = await getDocs(q);
-    const seen = new Map<string, string>();
-    const batch: string[] = [];
-    snap.docs.forEach((d) => {
-      const data = d.data();
-      const key = `${data.userName}:${data.text?.trim().toLowerCase()}`;
-      if (seen.has(key)) batch.push(d.id);
-      else seen.set(key, d.id);
-    });
-    for (const id of batch) {
-      await deleteDoc(doc(db, "reviews", id));
-    }
-    setReviews((prev) => prev.filter((r) => !batch.includes(r.id)));
-    setDoc(doc(db, "reviewsStats", slug), {
-      appSlug: slug,
-      averageRating: Math.round(avgRating * 10) / 10,
-      totalReviews: reviews.length - batch.length,
-    }).catch(() => {});
-    toast.success(`Hapus ${batch.length} duplikat`);
   };
 
   const avgRating =
@@ -332,11 +307,6 @@ export default function AppDetailPage({
       <div className="mb-8">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-sm font-bold text-gray-800">Rating & Ulasan</h2>
-          {user && (
-            <button onClick={cleanupDuplicates} className="text-xs text-red-500 hover:text-red-700">
-              Hapus duplikat
-            </button>
-          )}
         </div>
 
         {reviews.length > 0 && (
