@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
 import { getAdminAuth } from "@/lib/firebase/admin";
+import { uploadFileToPCloud } from "@/lib/pcloud";
 
 export async function POST(req: NextRequest) {
   try {
@@ -50,13 +49,10 @@ export async function POST(req: NextRequest) {
       subDir = `apks/${appId}`;
     }
 
-    const dir = join(process.cwd(), "public", "uploads", subDir);
-    await mkdir(dir, { recursive: true });
-    await writeFile(join(dir, fileName), buffer);
-
-    const url = `/uploads/${subDir}/${fileName}`;
+    const { url } = await uploadFileToPCloud(buffer, fileName, subDir);
     return NextResponse.json({ url });
-  } catch {
+  } catch (e) {
+    console.error(e);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }

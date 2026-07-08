@@ -23,8 +23,16 @@ export async function POST(req: NextRequest) {
       downloadCount: FieldValue.increment(1),
     });
 
+    if (ownerId) {
+      await db.collection("users").doc(ownerId).update({
+        totalDownloads: FieldValue.increment(1),
+      });
+    }
+
     await db.collection("downloads").add({
       appId,
+      appName: "",
+      appVersion: "",
       userId: decoded.uid,
       ownerId: ownerId || "",
       downloadedAt: FieldValue.serverTimestamp(),
