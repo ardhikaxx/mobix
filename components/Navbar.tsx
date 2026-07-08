@@ -9,12 +9,7 @@ import { SearchBar } from "./SearchBar";
 import {
   Menu,
   X,
-  Upload,
-  LayoutDashboard,
-  Grid3X3,
   LogOut,
-  User,
-  Settings,
   Smartphone,
 } from "lucide-react";
 import { CATEGORIES } from "@/lib/constants/categories";
@@ -60,13 +55,6 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             {user ? (
               <>
-                <Link
-                  href="/dashboard/upload"
-                  className="hidden items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700 sm:flex"
-                >
-                  <Upload className="size-4" />
-                  Upload
-                </Link>
                 <div className="relative">
                   <button
                     onClick={() => setProfileOpen(!profileOpen)}
@@ -101,38 +89,6 @@ export function Navbar() {
                           </p>
                           <p className="text-xs text-gray-500">{user.email}</p>
                         </div>
-                        <Link
-                          href="/dashboard"
-                          onClick={() => setProfileOpen(false)}
-                          className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-50"
-                        >
-                          <LayoutDashboard className="size-4" />
-                          Dashboard
-                        </Link>
-                        <Link
-                          href="/dashboard/apps"
-                          onClick={() => setProfileOpen(false)}
-                          className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-50"
-                        >
-                          <Grid3X3 className="size-4" />
-                          My Applications
-                        </Link>
-                        <Link
-                          href="/profile"
-                          onClick={() => setProfileOpen(false)}
-                          className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-50"
-                        >
-                          <User className="size-4" />
-                          Profile
-                        </Link>
-                        <Link
-                          href="/settings"
-                          onClick={() => setProfileOpen(false)}
-                          className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-50"
-                        >
-                          <Settings className="size-4" />
-                          Settings
-                        </Link>
                         <div className="border-t border-gray-100 pt-1">
                           <button
                             onClick={() => {
@@ -199,18 +155,6 @@ export function Navbar() {
                   {cat.label}
                 </Link>
               ))}
-            </div>
-            <div className="border-t border-gray-100 px-2 py-4">
-              {user && (
-                <Link
-                  href="/dashboard/upload"
-                  onClick={closeDrawer}
-                  className="flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white"
-                >
-                  <Upload className="size-4" />
-                  Upload Aplikasi
-                </Link>
-              )}
             </div>
           </div>
         </>
