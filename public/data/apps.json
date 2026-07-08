@@ -118,6 +118,28 @@
       "lastVersionUpdateAt": "2025-12-29T00:00:00.000Z"
     },
     {
+      "appId": "hpp-snap",
+      "name": "HPP Snap",
+      "slug": "hpp-snap",
+      "description": "Aplikasi kalkulator Harga Pokok Produksi (HPP) untuk UMKM dan pengrajin berbasis Flutter. 3 Layar Utama: Splash animasi dengan fitur utama (Hitung HPP, Bahan Baku, Tenaga Kerja, Biaya Tetap) → Form Input → Hasil & Export PDF. Informasi Produk: input nama dan kategori produk. Bahan Baku: tambah bahan dengan nama, jumlah pakai, satuan, info pembelian (total harga, jumlah beli, satuan beli), kalkulasi biaya per produk otomatis (totalHarga/jumlahBeli x jumlahPakai), edit/hapus. Biaya Tenaga Kerja: toggle aktif/nonaktif, input biaya per produk, keterangan opsional. Alokasi Biaya Tetap: input target penjualan per bulan, tambah biaya tetap (nama, total/bulan, alokasi per produk) dengan saran alokasi otomatis (totalBiaya/targetPenjualan), edit/hapus. Kalkulasi HPP: HPP = total Biaya Bahan + total Alokasi Biaya Tetap + total Biaya Tenaga Kerja. Hasil: kartu HPP per produk, ringkasan biaya dengan progress bar, detail biaya per item, saran harga jual 3 strategi (Konservatif 30%, Standar 50%, Agresif 100%) lengkap dengan harga jual, keuntungan, dan margin. Export PDF: generate laporan HPP format A4 (header, ringkasan, detail bahan/tenaga kerja/biaya tetap, saran harga jual) dan share via OS. Tema biru dengan font kustom SuperTrend.",
+      "category": "business",
+      "tags": ["business", "hpp", "production-cost", "calculator", "finance", "umkm"],
+      "searchKeywords": ["hpp", "harga pokok produksi", "kalkulator hpp", "biaya produksi", "umkm", "cost of goods sold", "hitung hpp", "margin", "harga jual"],
+      "status": "published",
+      "version": "1.0.0",
+      "versionCode": 1,
+      "apkURL": "/apk/HPP_Snap.apk",
+      "apkFileName": "HPP_Snap.apk",
+      "apkSizeBytes": 53139397,
+      "logoURL": "/images/logo_hpp_snap.png",
+      "screenshots": [],
+      "ownerId": "admin",
+      "ownerName": "ardhikaxx",
+      "createdAt": "2026-07-08T00:00:00.000Z",
+      "updatedAt": "2026-07-08T00:00:00.000Z",
+      "lastVersionUpdateAt": "2026-07-08T00:00:00.000Z"
+    },
+    {
       "appId": "mobile-posyandu",
       "name": "Mobile Posyandu",
       "slug": "mobile-posyandu",
