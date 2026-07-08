@@ -16,7 +16,13 @@ export function AppGrid({
   onRetry?: () => void;
 }) {
   if (isLoading) return <GridSkeleton />;
-  if (error) return <ErrorState message={error.message} onRetry={onRetry} />;
+  if (error) {
+    const isPermissionError = error.message?.includes("permission");
+    if (isPermissionError) {
+      return <EmptyState title="Belum ada aplikasi" description="Jadi yang pertama upload!" />;
+    }
+    return <ErrorState message={error.message} onRetry={onRetry} />;
+  }
   if (!apps || apps.length === 0)
     return <EmptyState title="Belum ada aplikasi" description="Jadi yang pertama upload!" />;
 

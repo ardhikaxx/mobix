@@ -45,6 +45,17 @@ export default function AppDetailPage({
   }
 
   if (error || !app) {
+    const isPermissionError = error?.message?.includes("permission");
+    if (isPermissionError) {
+      return (
+        <div className="mx-auto max-w-4xl px-4 py-8">
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <h3 className="mb-2 text-lg font-semibold text-gray-600">Aplikasi tidak ditemukan</h3>
+            <p className="mb-4 max-w-sm text-sm text-gray-400">Belum ada aplikasi yang diupload.</p>
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="mx-auto max-w-4xl px-4 py-8">
         <ErrorState

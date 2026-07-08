@@ -61,7 +61,26 @@ function MyAppsContent() {
   };
 
   if (isLoading) return <GridSkeleton count={4} />;
-  if (error) return <ErrorState message={error.message} />;
+  if (error) {
+    const isPermissionError = error.message?.includes("permission");
+    if (isPermissionError) {
+      return (
+        <EmptyState
+          title="Belum ada aplikasi"
+          description="Upload aplikasi pertama Anda sekarang!"
+          action={
+            <Link
+              href="/dashboard/upload"
+              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white"
+            >
+              <Upload className="size-4" /> Upload Aplikasi
+            </Link>
+          }
+        />
+      );
+    }
+    return <ErrorState message={error.message} />;
+  }
   if (!apps || apps.length === 0) {
     return (
       <EmptyState
