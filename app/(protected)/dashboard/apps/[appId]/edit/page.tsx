@@ -5,9 +5,8 @@ import { AuthGuard } from "@/components/AuthGuard";
 import { useAuth } from "@/context/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useAppById } from "@/lib/hooks/useApps";
-import { db, storage } from "@/lib/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { doc, updateDoc, serverTimestamp, increment } from "firebase/firestore";
-import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { CATEGORIES } from "@/lib/constants/categories";
 import { generateSearchKeywords } from "@/lib/utils/searchKeywords";
 import { DetailSkeleton } from "@/components/Skeleton";
@@ -110,20 +109,38 @@ function EditContent({ appId }: { appId: string }) {
         updatedAt: serverTimestamp(),
       };
 
-      let versionCode = app.versionCode;
+      const token = await user.getIdToken();
 
       if (newLogo) {
-        const logoRef = ref(storage, `users/${user.uid}/logos/${appId}.webp`);
-        const snap = await uploadBytesResumable(logoRef, newLogo);
-        updates.logoURL = await getDownloadURL(snap.ref);
+        const fd = new FormData();
+        fd.append("file", newLogo);
+        fd.append("type", "logo");
+        fd.append("appId", appId);
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: fd,
+        });
+        if (!res.ok) throw new Error();
+        const { url } = await res.json();
+        updates.logoURL = url;
       }
 
       if (newApk) {
-        versionCode = app.versionCode + 1;
-        const fileName = `${versionCode}-${newApk.name.toLowerCase().replace(/\s+/g, "-")}`;
-        const apkRef = ref(storage, `users/${user.uid}/apks/${appId}/${fileName}`);
-        const snap = await uploadBytesResumable(apkRef, newApk);
-        updates.apkURL = await getDownloadURL(snap.ref);
+        const versionCode = app.versionCode + 1;
+        const fd = new FormData();
+        fd.append("file", newApk);
+        fd.append("type", "apk");
+        fd.append("appId", appId);
+        fd.append("versionCode", String(versionCode));
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: fd,
+        });
+        if (!res.ok) throw new Error();
+        const { url } = await res.json();
+        updates.apkURL = url;
         updates.apkFileName = newApk.name;
         updates.apkSizeBytes = newApk.size;
         updates.versionCode = versionCode;

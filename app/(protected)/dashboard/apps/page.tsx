@@ -17,8 +17,7 @@ import {
   Upload,
 } from "lucide-react";
 import { doc, deleteDoc, updateDoc, increment, serverTimestamp } from "firebase/firestore";
-import { ref, deleteObject } from "firebase/storage";
-import { db, storage } from "@/lib/firebase/client";
+import { db } from "@/lib/firebase/client";
 import toast from "react-hot-toast";
 import { formatDate } from "@/lib/utils/slug";
 
@@ -31,20 +30,6 @@ function MyAppsContent() {
   const handleDelete = async (appId: string) => {
     setDeleting(true);
     try {
-      const app = apps?.find((a) => a.appId === appId);
-      if (!app) return;
-
-      const logoRef = ref(storage, `users/${user!.uid}/logos/${appId}.webp`);
-      const apkRef = ref(storage, `users/${user!.uid}/apks/${appId}/${app.apkFileName}`);
-
-      await Promise.allSettled([
-        deleteObject(logoRef),
-        deleteObject(apkRef),
-        ...(app.screenshots || []).map((_, idx) =>
-          deleteObject(ref(storage, `users/${user!.uid}/screenshots/${appId}/${idx + 1}.webp`))
-        ),
-      ]);
-
       await deleteDoc(doc(db, "apps", appId));
       await updateDoc(doc(db, "users", user!.uid), {
         appCount: increment(-1),
@@ -197,7 +182,7 @@ function MyAppsContent() {
       >
         <div className="space-y-4">
           <p className="text-sm text-gray-600">
-            Apakah Anda yakin ingin menghapus aplikasi ini? File di storage juga akan ikut terhapus. Tindakan ini tidak dapat dibatalkan.
+            Apakah Anda yakin ingin menghapus aplikasi ini? Tindakan ini tidak dapat dibatalkan.
           </p>
           <div className="flex justify-end gap-2">
             <button

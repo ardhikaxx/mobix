@@ -4,10 +4,8 @@ import { useState, useCallback } from "react";
 import { AuthGuard } from "@/components/AuthGuard";
 import { useAuth } from "@/context/AuthProvider";
 import { useRouter } from "next/navigation";
-import { db, storage } from "@/lib/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { doc, collection, setDoc, updateDoc, increment, serverTimestamp } from "firebase/firestore";
-import { ref as storageRef, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
-import type { StorageReference } from "firebase/storage";
 import { CATEGORIES } from "@/lib/constants/categories";
 import { generateAppSlug } from "@/lib/utils/slug";
 import { generateSearchKeywords } from "@/lib/utils/searchKeywords";
@@ -20,21 +18,28 @@ import {
   X,
 } from "lucide-react";
 
-function uploadFile(
-  strRef: StorageReference,
+async function uploadToAPI(
   file: File,
+  type: "logo" | "screenshot" | "apk",
+  appId: string,
+  token: string,
+  extra: Record<string, string> = {},
 ): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const task = uploadBytesResumable(strRef, file);
-    task.on("state_changed", null, reject, async () => {
-      try {
-        const url = await getDownloadURL(task.snapshot.ref);
-        resolve(url);
-      } catch (e) {
-        reject(e);
-      }
-    });
+  const fd = new FormData();
+  fd.append("file", file);
+  fd.append("type", type);
+  fd.append("appId", appId);
+  for (const [k, v] of Object.entries(extra)) fd.append(k, v);
+
+  const res = await fetch("/api/upload", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+    body: fd,
   });
+
+  if (!res.ok) throw new Error(await res.text());
+  const data = await res.json();
+  return data.url as string;
 }
 
 interface UploadProgress {
@@ -88,8 +93,7 @@ function UploadContent() {
     const appId = doc(collection(db, "apps")).id;
     const slug = generateAppSlug(form.name);
     const searchKeywords = generateSearchKeywords(form.name, [], form.category);
-
-    const uploadPaths: string[] = [];
+    const token = await user.getIdToken();
 
     try {
       let logoURL = "";
@@ -109,31 +113,21 @@ function UploadContent() {
       };
 
       if (logoFile) {
-        const logoPath = `users/${user.uid}/logos/${appId}.webp`;
-        uploadPaths.push(logoPath);
-        const logoRef = storageRef(storage, logoPath);
         tasks.push(
-          track(uploadFile(logoRef, logoFile)).then((url) => { logoURL = url; }),
+          track(uploadToAPI(logoFile, "logo", appId, token)).then((url) => { logoURL = url; }),
         );
       }
 
       for (let i = 0; i < screenshotFiles.length; i++) {
-        const path = `users/${user.uid}/screenshots/${appId}/${i + 1}.webp`;
-        uploadPaths.push(path);
-        const ref_ = storageRef(storage, path);
         const idx = i;
         tasks.push(
-          track(uploadFile(ref_, screenshotFiles[i])).then((url) => { screenshotURLs[idx] = url; }),
+          track(uploadToAPI(screenshotFiles[i], "screenshot", appId, token, { index: String(idx) })).then((url) => { screenshotURLs[idx] = url; }),
         );
       }
 
       if (apkFile) {
-        const fileName = `1-${apkFile.name.toLowerCase().replace(/\s+/g, "-")}`;
-        const apkPath = `users/${user.uid}/apks/${appId}/${fileName}`;
-        uploadPaths.push(apkPath);
-        const apkRef = storageRef(storage, apkPath);
         tasks.push(
-          track(uploadFile(apkRef, apkFile)).then((url) => { apkURL = url; }),
+          track(uploadToAPI(apkFile, "apk", appId, token, { versionCode: "1" })).then((url) => { apkURL = url; }),
         );
       }
 
@@ -176,11 +170,6 @@ function UploadContent() {
       toast.success("Aplikasi berhasil diupload!");
       router.push("/dashboard/apps");
     } catch {
-      for (const path of uploadPaths) {
-        try {
-          await deleteObject(storageRef(storage, path));
-        } catch {}
-      }
       toast.error("Gagal mengupload aplikasi. Silakan coba lagi.");
     } finally {
       setLoading(false);

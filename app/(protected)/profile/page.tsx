@@ -4,9 +4,8 @@ import { useState, useEffect } from "react";
 import { AuthGuard } from "@/components/AuthGuard";
 import { useAuth } from "@/context/AuthProvider";
 import { useUser } from "@/lib/hooks/useUser";
-import { db, storage } from "@/lib/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { DetailSkeleton } from "@/components/Skeleton";
 import { ErrorState } from "@/components/ErrorState";
 import Image from "next/image";
@@ -44,9 +43,20 @@ function ProfileContent() {
     if (!file || !user) return;
 
     try {
-      const ref_ = ref(storage, `users/${user.uid}/avatar.webp`);
-      await uploadBytes(ref_, file);
-      const url = await getDownloadURL(ref_);
+      const token = await user.getIdToken();
+      const fd = new FormData();
+      fd.append("file", file);
+      fd.append("type", "avatar");
+      fd.append("appId", "profile");
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: fd,
+      });
+
+      if (!res.ok) throw new Error();
+      const { url } = await res.json();
       await updateDoc(doc(db, "users", user.uid), { photoURL: url, updatedAt: serverTimestamp() });
       toast.success("Foto profil diperbarui");
       mutate();
