@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthProvider";
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { auth, db } from "@/lib/firebase/client";
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { auth } from "@/lib/firebase/client";
 import { registerSchema, type RegisterInput } from "@/lib/validations/appSchema";
 import toast from "react-hot-toast";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
@@ -24,16 +23,9 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState<Partial<Record<string, string>>>({});
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [redirecting, setRedirecting] = useState(false);
-
   useEffect(() => {
-    if (user) {
-      setRedirecting(true);
-      router.replace("/");
-    }
+    if (user) router.replace("/");
   }, [user, router]);
-
-  if (redirecting) return null;
 
   const handleEmailRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,23 +44,7 @@ export default function RegisterPage() {
 
     setLoading(true);
     try {
-      const cred = await createUserWithEmailAndPassword(auth, form.email, form.password);
-      await setDoc(doc(db, "users", cred.user.uid), {
-        uid: cred.user.uid,
-        displayName: form.displayName,
-        email: form.email,
-        photoURL: null,
-        provider: "password",
-        bio: null,
-        website: null,
-        githubUsername: null,
-        appCount: 0,
-        totalDownloads: 0,
-        status: "active",
-        role: "user",
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      });
+      await createUserWithEmailAndPassword(auth, form.email, form.password);
       toast.success("Registrasi berhasil!");
       router.push("/");
     } catch (err: unknown) {
@@ -89,26 +65,7 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const userDoc = await getDoc(doc(db, "users", result.user.uid));
-      if (!userDoc.exists()) {
-        await setDoc(doc(db, "users", result.user.uid), {
-          uid: result.user.uid,
-          displayName: result.user.displayName || "User",
-          email: result.user.email,
-          photoURL: result.user.photoURL,
-          provider: "google.com",
-          bio: null,
-          website: null,
-          githubUsername: null,
-          appCount: 0,
-          totalDownloads: 0,
-          status: "active",
-          role: "user",
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
-        });
-      }
+      await signInWithPopup(auth, provider);
       toast.success("Registrasi berhasil!");
       router.push("/");
     } catch (err: unknown) {
@@ -133,7 +90,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-bold text-gray-900">Buat Akun</h1>
-          <p className="mt-2 text-sm text-gray-500">Daftar untuk mulai upload dan download aplikasi</p>
+          <p className="mt-2 text-sm text-gray-500">Daftar untuk mulai download aplikasi</p>
         </div>
 
         <form onSubmit={handleEmailRegister} className="space-y-4">

@@ -10,7 +10,6 @@ import {
   Menu,
   X,
   LogOut,
-  Smartphone,
 } from "lucide-react";
 import { CATEGORIES } from "@/lib/constants/categories";
 
@@ -32,7 +31,9 @@ export function Navbar() {
           </button>
 
           <Link href="/" className="flex items-center gap-2 shrink-0" onClick={closeDrawer}>
-            <Smartphone className="size-7 text-blue-600" />
+            <div className="flex size-8 items-center justify-center rounded-lg bg-store text-white text-sm font-bold shadow-sm">
+              M
+            </div>
             <span className="text-xl font-bold text-gray-900">Mobix</span>
           </Link>
 
@@ -120,7 +121,7 @@ export function Navbar() {
                 </Link>
                 <Link
                   href="/register"
-                  className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
+                  className="rounded-lg bg-store px-4 py-2 text-sm font-medium text-white transition hover:bg-store-light"
                 >
                   Register
                 </Link>
@@ -135,7 +136,9 @@ export function Navbar() {
           <div className="fixed inset-0 z-30 bg-black/30 lg:hidden" onClick={closeDrawer} />
           <div className="fixed inset-y-0 left-0 z-40 w-72 border-r border-gray-100 bg-white lg:hidden">
             <div className="flex h-16 items-center gap-2 border-b border-gray-100 px-4">
-              <Smartphone className="size-7 text-blue-600" />
+              <div className="flex size-8 items-center justify-center rounded-lg bg-store text-white text-sm font-bold shadow-sm">
+                M
+              </div>
               <span className="text-xl font-bold text-gray-900">Mobix</span>
             </div>
             <div className="px-4 py-4">

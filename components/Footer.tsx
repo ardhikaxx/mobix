@@ -1,62 +1,24 @@
 import Link from "next/link";
-import { Smartphone } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="border-t border-gray-100 bg-gray-50">
-      <div className="mx-auto max-w-7xl px-4 py-12">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <div className="mb-3 flex items-center gap-2">
-              <Smartphone className="size-6 text-blue-600" />
-              <span className="text-lg font-bold text-gray-900">Mobix</span>
+    <footer className="border-t border-gray-100 bg-white">
+      <div className="mx-auto max-w-5xl px-4 py-10">
+        <div className="mb-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
+          <div className="flex items-center gap-2">
+            <div className="flex size-7 items-center justify-center rounded-md bg-store text-white text-xs font-bold">
+              M
             </div>
-            <p className="text-sm text-gray-500">
-              One Place for Every App. Platform distribusi aplikasi mobile berbasis komunitas.
-            </p>
+            <span className="text-base font-bold text-gray-800">Mobix</span>
           </div>
-          <div>
-            <h4 className="mb-3 text-sm font-semibold text-gray-900">Navigate</h4>
-            <ul className="space-y-2 text-sm text-gray-500">
-              <li>
-                <Link href="/" className="transition hover:text-blue-600">Home</Link>
-              </li>
-              <li>
-                <Link href="/about" className="transition hover:text-blue-600">About</Link>
-              </li>
-              <li>
-                <Link href="/search" className="transition hover:text-blue-600">Search</Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="mb-3 text-sm font-semibold text-gray-900">Categories</h4>
-            <ul className="space-y-2 text-sm text-gray-500">
-              <li>
-                <Link href="/category/productivity" className="transition hover:text-blue-600">Productivity</Link>
-              </li>
-              <li>
-                <Link href="/category/games" className="transition hover:text-blue-600">Games</Link>
-              </li>
-              <li>
-                <Link href="/category/tools" className="transition hover:text-blue-600">Tools</Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="mb-3 text-sm font-semibold text-gray-900">Account</h4>
-            <ul className="space-y-2 text-sm text-gray-500">
-              <li>
-                <Link href="/login" className="transition hover:text-blue-600">Login</Link>
-              </li>
-              <li>
-                <Link href="/register" className="transition hover:text-blue-600">Register</Link>
-              </li>
-            </ul>
+          <div className="flex gap-6 text-sm text-gray-500">
+            <Link href="/" className="hover:text-store transition">Home</Link>
+            <Link href="/about" className="hover:text-store transition">About</Link>
+            <Link href="/search" className="hover:text-store transition">Search</Link>
           </div>
         </div>
-        <div className="mt-8 border-t border-gray-200 pt-6 text-center text-xs text-gray-400">
-          &copy; {new Date().getFullYear()} Mobix. All rights reserved.
+        <div className="border-t border-gray-100 pt-6 text-center text-xs text-gray-400">
+          &copy; {new Date().getFullYear()} Mobix
         </div>
       </div>
     </footer>

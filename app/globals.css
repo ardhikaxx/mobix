@@ -9,11 +9,25 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground:#171717;
 }
 
 body {
-  background: var(--background);
+  background: #f8f9fa;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.bg-store { background-color: #01875f; }
+.bg-store-light { background-color: #02a172; }
+.text-store { color: #01875f; }
+.hover\:bg-store-light:hover { background-color: #02a172; }
+.hover\:text-store-light:hover { color: #02a172; }
+.fill-store { fill: #01875f; }
+.border-store { border-color: #01875f; }
+.focus\:border-store:focus { border-color: #01875f; }
+.focus\:ring-store\/20:focus { --tw-ring-color: rgba(1, 135, 95, 0.2); }
+.ring-store { --tw-ring-color: #01875f; }
+
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

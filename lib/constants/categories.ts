@@ -8,6 +8,7 @@ export const CATEGORIES = [
   { slug: "education", label: "Education" },
   { slug: "entertainment", label: "Entertainment" },
   { slug: "photography", label: "Photography" },
+  { slug: "business", label: "Business" },
   { slug: "other", label: "Other" },
 ] as const;
 

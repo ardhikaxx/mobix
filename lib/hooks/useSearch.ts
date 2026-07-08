@@ -1,24 +1,25 @@
 import useSWR from "swr";
-import { collection, getDocs, limit, query, where, orderBy } from "firebase/firestore";
-import { db } from "@/lib/firebase/client";
 import type { AppDoc } from "@/types/app";
 
 export function useSearch(queryStr: string) {
   return useSWR(
     queryStr ? `search:${queryStr}` : null,
     async () => {
+      const data = await fetch("/data/apps.json").then((r) => r.json());
+      const apps = data.apps as AppDoc[];
       const keyword = queryStr.toLowerCase().trim();
       if (!keyword) return [];
 
-      const q = query(
-        collection(db, "apps"),
-        where("status", "==", "published"),
-        where("searchKeywords", "array-contains", keyword),
-        orderBy("downloadCount", "desc"),
-        limit(20)
-      );
-      const snap = await getDocs(q);
-      return snap.docs.map((d) => ({ appId: d.id, ...d.data() } as AppDoc));
+      return apps
+        .filter((a) => a.status === "published")
+        .filter(
+          (a) =>
+            a.name.toLowerCase().includes(keyword) ||
+            a.description.toLowerCase().includes(keyword) ||
+            a.searchKeywords?.some((k) => k.toLowerCase().includes(keyword))
+        )
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        .slice(0, 20);
     },
     { revalidateOnFocus: false }
   );

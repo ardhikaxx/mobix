@@ -6,11 +6,6 @@ export function slugify(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-export function generateAppSlug(name: string): string {
-  const { nanoid } = require("nanoid");
-  return `${slugify(name)}-${nanoid(6)}`;
-}
-
 export function formatBytes(bytes: number): string {
   if (bytes === 0) return "0 B";
   const k = 1024;
@@ -19,10 +14,19 @@ export function formatBytes(bytes: number): string {
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
 }
 
-export function formatDate(timestamp: { toDate?: () => Date; seconds?: number; nanoseconds?: number } | null | undefined): string {
-  if (!timestamp) return "-";
+export function formatDate(
+  value: { toDate?: () => Date; seconds?: number; nanoseconds?: number } | string | null | undefined
+): string {
+  if (!value) return "-";
   try {
-    const date = timestamp.toDate ? timestamp.toDate() : new Date((timestamp.seconds ?? 0) * 1000);
+    let date: Date;
+    if (typeof value === "string") {
+      date = new Date(value);
+    } else if (value.toDate) {
+      date = value.toDate();
+    } else {
+      date = new Date((value.seconds ?? 0) * 1000);
+    }
     return date.toLocaleDateString("id-ID", { year: "numeric", month: "short", day: "numeric" });
   } catch {
     return "-";
