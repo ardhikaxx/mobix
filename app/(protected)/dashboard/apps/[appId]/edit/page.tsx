@@ -35,8 +35,7 @@ function EditContent({ appId }: { appId: string }) {
 
   const [form, setForm] = useState({
     name: "",
-    shortDescription: "",
-    longDescription: "",
+    description: "",
     category: "tools",
     version: "1.0.0",
     websiteURL: "",
@@ -54,8 +53,7 @@ function EditContent({ appId }: { appId: string }) {
     if (app) {
       setForm({
         name: app.name,
-        shortDescription: app.shortDescription,
-        longDescription: app.longDescription,
+        description: app.description,
         category: app.category,
         version: app.version,
         websiteURL: app.websiteURL || "",
@@ -77,9 +75,8 @@ function EditContent({ appId }: { appId: string }) {
     const errs: Record<string, string> = {};
     if (!form.name || form.name.length < 3) errs.name = "Minimal 3 karakter";
     if (form.name.length > 60) errs.name = "Maksimal 60 karakter";
-    if (!form.shortDescription) errs.shortDescription = "Wajib diisi";
-    if (form.shortDescription.length > 150) errs.shortDescription = "Maksimal 150 karakter";
-    if (!form.longDescription || form.longDescription.length < 20) errs.longDescription = "Minimal 20 karakter";
+    if (!form.description || form.description.length < 20) errs.description = "Minimal 20 karakter";
+    if (form.description.length > 5000) errs.description = "Maksimal 5000 karakter";
     if (!/^\d+\.\d+\.\d+$/.test(form.version)) errs.version = "Format harus x.y.z";
     if (newLogo && newLogo.size > 2 * 1024 * 1024) errs.logo = "Logo maksimal 2MB";
     if (newApk && newApk.size > 200 * 1024 * 1024) errs.apk = "APK maksimal 200MB";
@@ -102,8 +99,7 @@ function EditContent({ appId }: { appId: string }) {
     try {
       const updates: Record<string, unknown> = {
         name: form.name,
-        shortDescription: form.shortDescription,
-        longDescription: form.longDescription,
+        description: form.description,
         category: form.category,
         tags,
         searchKeywords,
@@ -166,25 +162,15 @@ function EditContent({ appId }: { appId: string }) {
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">Deskripsi Singkat *</label>
-              <input
-                value={form.shortDescription}
-                onChange={(e) => setForm({ ...form, shortDescription: e.target.value })}
-                maxLength={150}
-                className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm outline-none focus:border-blue-400"
-              />
-              {errors.shortDescription && <p className="mt-1 text-xs text-red-500">{errors.shortDescription}</p>}
-            </div>
-
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">Deskripsi Lengkap *</label>
+              <label className="mb-1 block text-sm font-medium text-gray-700">Deskripsi *</label>
               <textarea
-                value={form.longDescription}
-                onChange={(e) => setForm({ ...form, longDescription: e.target.value })}
-                rows={5}
+                value={form.description}
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+                rows={6}
                 className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm outline-none focus:border-blue-400"
               />
-              {errors.longDescription && <p className="mt-1 text-xs text-red-500">{errors.longDescription}</p>}
+              <div className="mt-1 text-right text-xs text-gray-400">{form.description.length}/5000</div>
+              {errors.description && <p className="mt-1 text-xs text-red-500">{errors.description}</p>}
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">

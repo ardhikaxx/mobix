@@ -7,8 +7,7 @@ export interface AppDoc {
   ownerPhotoURL: string | null;
   name: string;
   slug: string;
-  shortDescription: string;
-  longDescription: string;
+  description: string;
   category: string;
   tags: string[];
   searchKeywords: string[];
@@ -33,8 +32,7 @@ export interface AppDoc {
 
 export interface AppFormData {
   name: string;
-  shortDescription: string;
-  longDescription: string;
+  description: string;
   category: string;
   version: string;
   websiteURL?: string;

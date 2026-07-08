@@ -37,8 +37,7 @@ function UploadContent() {
 
   const [form, setForm] = useState({
     name: "",
-    shortDescription: "",
-    longDescription: "",
+    description: "",
     category: "tools",
     version: "1.0.0",
   });
@@ -52,10 +51,8 @@ function UploadContent() {
     const errs: Record<string, string> = {};
     if (!form.name || form.name.length < 3) errs.name = "Minimal 3 karakter";
     if (form.name.length > 60) errs.name = "Maksimal 60 karakter";
-    if (!form.shortDescription) errs.shortDescription = "Wajib diisi";
-    if (form.shortDescription.length > 150) errs.shortDescription = "Maksimal 150 karakter";
-    if (!form.longDescription || form.longDescription.length < 20) errs.longDescription = "Minimal 20 karakter";
-    if (form.longDescription.length > 5000) errs.longDescription = "Maksimal 5000 karakter";
+    if (!form.description || form.description.length < 20) errs.description = "Minimal 20 karakter";
+    if (form.description.length > 5000) errs.description = "Maksimal 5000 karakter";
     if (!/^\d+\.\d+\.\d+$/.test(form.version)) errs.version = "Format harus x.y.z";
     if (!logoFile) errs.logo = "Logo wajib diupload";
     if (logoFile && logoFile.size > 2 * 1024 * 1024) errs.logo = "Logo maksimal 2MB";
@@ -125,8 +122,7 @@ function UploadContent() {
         ownerPhotoURL: user.photoURL || null,
         name: form.name,
         slug,
-        shortDescription: form.shortDescription,
-        longDescription: form.longDescription,
+        description: form.description,
         category: form.category,
         tags: [],
         searchKeywords,
@@ -187,28 +183,16 @@ function UploadContent() {
             </div>
 
             <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">Deskripsi Singkat *</label>
-              <input
-                value={form.shortDescription}
-                onChange={(e) => setForm({ ...form, shortDescription: e.target.value })}
-                className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
-                placeholder="Maksimal 150 karakter"
-                maxLength={150}
-              />
-              <div className="mt-1 text-right text-xs text-gray-400">{form.shortDescription.length}/150</div>
-              {errors.shortDescription && <p className="mt-1 text-xs text-red-500">{errors.shortDescription}</p>}
-            </div>
-
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">Deskripsi Lengkap *</label>
+              <label className="mb-1 block text-sm font-medium text-gray-700">Deskripsi *</label>
               <textarea
-                value={form.longDescription}
-                onChange={(e) => setForm({ ...form, longDescription: e.target.value })}
-                rows={5}
+                value={form.description}
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+                rows={6}
                 className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
                 placeholder="Deskripsikan aplikasi Anda (min 20 karakter)"
               />
-              {errors.longDescription && <p className="mt-1 text-xs text-red-500">{errors.longDescription}</p>}
+              <div className="mt-1 text-right text-xs text-gray-400">{form.description.length}/5000</div>
+              {errors.description && <p className="mt-1 text-xs text-red-500">{errors.description}</p>}
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">

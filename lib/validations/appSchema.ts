@@ -2,8 +2,7 @@ import { z } from "zod";
 
 export const appUploadSchema = z.object({
   name: z.string().min(3, "Nama minimal 3 karakter").max(60, "Nama maksimal 60 karakter"),
-  shortDescription: z.string().max(150, "Maksimal 150 karakter"),
-  longDescription: z.string().min(20, "Deskripsi terlalu singkat").max(5000, "Deskripsi terlalu panjang"),
+  description: z.string().min(20, "Deskripsi terlalu singkat").max(5000, "Deskripsi terlalu panjang"),
   category: z.enum([
     "productivity", "tools", "games", "social", "finance",
     "health", "education", "entertainment", "photography", "other",
@@ -28,8 +27,7 @@ export type AppUploadInput = z.infer<typeof appUploadSchema>;
 
 export const appEditSchema = z.object({
   name: z.string().min(3, "Nama minimal 3 karakter").max(60, "Nama maksimal 60 karakter"),
-  shortDescription: z.string().max(150, "Maksimal 150 karakter"),
-  longDescription: z.string().min(20, "Deskripsi terlalu singkat").max(5000, "Deskripsi terlalu panjang"),
+  description: z.string().min(20, "Deskripsi terlalu singkat").max(5000, "Deskripsi terlalu panjang"),
   category: z.enum([
     "productivity", "tools", "games", "social", "finance",
     "health", "education", "entertainment", "photography", "other",

@@ -186,7 +186,7 @@ export default function AppDetailPage({
       <div className="mb-8">
         <h2 className="mb-3 text-lg font-semibold text-gray-900">Description</h2>
         <p className="whitespace-pre-line text-sm leading-relaxed text-gray-600">
-          {app.longDescription}
+          {app.description}
         </p>
       </div>
 

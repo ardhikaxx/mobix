@@ -139,7 +139,7 @@ function MyAppsContent() {
                     </div>
                     <div>
                       <div className="font-medium text-gray-900">{app.name}</div>
-                      <div className="text-xs text-gray-400">{app.shortDescription.slice(0, 40)}</div>
+                      <div className="text-xs text-gray-400">{app.description.slice(0, 40)}</div>
                     </div>
                   </div>
                 </td>
