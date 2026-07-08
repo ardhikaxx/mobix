@@ -10,6 +10,8 @@ import { useAuth } from "@/context/AuthProvider";
 import { AuthDialog } from "@/components/AuthDialog";
 import { DetailSkeleton } from "@/components/Skeleton";
 import { ErrorState } from "@/components/ErrorState";
+import { doc, updateDoc, increment, serverTimestamp, addDoc, collection } from "firebase/firestore";
+import { db } from "@/lib/firebase/client";
 import {
   Download,
   Eye,
@@ -71,19 +73,24 @@ export default function AppDetailPage({
 
     setDownloading(true);
     try {
-      const token = await user.getIdToken();
-      const res = await fetch("/api/download", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ appId: app.appId, ownerId: app.ownerId }),
+      window.open(app.apkURL, "_blank");
+
+      await addDoc(collection(db, "downloads"), {
+        appId: app.appId,
+        appName: app.name,
+        appVersion: app.version,
+        userId: user.uid,
+        ownerId: app.ownerId,
+        downloadedAt: serverTimestamp(),
+      });
+      await updateDoc(doc(db, "apps", app.appId), {
+        downloadCount: increment(1),
+        updatedAt: serverTimestamp(),
+      });
+      await updateDoc(doc(db, "users", app.ownerId), {
+        totalDownloads: increment(1),
       });
 
-      if (!res.ok) throw new Error();
-      const { apkURL } = await res.json();
-      window.open(apkURL, "_blank");
       toast.success("Download dimulai!");
     } catch {
       window.open(app.apkURL, "_blank");
