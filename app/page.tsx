@@ -31,6 +31,7 @@ export default function HomePage() {
                   src={featuredApp.screenshots[0]}
                   alt={featuredApp.name}
                   fill
+                  priority
                   className="object-cover transition duration-500 group-hover:scale-105"
                   sizes="(max-width: 1024px) 100vw, 1024px"
                 />

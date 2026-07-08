@@ -196,6 +196,7 @@ export default function AppDetailPage({
             src={app.logoURL}
             alt={app.name}
             fill
+            priority
             className="object-cover"
             sizes="100px"
           />
