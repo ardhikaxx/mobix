@@ -6,7 +6,8 @@ import { useAuth } from "@/context/AuthProvider";
 import { useRouter } from "next/navigation";
 import { db, storage } from "@/lib/firebase/client";
 import { doc, collection, setDoc, updateDoc, increment, serverTimestamp } from "firebase/firestore";
-import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
+import { ref as storageRef, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
+import type { StorageReference } from "firebase/storage";
 import { CATEGORIES } from "@/lib/constants/categories";
 import { generateAppSlug } from "@/lib/utils/slug";
 import { generateSearchKeywords } from "@/lib/utils/searchKeywords";
@@ -19,6 +20,23 @@ import {
   X,
 } from "lucide-react";
 
+function uploadFile(
+  strRef: StorageReference,
+  file: File,
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const task = uploadBytesResumable(strRef, file);
+    task.on("state_changed", null, reject, async () => {
+      try {
+        const url = await getDownloadURL(task.snapshot.ref);
+        resolve(url);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  });
+}
+
 interface UploadProgress {
   logo: number;
   screenshots: number[];
@@ -29,11 +47,7 @@ function UploadContent() {
   const { user } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState<UploadProgress>({
-    logo: 0,
-    screenshots: [],
-    apk: 0,
-  });
+  const [progress, setProgress] = useState(0);
 
   const [form, setForm] = useState({
     name: "",
@@ -69,51 +83,61 @@ function UploadContent() {
     if (!user || !validate()) return;
 
     setLoading(true);
+    setProgress(0);
+
     const appId = doc(collection(db, "apps")).id;
     const slug = generateAppSlug(form.name);
     const searchKeywords = generateSearchKeywords(form.name, [], form.category);
 
-    const uploadedUrls: { logoURL?: string; screenshotURLs?: string[]; apkURL?: string; apkSizeBytes?: number } = {};
     const uploadPaths: string[] = [];
 
     try {
-      const screenshotProgress: number[] = new Array(screenshotFiles.length).fill(0);
-      setProgress({ logo: 0, screenshots: screenshotProgress, apk: 0 });
+      let logoURL = "";
+      const screenshotURLs: string[] = [];
+      let apkURL = "";
+
+      const tasks: Promise<void>[] = [];
+      let completed = 0;
+      const total = (logoFile ? 1 : 0) + screenshotFiles.length + (apkFile ? 1 : 0);
+
+      const track = <T,>(p: Promise<T>): Promise<T> => {
+        return p.then((v) => {
+          completed++;
+          setProgress(Math.round((completed / total) * 100));
+          return v;
+        });
+      };
 
       if (logoFile) {
         const logoPath = `users/${user.uid}/logos/${appId}.webp`;
         uploadPaths.push(logoPath);
-        const logoRef = ref(storage, logoPath);
-        const logoSnap = await uploadBytesResumable(logoRef, logoFile);
-        uploadedUrls.logoURL = await getDownloadURL(logoSnap.ref);
-        setProgress((p) => ({ ...p, logo: 100 }));
+        const logoRef = storageRef(storage, logoPath);
+        tasks.push(
+          track(uploadFile(logoRef, logoFile)).then((url) => { logoURL = url; }),
+        );
       }
 
-      if (screenshotFiles.length > 0) {
-        const urls: string[] = [];
-        for (let i = 0; i < screenshotFiles.length; i++) {
-          const path = `users/${user.uid}/screenshots/${appId}/${i + 1}.webp`;
-          uploadPaths.push(path);
-          const ref_ = ref(storage, path);
-          const snap = await uploadBytesResumable(ref_, screenshotFiles[i]);
-          urls.push(await getDownloadURL(snap.ref));
-          screenshotProgress[i] = 100;
-          setProgress((p) => ({ ...p, screenshots: [...screenshotProgress] }));
-        }
-        uploadedUrls.screenshotURLs = urls;
+      for (let i = 0; i < screenshotFiles.length; i++) {
+        const path = `users/${user.uid}/screenshots/${appId}/${i + 1}.webp`;
+        uploadPaths.push(path);
+        const ref_ = storageRef(storage, path);
+        const idx = i;
+        tasks.push(
+          track(uploadFile(ref_, screenshotFiles[i])).then((url) => { screenshotURLs[idx] = url; }),
+        );
       }
 
       if (apkFile) {
-        const versionCode = 1;
-        const fileName = `${versionCode}-${apkFile.name.toLowerCase().replace(/\s+/g, "-")}`;
+        const fileName = `1-${apkFile.name.toLowerCase().replace(/\s+/g, "-")}`;
         const apkPath = `users/${user.uid}/apks/${appId}/${fileName}`;
         uploadPaths.push(apkPath);
-        const apkRef = ref(storage, apkPath);
-        const apkSnap = await uploadBytesResumable(apkRef, apkFile);
-        uploadedUrls.apkURL = await getDownloadURL(apkSnap.ref);
-        uploadedUrls.apkSizeBytes = apkFile.size;
-        setProgress((p) => ({ ...p, apk: 100 }));
+        const apkRef = storageRef(storage, apkPath);
+        tasks.push(
+          track(uploadFile(apkRef, apkFile)).then((url) => { apkURL = url; }),
+        );
       }
+
+      await Promise.all(tasks);
 
       await setDoc(doc(db, "apps", appId), {
         appId,
@@ -126,11 +150,11 @@ function UploadContent() {
         category: form.category,
         tags: [],
         searchKeywords,
-        logoURL: uploadedUrls.logoURL || "",
-        screenshots: uploadedUrls.screenshotURLs || [],
-        apkURL: uploadedUrls.apkURL || "",
+        logoURL,
+        screenshots: screenshotURLs,
+        apkURL,
         apkFileName: apkFile?.name || "",
-        apkSizeBytes: uploadedUrls.apkSizeBytes || 0,
+        apkSizeBytes: apkFile?.size || 0,
         version: form.version,
         versionCode: 1,
         minAndroidVersion: "",
@@ -154,7 +178,7 @@ function UploadContent() {
     } catch {
       for (const path of uploadPaths) {
         try {
-          await deleteObject(ref(storage, path));
+          await deleteObject(storageRef(storage, path));
         } catch {}
       }
       toast.error("Gagal mengupload aplikasi. Silakan coba lagi.");
@@ -256,11 +280,6 @@ function UploadContent() {
                 />
               </div>
               {errors.logo && <p className="mt-1 text-xs text-red-500">{errors.logo}</p>}
-              {progress.logo > 0 && progress.logo < 100 && (
-                <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-200">
-                  <div className="h-full rounded-full bg-blue-600 transition-all" style={{ width: `${progress.logo}%` }} />
-                </div>
-              )}
             </div>
 
             <div>
@@ -328,14 +347,24 @@ function UploadContent() {
                 />
               </div>
               {errors.apk && <p className="mt-1 text-xs text-red-500">{errors.apk}</p>}
-              {progress.apk > 0 && progress.apk < 100 && (
-                <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-200">
-                  <div className="h-full rounded-full bg-blue-600 transition-all" style={{ width: `${progress.apk}%` }} />
-                </div>
-              )}
             </div>
           </div>
         </section>
+
+        {loading && progress > 0 && progress < 100 && (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-sm text-gray-500">
+              <span>Mengupload file...</span>
+              <span>{progress}%</span>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full bg-gray-200">
+              <div
+                className="h-full rounded-full bg-blue-600 transition-all duration-300"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
+        )}
 
         <button
           type="submit"
