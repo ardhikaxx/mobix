@@ -17,6 +17,7 @@ import {
   addDoc,
   doc,
   setDoc,
+  updateDoc,
   deleteDoc,
   serverTimestamp,
 } from "firebase/firestore";
@@ -76,6 +77,8 @@ export default function AppDetailPage({
   const [submitting, setSubmitting] = useState(false);
   const [loadingReviews, setLoadingReviews] = useState(true);
 
+  const myReview = user ? reviews.find((r) => r.userId === user.uid) : null;
+
   useEffect(() => {
     if (!app) return;
     setLoadingReviews(true);
@@ -95,6 +98,16 @@ export default function AppDetailPage({
       // gagal fetch reviews
     }).finally(() => setLoadingReviews(false));
   }, [app, slug]);
+
+  useEffect(() => {
+    if (myReview) {
+      setReviewRating(myReview.rating);
+      setReviewText(myReview.text);
+    } else if (user) {
+      setReviewRating(5);
+      setReviewText("");
+    }
+  }, [myReview, user]);
 
   if (isLoading) {
     return (
@@ -134,7 +147,8 @@ export default function AppDetailPage({
 
     setSubmitting(true);
     try {
-      const newReview = {
+      const now = serverTimestamp();
+      const reviewData = {
         appSlug: slug,
         appName: app.name,
         userId: user.uid,
@@ -142,26 +156,39 @@ export default function AppDetailPage({
         userPhoto: user.photoURL || null,
         rating: reviewRating,
         text: reviewText.trim(),
-        createdAt: serverTimestamp(),
+        createdAt: myReview ? undefined : now,
+        updatedAt: myReview ? now : undefined,
       };
-      const docRef = await addDoc(collection(db, "reviews"), newReview);
-      const updatedReviews = [
-        { id: docRef.id, ...newReview, createdAt: null } as Review,
-        ...reviews,
-      ];
+
+      let updatedReviews: Review[];
+      if (myReview) {
+        await updateDoc(doc(db, "reviews", myReview.id), reviewData);
+        updatedReviews = reviews.map((r) =>
+          r.id === myReview.id
+            ? { ...r, ...reviewData, id: r.id, createdAt: r.createdAt }
+            : r
+        );
+        toast.success("Ulasan berhasil diperbarui!");
+      } else {
+        const docRef = await addDoc(collection(db, "reviews"), {
+          ...reviewData,
+          createdAt: now,
+        });
+        updatedReviews = [
+          { id: docRef.id, ...reviewData, createdAt: null } as Review,
+          ...reviews,
+        ];
+        toast.success("Ulasan berhasil ditambahkan!");
+      }
       setReviews(updatedReviews);
-      setReviewText("");
-      setReviewRating(5);
 
       const total = updatedReviews.length;
-      const avg = updatedReviews.reduce((s, r) => s + r.rating, 0) / total;
+      const avg = total > 0 ? updatedReviews.reduce((s, r) => s + r.rating, 0) / total : 0;
       setDoc(doc(db, "reviewsStats", slug), {
         appSlug: slug,
         averageRating: Math.round(avg * 10) / 10,
         totalReviews: total,
       }).catch(() => {});
-
-      toast.success("Ulasan berhasil ditambahkan!");
     } catch (err: unknown) {
       toast.error("Gagal menambahkan ulasan");
       console.error(err);
@@ -341,7 +368,9 @@ export default function AppDetailPage({
 
         {user ? (
           <form onSubmit={handleSubmitReview} className="mb-6 rounded-xl border border-gray-100 bg-gray-50 p-4">
-            <h3 className="mb-3 text-sm font-semibold text-gray-800">Berikan Ulasan</h3>
+            <h3 className="mb-3 text-sm font-semibold text-gray-800">
+              {myReview ? "Edit Ulasan" : "Berikan Ulasan"}
+            </h3>
             <div className="mb-3 flex items-center gap-2">
               <span className="text-xs text-gray-500">Rating:</span>
               <ReviewStars rating={reviewRating} size="sm" interactive onChange={setReviewRating} />
@@ -353,14 +382,28 @@ export default function AppDetailPage({
               className="mb-3 w-full resize-none rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-store focus:ring-2 focus:ring-store/20"
               placeholder="Ceritakan pendapat Anda tentang aplikasi ini..."
             />
-            <button
-              type="submit"
-              disabled={submitting}
-              className="inline-flex items-center gap-2 rounded-lg bg-store px-4 py-2 text-sm font-medium text-white transition hover:bg-store-light disabled:opacity-50"
-            >
-              <Send className="size-3.5" />
-              {submitting ? "Mengirim..." : "Kirim Ulasan"}
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="submit"
+                disabled={submitting}
+                className="inline-flex items-center gap-2 rounded-lg bg-store px-4 py-2 text-sm font-medium text-white transition hover:bg-store-light disabled:opacity-50"
+              >
+                <Send className="size-3.5" />
+                {submitting ? "Mengirim..." : myReview ? "Perbarui Ulasan" : "Kirim Ulasan"}
+              </button>
+              {myReview && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setReviewRating(myReview.rating);
+                    setReviewText(myReview.text);
+                  }}
+                  className="text-xs text-gray-500 hover:text-gray-700"
+                >
+                  Batal
+                </button>
+              )}
+            </div>
           </form>
         ) : (
           <div className="mb-6 text-center">
