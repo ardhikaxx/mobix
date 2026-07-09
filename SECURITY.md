@@ -2,20 +2,38 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+Mobix is a community Android app distribution platform. Security updates are provided for the latest stable release.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| Version | Supported |
+| ------- | --------- |
+| 1.x     | ✅ Supported |
+| < 1.0   | ❌ Not supported |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+If you discover a security vulnerability in Mobix, please report it responsibly:
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+- **Email:** ardhikayanuar58@gmail.com
+- **WhatsApp:** [085933648537](https://wa.me/6285933648537)
+
+We will respond within **48 hours** and work to resolve the issue as quickly as possible.
+
+### What to include:
+- Description of the vulnerability
+- Steps to reproduce
+- Potential impact
+- Any suggested fixes (optional)
+
+### Scope
+This security policy covers:
+- The Mobix website code (Next.js app)
+- Firebase configuration and Firestore rules
+- User authentication flow
+- App upload and distribution process
+
+### Out of scope
+- Third-party APK files uploaded by developers
+- External links and services
+- User-generated content in reviews
+
+We appreciate responsible disclosure and will acknowledge valid reports.
