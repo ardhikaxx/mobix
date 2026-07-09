@@ -28,10 +28,10 @@ export function Navbar() {
         <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4">
           <button
             onClick={toggleDrawer}
-            className="flex items-center justify-center size-11 min-h-[44px] min-w-[44px] rounded-xl text-gray-700 hover:bg-gray-100/80 active:scale-90 transition-all duration-200 lg:hidden"
+            className="flex items-center justify-center min-h-[44px] min-w-[44px] rounded-lg p-2 text-gray-600 hover:bg-gray-100 lg:hidden"
             aria-label="Menu"
           >
-            {isDrawerOpen ? <X className="size-6 text-gray-800" /> : <Menu className="size-6 text-gray-800" />}
+            {isDrawerOpen ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
 
           <Link href="/" className="flex items-center gap-2 shrink-0" onClick={closeDrawer}>
@@ -115,12 +115,12 @@ export function Navbar() {
                         className="fixed inset-0 z-10"
                         onClick={() => setProfileOpen(false)}
                       />
-                      <div className="absolute right-0 top-full z-20 mt-2 w-56 rounded-xl border border-gray-100 bg-white py-2 shadow-lg">
+                      <div className="absolute right-0 top-full z-20 mt-2 w-56 min-w-[180px] max-w-[calc(100vw-2rem)] rounded-xl border border-gray-100 bg-white py-2 shadow-lg">
                         <div className="border-b border-gray-100 px-4 py-2">
-                          <p className="text-sm font-medium text-gray-900">
+                          <p className="truncate text-sm font-medium text-gray-900">
                             {user.displayName || "User"}
                           </p>
-                          <p className="text-xs text-gray-500">{user.email}</p>
+                          <p className="truncate text-xs text-gray-500">{user.email}</p>
                         </div>
                         <div className="border-t border-gray-100 pt-1">
                           <button
@@ -179,37 +179,36 @@ export function Navbar() {
       {isDrawerOpen && (
         <>
           <div className="fixed inset-0 z-30 bg-black/30 lg:hidden" onClick={closeDrawer} />
-          <div className="fixed inset-y-0 left-0 z-40 w-72 sm:w-80 border-r border-gray-100 bg-white lg:hidden flex flex-col shadow-2xl animate-in slide-in-from-left duration-300">
-            <div className="flex h-16 shrink-0 items-center gap-3 border-b border-gray-100 px-5">
+          <div className="fixed inset-y-0 left-0 z-40 w-72 max-w-[calc(100vw-3rem)] border-r border-gray-100 bg-white lg:hidden">
+            <div className="flex h-16 items-center gap-2 border-b border-gray-100 px-4">
               <div className="relative size-8 shrink-0 overflow-hidden rounded-lg shadow-sm">
                 <Image src="/images/logo_mobix.png" alt="Mobix Logo" fill className="object-cover" />
               </div>
-              <span className="text-xl font-bold text-gray-900 tracking-tight">Mobix</span>
+              <span className="text-xl font-bold text-gray-900">Mobix</span>
             </div>
-            <div className="px-4 py-4 border-b border-gray-50 bg-gray-50/50">
+            <div className="px-4 py-4">
               <SearchBar />
             </div>
-            <div className="flex-1 overflow-y-auto space-y-1.5 px-3 py-4 hide-scrollbar">
-              <p className="px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-gray-400">
-                Kategori Aplikasi
+            <div className="space-y-1 overflow-y-auto px-2 pb-4">
+              <p className="px-3 py-2 text-xs font-medium uppercase text-gray-500">
+                Menu
               </p>
               {CATEGORIES.map((cat) => (
                 <Link
                   key={cat.slug}
                   href={`/category/${cat.slug}`}
                   onClick={closeDrawer}
-                  className="flex items-center min-h-[44px] rounded-xl px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-store/10 hover:text-store active:scale-[0.98]"
+                  className="block truncate rounded-lg px-3 py-2.5 text-sm text-gray-700 transition hover:bg-gray-100"
                 >
                   {cat.label}
                 </Link>
               ))}
-              <div className="pt-3 my-2 border-t border-gray-100" />
               <Link
                 href="/about"
                 onClick={closeDrawer}
-                className="flex items-center min-h-[44px] rounded-xl px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-store/10 hover:text-store active:scale-[0.98]"
+                className="block truncate rounded-lg px-3 py-2.5 text-sm text-gray-700 transition hover:bg-gray-100"
               >
-                💚 Tentang & Donasi
+                Tentang
               </Link>
             </div>
           </div>

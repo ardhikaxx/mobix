@@ -265,16 +265,16 @@ export default function AppDetailPage({
         </div>
       </div>
 
-      <div className="mb-8 flex items-center justify-between gap-4 overflow-x-auto border-y border-gray-100 py-4 text-center hide-scrollbar md:justify-start md:gap-10">
+      <div className="mb-8 flex items-center justify-around gap-2 border-y border-gray-100 py-4 text-center">
         <div className="min-w-0 px-2">
-          <div className="flex items-center justify-center gap-1 text-base font-bold text-gray-800">
+          <div className="flex items-center justify-center gap-1 text-sm sm:text-base font-bold text-gray-800">
             {avgRating > 0 ? avgRating.toFixed(1) : "-"} <Star className="size-3.5 fill-store text-store" />
           </div>
-          <p className="mt-0.5 text-[11px] text-gray-500">{reviews.length} ulasan</p>
+          <p className="mt-0.5 text-[10px] sm:text-[11px] text-gray-500 whitespace-nowrap">{reviews.length} ulasan</p>
         </div>
         <div className="min-w-0 px-2">
-          <div className="text-base font-bold text-gray-800">{formatBytes(app.apkSizeBytes)}</div>
-          <p className="mt-0.5 text-[11px] text-gray-500">Size</p>
+          <div className="text-sm sm:text-base font-bold text-gray-800">{formatBytes(app.apkSizeBytes)}</div>
+          <p className="mt-0.5 text-[10px] sm:text-[11px] text-gray-500">Size</p>
         </div>
       </div>
 
