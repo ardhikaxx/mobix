@@ -36,56 +36,48 @@ export function Navbar() {
             <span className="text-xl font-bold text-gray-900 dark:text-gray-100">Mobix</span>
           </Link>
 
-          {/* Center/Right: Menu (Desktop) */}
-          <div className="hidden items-center gap-1 lg:flex">
-            {/* Categories Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setCategoryOpen(!categoryOpen)}
-                onMouseEnter={() => setCategoryOpen(true)}
-                onMouseLeave={() => setCategoryOpen(false)}
-                className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
-              >
-                Categories
-                <ChevronDown className={`size-4 transition ${categoryOpen ? "rotate-180" : ""}`} />
-              </button>
-              {categoryOpen && (
-                <div
+          {/* Right: Menu + User/Auth + Mobile Menu */}
+          <div className="flex items-center gap-1">
+            {/* Desktop Menu */}
+            <div className="hidden items-center gap-1 lg:flex">
+              {/* Categories Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setCategoryOpen(!categoryOpen)}
                   onMouseEnter={() => setCategoryOpen(true)}
                   onMouseLeave={() => setCategoryOpen(false)}
-                  className="absolute left-0 top-full z-20 mt-1 w-48 rounded-xl border border-gray-100 bg-white py-1 shadow-lg dark:border-gray-700 dark:bg-gray-900"
+                  className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
                 >
-                  {CATEGORIES.map((cat) => (
-                    <Link
-                      key={cat.slug}
-                      href={`/category/${cat.slug}`}
-                      onClick={() => setCategoryOpen(false)}
-                      className="block px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
-                    >
-                      {cat.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
+                  Categories
+                  <ChevronDown className={`size-4 transition ${categoryOpen ? "rotate-180" : ""}`} />
+                </button>
+                {categoryOpen && (
+                  <div
+                    onMouseEnter={() => setCategoryOpen(true)}
+                    onMouseLeave={() => setCategoryOpen(false)}
+                    className="absolute right-0 top-full z-20 mt-1 w-48 rounded-xl border border-gray-100 bg-white py-1 shadow-lg dark:border-gray-700 dark:bg-gray-900"
+                  >
+                    {CATEGORIES.map((cat) => (
+                      <Link
+                        key={cat.slug}
+                        href={`/category/${cat.slug}`}
+                        onClick={() => setCategoryOpen(false)}
+                        className="block px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800"
+                      >
+                        {cat.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <Link
+                href="/about"
+                className="rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+              >
+                Tentang
+              </Link>
             </div>
-
-            <Link
-              href="/about"
-              className="rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
-            >
-              Tentang
-            </Link>
-          </div>
-
-          {/* Right: User/Auth + Mobile Menu */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={toggleDrawer}
-              className="flex items-center justify-center min-h-[44px] min-w-[44px] rounded-lg p-2 text-gray-600 hover:bg-gray-100 lg:hidden dark:text-gray-400 dark:hover:bg-gray-800"
-              aria-label="Menu"
-            >
-              {isDrawerOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-            </button>
 
             <button
               onClick={() => setSettingsOpen(true)}
@@ -163,6 +155,14 @@ export function Navbar() {
                 </Link>
               </>
             )}
+
+            <button
+              onClick={toggleDrawer}
+              className="flex items-center justify-center min-h-[44px] min-w-[44px] rounded-lg p-2 text-gray-600 hover:bg-gray-100 lg:hidden dark:text-gray-400 dark:hover:bg-gray-800"
+              aria-label="Menu"
+            >
+              {isDrawerOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            </button>
           </div>
         </div>
       </nav>
