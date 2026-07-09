@@ -40,8 +40,8 @@ export function SearchBar({
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Cari aplikasi..."
-        className={`w-full rounded-xl border border-gray-200 bg-white pr-4 text-gray-900 placeholder-gray-400 outline-none transition focus:border-store focus:ring-2 focus:ring-store/20 ${
-          large ? "py-4 pl-12 text-lg" : "py-2 pl-10 text-sm"
+        className={`w-full rounded-xl border border-gray-200 bg-white pr-4 text-gray-900 placeholder-gray-400 outline-none transition focus:border-store focus:ring-2 focus:ring-store/20 min-h-[44px] ${
+          large ? "py-4 pl-12 text-base sm:text-lg" : "py-2.5 pl-10 text-base sm:text-sm"
         }`}
       />
       <Search

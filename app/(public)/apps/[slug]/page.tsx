@@ -227,9 +227,9 @@ export default function AppDetailPage({
     <div className="mx-auto max-w-4xl px-4 py-6">
       <Link
         href="/"
-        className="mb-4 inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
+        className="mb-4 inline-flex items-center gap-1 min-h-[40px] rounded-xl px-3 py-1.5 -ml-3 text-sm font-bold text-gray-600 hover:bg-gray-100 hover:text-gray-900 active:scale-95 transition-all"
       >
-        <ChevronLeft className="size-4" /> Kembali
+        <ChevronLeft className="size-4 text-store" /> Kembali ke Beranda
       </Link>
 
       <div className="mb-6 flex flex-col gap-5 sm:flex-row">
@@ -246,16 +246,20 @@ export default function AppDetailPage({
         <div className="flex min-w-0 flex-1 flex-col justify-center text-center sm:text-left">
           <h1 className="text-xl font-bold text-gray-900 md:text-2xl">{app.name}</h1>
           <p className="mt-0.5 text-sm font-medium text-store">{app.ownerName}</p>
-          <div className="mt-3 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5 sm:justify-start w-full sm:w-auto">
             <button
               onClick={handleDownload}
-              className="inline-flex items-center gap-2 rounded-full bg-store px-8 py-2.5 text-sm font-medium text-white transition hover:bg-store-light shadow-sm"
+              className="inline-flex flex-1 sm:flex-initial items-center justify-center gap-2.5 min-h-[46px] rounded-full bg-store px-8 py-3 text-sm sm:text-base font-bold text-white transition-all hover:bg-store-light active:scale-95 shadow-md shadow-store/20"
             >
-              <Download className="size-4" />
-              Install
+              <Download className="size-5" />
+              Install Aplikasi
             </button>
-            <button onClick={handleShare} className="rounded-full border border-gray-200 bg-white p-2.5 text-gray-600 transition hover:bg-gray-50">
-              <Share2 className="size-4" />
+            <button 
+              onClick={handleShare} 
+              className="flex items-center justify-center min-h-[46px] min-w-[46px] rounded-full border border-gray-200 bg-white p-3 text-gray-700 transition-all hover:bg-gray-50 active:scale-95 shadow-sm"
+              title="Bagikan Aplikasi"
+            >
+              <Share2 className="size-5 text-store" />
             </button>
           </div>
         </div>

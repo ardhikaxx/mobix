@@ -20,9 +20,9 @@ export default function CategoryPage({
     <div className="mx-auto max-w-7xl px-4 py-8">
       <Link
         href="/"
-        className="mb-6 inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
+        className="mb-4 inline-flex items-center gap-1 min-h-[40px] rounded-xl px-3 py-1.5 -ml-3 text-sm font-bold text-gray-600 hover:bg-gray-100 hover:text-gray-900 active:scale-95 transition-all"
       >
-        <ChevronLeft className="size-4" /> Kembali
+        <ChevronLeft className="size-4 text-store" /> Kembali ke Beranda
       </Link>
       <h1 className="mb-8 text-2xl font-bold text-gray-900">Kategori: {label}</h1>
       <AppGrid apps={apps} isLoading={isLoading} error={error} />

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useAuth } from "@/context/AuthProvider";
 import { useUIStore } from "@/store/uiStore";
 import { SearchBar } from "./SearchBar";
+import { ConfirmDialog } from "./ConfirmDialog";
 import {
   Menu,
   X,
@@ -19,6 +20,7 @@ export function Navbar() {
   const { isDrawerOpen, toggleDrawer, closeDrawer } = useUIStore();
   const [profileOpen, setProfileOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
+  const [confirmLogout, setConfirmLogout] = useState(false);
 
   return (
     <>
@@ -26,10 +28,10 @@ export function Navbar() {
         <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4">
           <button
             onClick={toggleDrawer}
-            className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 lg:hidden"
+            className="flex items-center justify-center size-11 min-h-[44px] min-w-[44px] rounded-xl text-gray-700 hover:bg-gray-100/80 active:scale-90 transition-all duration-200 lg:hidden"
             aria-label="Menu"
           >
-            {isDrawerOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            {isDrawerOpen ? <X className="size-6 text-gray-800" /> : <Menu className="size-6 text-gray-800" />}
           </button>
 
           <Link href="/" className="flex items-center gap-2 shrink-0" onClick={closeDrawer}>
@@ -124,11 +126,7 @@ export function Navbar() {
                           <button
                             onClick={() => {
                               setProfileOpen(false);
-                              import("firebase/auth").then(({ signOut }) =>
-                                import("@/lib/firebase/client").then(({ auth }) =>
-                                  signOut(auth)
-                                )
-                              );
+                              setConfirmLogout(true);
                             }}
                             className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 transition hover:bg-red-50"
                           >
@@ -161,39 +159,57 @@ export function Navbar() {
         </div>
       </nav>
 
+      <ConfirmDialog
+        isOpen={confirmLogout}
+        onClose={() => setConfirmLogout(false)}
+        onConfirm={() => {
+          import("firebase/auth").then(({ signOut }) =>
+            import("@/lib/firebase/client").then(({ auth }) =>
+              signOut(auth)
+            )
+          );
+        }}
+        title="Konfirmasi Logout"
+        message="Apakah Anda yakin ingin logout?"
+        confirmLabel="Logout"
+        cancelLabel="Batal"
+        variant="danger"
+      />
+
       {isDrawerOpen && (
         <>
           <div className="fixed inset-0 z-30 bg-black/30 lg:hidden" onClick={closeDrawer} />
-          <div className="fixed inset-y-0 left-0 z-40 w-72 border-r border-gray-100 bg-white lg:hidden">
-            <div className="flex h-16 items-center gap-2 border-b border-gray-100 px-4">
+          <div className="fixed inset-y-0 left-0 z-40 w-72 sm:w-80 border-r border-gray-100 bg-white lg:hidden flex flex-col shadow-2xl animate-in slide-in-from-left duration-300">
+            <div className="flex h-16 shrink-0 items-center gap-3 border-b border-gray-100 px-5">
               <div className="relative size-8 shrink-0 overflow-hidden rounded-lg shadow-sm">
                 <Image src="/images/logo_mobix.png" alt="Mobix Logo" fill className="object-cover" />
               </div>
-              <span className="text-xl font-bold text-gray-900">Mobix</span>
+              <span className="text-xl font-bold text-gray-900 tracking-tight">Mobix</span>
             </div>
-            <div className="px-4 py-4">
+            <div className="px-4 py-4 border-b border-gray-50 bg-gray-50/50">
               <SearchBar />
             </div>
-            <div className="space-y-1 px-2">
-              <p className="px-3 py-2 text-xs font-medium uppercase text-gray-500">
-                Menu
+            <div className="flex-1 overflow-y-auto space-y-1.5 px-3 py-4 hide-scrollbar">
+              <p className="px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-gray-400">
+                Kategori Aplikasi
               </p>
               {CATEGORIES.map((cat) => (
                 <Link
                   key={cat.slug}
                   href={`/category/${cat.slug}`}
                   onClick={closeDrawer}
-                  className="block rounded-lg px-3 py-2 text-sm text-gray-700 transition hover:bg-gray-100"
+                  className="flex items-center min-h-[44px] rounded-xl px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-store/10 hover:text-store active:scale-[0.98]"
                 >
                   {cat.label}
                 </Link>
               ))}
+              <div className="pt-3 my-2 border-t border-gray-100" />
               <Link
                 href="/about"
                 onClick={closeDrawer}
-                className="block rounded-lg px-3 py-2 text-sm text-gray-700 transition hover:bg-gray-100"
+                className="flex items-center min-h-[44px] rounded-xl px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-store/10 hover:text-store active:scale-[0.98]"
               >
-                Tentang
+                💚 Tentang & Donasi
               </Link>
             </div>
           </div>

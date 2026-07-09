@@ -30,11 +30,11 @@ export function AppCard({ app }: { app: AppDoc }) {
   return (
     <Link
       href={`/apps/${app.slug}`}
-      className="group block rounded-2xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:border-gray-200 hover:shadow-lg"
+      className="group block rounded-2xl border border-gray-100 bg-white p-4 transition-all duration-200 hover:border-store/30 hover:shadow-lg active:scale-[0.98] active:bg-gray-50/50"
     >
-      <div className="flex items-start gap-4">
-        <div className="relative w-16 shrink-0 aspect-square rounded-2xl overflow-hidden ring-1 ring-black/5">
-          <Image src={app.logoURL} alt={app.name} fill className="object-cover" sizes="64px" loading="eager" />
+      <div className="flex items-start gap-3.5 sm:gap-4">
+        <div className="relative size-16 sm:size-[68px] shrink-0 rounded-2xl overflow-hidden ring-1 ring-black/5 shadow-sm">
+          <Image src={app.logoURL} alt={app.name} fill className="object-cover" sizes="68px" loading="eager" />
         </div>
 
         <div className="flex min-w-0 flex-1 flex-col gap-1.5">

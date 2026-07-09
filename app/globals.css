@@ -9,13 +9,23 @@
 
 :root {
   --background: #ffffff;
-  --foreground:#171717;
+  --foreground: #171717;
+}
+
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
+  overflow-x: hidden;
   background: #f8f9fa;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .bg-store { background-color: #01875f; }
