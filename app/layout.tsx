@@ -46,9 +46,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(){try{var t=localStorage.getItem('mobix-theme'),d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d)document.documentElement.classList.add('dark')}catch(e){}})();
+            `,
+          }}
+        />
         <AuthProvider>
           <ThemeProvider>
-            <div className="flex min-h-screen flex-col">
+            <div className="flex min-h-screen flex-col bg-white dark:bg-gray-900">
               <Navbar />
               <main className="flex-1">{children}</main>
               <Footer />
