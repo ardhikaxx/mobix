@@ -132,7 +132,10 @@
       "apkFileName": "HPP_Snap.apk",
       "apkSizeBytes": 53139397,
       "logoURL": "/images/logo_hpp_snap.png",
-      "screenshots": [],
+      "screenshots": [
+        "/images/screenshot_hpp_snap_01.png",
+        "/images/screenshot_hpp_snap_02.png"
+      ],
       "ownerId": "admin",
       "ownerName": "ardhikaxx",
       "createdAt": "2026-07-08T00:00:00.000Z",
