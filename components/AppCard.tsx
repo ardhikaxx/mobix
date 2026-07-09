@@ -7,6 +7,7 @@ import type { AppDoc } from "@/types/app";
 import { getCategoryLabel } from "@/lib/constants/categories";
 import { formatBytes } from "@/lib/utils/slug";
 import { useRealtimeRating } from "@/lib/hooks/useRealtimeRating";
+import { useDownloadCount } from "@/lib/hooks/useDownloadCount";
 
 function RatingStars({ rating }: { rating: number }) {
   const stars = [];
@@ -24,6 +25,7 @@ function RatingStars({ rating }: { rating: number }) {
 
 export function AppCard({ app }: { app: AppDoc }) {
   const { rating, totalReviews } = useRealtimeRating(app.slug);
+  const { count: downloadCount } = useDownloadCount(app.slug);
   const category = getCategoryLabel(app.category);
   const hasRating = totalReviews > 0;
 
@@ -44,7 +46,10 @@ export function AppCard({ app }: { app: AppDoc }) {
 
           <span className="text-xs text-gray-400 dark:text-gray-500">{category}</span>
 
-          <span className="text-xs text-gray-400 dark:text-gray-500">{formatBytes(app.apkSizeBytes)}</span>
+          <div className="flex flex-col gap-0">
+            <span className="text-xs text-gray-400 dark:text-gray-500">{formatBytes(app.apkSizeBytes)}</span>
+            <span className="text-[11px] text-gray-400 dark:text-gray-500">{downloadCount} download</span>
+          </div>
 
           {hasRating && (
             <div className="flex items-center gap-1.5">

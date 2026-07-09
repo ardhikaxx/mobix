@@ -1,17 +1,19 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { AppGrid } from "@/components/AppGrid";
 import { SearchBar } from "@/components/SearchBar";
 import { CategoryPill } from "@/components/CategoryPill";
 import { usePublishedApps } from "@/lib/hooks/useApps";
 import { useTranslation } from "@/lib/hooks/useTranslation";
 import { CATEGORIES } from "@/lib/constants/categories";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowUpDown } from "lucide-react";
 import { TrustBadge } from "@/components/TrustBadge";
 import { MobixBadge } from "@/components/MobixBadge";
 
 const PAGE_SIZE = 8;
+
+type SortMode = "newest" | "popular";
 
 export default function HomePage() {
   const { data: allApps, error: publishedErr, isLoading: publishedLoad } = usePublishedApps();
@@ -20,6 +22,9 @@ export default function HomePage() {
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [sortMode, setSortMode] = useState<SortMode>("newest");
+  const [filterCategory, setFilterCategory] = useState<string>("");
+  const [sortOpen, setSortOpen] = useState(false);
 
   const handleSearch = async (q: string) => {
     setSearchQuery(q);
@@ -51,15 +56,37 @@ export default function HomePage() {
     setSearchResults([]);
   };
 
-  const visibleApps = useMemo(() => {
-    if (!allApps) return [];
-    return allApps.slice(0, visibleCount);
-  }, [allApps, visibleCount]);
+  const handleCategoryFilter = (slug: string) => {
+    setFilterCategory((prev) => (prev === slug ? "" : slug));
+    setVisibleCount(PAGE_SIZE);
+  };
 
-  const hasMore = allApps ? visibleCount < allApps.length : false;
+  const sortedAndFiltered = useMemo(() => {
+    if (!allApps) return [];
+    let list = [...allApps];
+    if (filterCategory) {
+      list = list.filter((a) => a.category === filterCategory);
+    }
+    if (sortMode === "popular") {
+      list.sort((a, b) => (b as any).downloadCount ?? 0 - ((a as any).downloadCount ?? 0));
+    }
+    return list;
+  }, [allApps, filterCategory, sortMode]);
+
+  const visibleApps = useMemo(() => {
+    return sortedAndFiltered.slice(0, visibleCount);
+  }, [sortedAndFiltered, visibleCount]);
+
+  const hasMore = allApps ? visibleCount < sortedAndFiltered.length : false;
 
   const handleLoadMore = () => {
-    setVisibleCount((prev) => Math.min(prev + PAGE_SIZE, allApps?.length ?? prev));
+    setVisibleCount((prev) => Math.min(prev + PAGE_SIZE, sortedAndFiltered.length));
+  };
+
+  const toggleSort = () => {
+    setSortMode((prev) => (prev === "newest" ? "popular" : "newest"));
+    setVisibleCount(PAGE_SIZE);
+    setSortOpen(false);
   };
 
   return (
@@ -82,8 +109,26 @@ export default function HomePage() {
           </div>
           <div className="flex flex-wrap gap-2">
             {CATEGORIES.map((cat) => (
-              <CategoryPill key={cat.slug} slug={cat.slug} label={cat.label} />
+              <button
+                key={cat.slug}
+                onClick={() => handleCategoryFilter(cat.slug)}
+                className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition ${
+                  filterCategory === cat.slug
+                    ? "border-store bg-store text-white"
+                    : "border-gray-200 bg-white text-gray-600 hover:border-store/50 hover:text-store dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:border-store/50 dark:hover:text-store"
+                }`}
+              >
+                {cat.label}
+              </button>
             ))}
+            {filterCategory && (
+              <button
+                onClick={() => setFilterCategory("")}
+                className="rounded-full border border-red-200 bg-red-50 px-4 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-100 dark:border-red-800 dark:bg-red-900/30 dark:text-red-400"
+              >
+                {t.home.filterReset}
+              </button>
+            )}
           </div>
         </section>
       )}
@@ -112,6 +157,34 @@ export default function HomePage() {
         <section className="mx-auto max-w-5xl px-4 py-4 sm:py-6">
           <div className="mb-3 sm:mb-4 flex items-center justify-between">
             <h2 className="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-200">{t.home.newUpdates}</h2>
+            <div className="relative">
+              <button
+                onClick={() => setSortOpen(!sortOpen)}
+                className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-4 py-1.5 text-xs font-semibold text-gray-600 transition hover:border-store/50 hover:text-store dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+              >
+                <ArrowUpDown className="size-3.5" />
+                {sortMode === "newest" ? t.home.sortNewest : t.home.sortPopular}
+              </button>
+              {sortOpen && (
+                <>
+                  <div className="fixed inset-0 z-10" onClick={() => setSortOpen(false)} />
+                  <div className="absolute right-0 top-full z-20 mt-1 w-36 rounded-xl border border-gray-100 bg-white py-1 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+                    <button
+                      onClick={toggleSort}
+                      className={`w-full px-4 py-2 text-left text-xs font-semibold transition hover:bg-gray-50 dark:hover:bg-gray-700 ${sortMode === "newest" ? "text-store" : "text-gray-600 dark:text-gray-400"}`}
+                    >
+                      {t.home.sortNewest}
+                    </button>
+                    <button
+                      onClick={toggleSort}
+                      className={`w-full px-4 py-2 text-left text-xs font-semibold transition hover:bg-gray-50 dark:hover:bg-gray-700 ${sortMode === "popular" ? "text-store" : "text-gray-600 dark:text-gray-400"}`}
+                    >
+                      {t.home.sortPopular}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
           <AppGrid
             apps={visibleApps}
@@ -125,7 +198,7 @@ export default function HomePage() {
                 className="inline-flex items-center gap-2 min-h-[46px] rounded-full border border-gray-200 bg-white px-8 py-3 text-sm font-bold text-gray-700 transition-all hover:border-store/30 hover:bg-store/5 hover:text-store active:scale-95 shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-store/30 dark:hover:bg-store/10"
               >
                 <Loader2 className="size-4" />
-                Load More ({allApps!.length - visibleCount} remaining)
+                {t.home.loadMore} ({sortedAndFiltered.length - visibleCount} remaining)
               </button>
             </div>
           )}

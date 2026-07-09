@@ -23,6 +23,12 @@ export const translations = {
       searchResults: "Hasil pencarian untuk",
       clear: "Bersihkan",
       noResults: "Tidak ada hasil",
+      sortNewest: "Terbaru",
+      sortPopular: "Populer",
+      loadMore: "Muat Lainnya",
+      filterReset: "✕ Reset",
+      download: "download",
+      downloads: "Download",
     },
     // Settings Dialog
     settings: {
@@ -77,6 +83,12 @@ export const translations = {
       searchResults: "Search results for",
       clear: "Clear",
       noResults: "No results found",
+      sortNewest: "Newest",
+      sortPopular: "Popular",
+      loadMore: "Load More",
+      filterReset: "✕ Reset",
+      download: "download",
+      downloads: "Downloads",
     },
     // Settings Dialog
     settings: {

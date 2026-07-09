@@ -22,6 +22,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
 import { AppCard } from "@/components/AppCard";
+import { useDownloadCount, incrementDownload } from "@/lib/hooks/useDownloadCount";
 import { ChevronLeft, Star, Download, Shield, Share2, Send, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -79,6 +80,7 @@ export default function AppDetailPageClient({
   const [reviewText, setReviewText] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [loadingReviews, setLoadingReviews] = useState(true);
+  const { count: downloadCount } = useDownloadCount(slug);
 
   const myReview = user ? reviews.find((r) => r.userId === user.uid) : null;
 
@@ -138,6 +140,7 @@ export default function AppDetailPageClient({
       return;
     }
     window.open(app.apkURL, "_blank");
+    incrementDownload(slug);
     toast.success("Download dimulai!");
   };
 
@@ -280,6 +283,10 @@ export default function AppDetailPageClient({
         <div className="min-w-0 px-2">
           <div className="text-sm sm:text-base font-bold text-gray-800 dark:text-gray-200">{formatBytes(app.apkSizeBytes)}</div>
           <p className="mt-0.5 text-[10px] sm:text-[11px] text-gray-500 dark:text-gray-400">Size</p>
+        </div>
+        <div className="min-w-0 px-2">
+          <div className="text-sm sm:text-base font-bold text-gray-800 dark:text-gray-200">{downloadCount}</div>
+          <p className="mt-0.5 text-[10px] sm:text-[11px] text-gray-500 whitespace-nowrap">Downloads</p>
         </div>
       </div>
 
