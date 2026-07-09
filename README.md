@@ -13,6 +13,12 @@
   <a href="https://wa.me/6285933648537">Kontak Admin (WhatsApp)</a>
 </p>
 
+<p align="center">
+  <a href="https://mobix-mu.vercel.app">
+    <img src="https://mobix-mu.vercel.app/badge.svg" alt="Tersedia di Mobix" height="48">
+  </a>
+</p>
+
 ---
 
 ## 📱 Apa itu Mobix?
@@ -69,6 +75,20 @@ Setelah aplikasi terpasang, kamu bisa pasang badge Mobix di website-mu:
 ```bbcode
 [url=https://mobix-mu.vercel.app][img]https://mobix-mu.vercel.app/badge.svg[/img][/url]
 ```
+
+## ☕ Dukung Pengembangan
+
+Mobix dikembangkan dan dioperasikan secara mandiri. Jika kamu terbantu dengan adanya platform ini, bisa traktir kopi via QRIS:
+
+<p align="center">
+  <img src="public/assets/qris.png" alt="QRIS Donasi" width="200" height="200">
+</p>
+
+<p align="center">
+  <em>Scan QRIS di atas untuk donasi — berapapun sangat berarti untuk operasional server dan pengembangan fitur.</em>
+</p>
+
+---
 
 ## 🛠️ Tech Stack
 
