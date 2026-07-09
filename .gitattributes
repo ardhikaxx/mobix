@@ -1,2 +1,12 @@
 *.apk filter=lfs diff=lfs merge=lfs -text
 public/apk/* filter=lfs diff=lfs merge=lfs -text
+.next/dev/cache/turbopack/v16.2.10/00005799.sst filter=lfs diff=lfs merge=lfs -text
+.next/dev/cache/turbopack/v16.2.10/00006100.sst filter=lfs diff=lfs merge=lfs -text
+.next/dev/cache/turbopack/v16.2.10/00006101.sst filter=lfs diff=lfs merge=lfs -text
+node_modules/@next/swc-win32-x64-msvc/next-swc.win32-x64-msvc.node filter=lfs diff=lfs merge=lfs -text
+public/apk/GlucoWise.apk filter=lfs diff=lfs merge=lfs -text
+public/apk/HPP_Snap.apk filter=lfs diff=lfs merge=lfs -text
+public/apk/Ibu_Carelink.apk filter=lfs diff=lfs merge=lfs -text
+public/apk/MIDA.apk filter=lfs diff=lfs merge=lfs -text
+public/apk/Mobile_Posyandu.apk filter=lfs diff=lfs merge=lfs -text
+public/apk/MySaku.apk filter=lfs diff=lfs merge=lfs -text
