@@ -39,7 +39,7 @@ export function Navbar() {
 
           <Link href="/" className="flex items-center gap-2 shrink-0" onClick={closeDrawer}>
             <div className="relative size-8 shrink-0 overflow-hidden rounded-lg shadow-sm">
-              <Image src="/images/logo_mobix.png" alt="Mobix Logo" fill className="object-cover" />
+              <Image src="/images/logo_mobix.png" alt="Mobix Logo" fill sizes="32px" className="object-cover" />
             </div>
             <span className="text-xl font-bold text-gray-900 dark:text-gray-100">Mobix</span>
           </Link>
@@ -197,7 +197,7 @@ export function Navbar() {
           <div className="fixed inset-y-0 left-0 z-40 w-72 max-w-[calc(100vw-3rem)] border-r border-gray-100 bg-white lg:hidden dark:border-gray-800 dark:bg-gray-900">
             <div className="flex h-16 items-center gap-2 border-b border-gray-100 px-4 dark:border-gray-800">
               <div className="relative size-8 shrink-0 overflow-hidden rounded-lg shadow-sm">
-                <Image src="/images/logo_mobix.png" alt="Mobix Logo" fill className="object-cover" />
+                <Image src="/images/logo_mobix.png" alt="Mobix Logo" fill sizes="32px" className="object-cover" />
               </div>
               <span className="text-xl font-bold text-gray-900 dark:text-gray-100">Mobix</span>
             </div>

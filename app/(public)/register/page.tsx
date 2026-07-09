@@ -92,7 +92,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-md rounded-3xl border border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900 p-6 sm:p-8 shadow-[0_20px_50px_rgba(1,135,95,0.08)]">
         <div className="mb-8 text-center flex flex-col items-center">
           <div className="relative size-14 mb-3">
-            <Image src="/images/logo_mobix.png" alt="Mobix Logo" fill className="object-contain" />
+            <Image src="/images/logo_mobix.png" alt="Mobix Logo" fill sizes="56px" className="object-contain" />
           </div>
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">Buat Akun Mobix</h1>
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Bergabung dengan komunitas <span className="font-semibold text-store">Mobix</span> sekarang</p>

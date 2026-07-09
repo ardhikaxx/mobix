@@ -8,7 +8,7 @@ export function Footer() {
         <div className="mb-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
           <div className="flex items-center gap-2">
             <div className="relative size-7 shrink-0 overflow-hidden rounded-md shadow-sm">
-              <Image src="/images/logo_mobix.png" alt="Mobix Logo" fill className="object-cover" />
+              <Image src="/images/logo_mobix.png" alt="Mobix Logo" fill sizes="28px" className="object-cover" />
             </div>
             <span className="text-base font-bold text-gray-800 dark:text-gray-100">Mobix</span>
           </div>
