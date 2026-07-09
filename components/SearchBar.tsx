@@ -32,11 +32,9 @@ export function SearchBar({
 
     const trimmedValue = value.trim();
     
-    if (trimmedValue.length >= 2) {
+    if (trimmedValue.length >= 2 && onSearch) {
       debounceTimer.current = setTimeout(() => {
-        if (onSearch) {
-          onSearch(trimmedValue);
-        }
+        onSearch(trimmedValue);
       }, 300);
     } else if (trimmedValue.length === 0 && onSearch) {
       onSearch("");

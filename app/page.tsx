@@ -15,10 +15,19 @@ export default function HomePage() {
 
   const handleSearch = async (q: string) => {
     setSearchQuery(q);
+    
+    if (!q) {
+      setSearchResults([]);
+      return;
+    }
+
     setIsSearching(true);
     
     try {
       const response = await fetch(`/api/apps?search=${encodeURIComponent(q)}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
       setSearchResults(data.apps || []);
     } catch (error) {
