@@ -8,6 +8,7 @@ import { usePublishedApps } from "@/lib/hooks/useApps";
 import { useTranslation } from "@/lib/hooks/useTranslation";
 import { CATEGORIES } from "@/lib/constants/categories";
 import { Loader2 } from "lucide-react";
+import { TrustBadge } from "@/components/TrustBadge";
 import { MobixBadge } from "@/components/MobixBadge";
 
 const PAGE_SIZE = 8;
@@ -66,7 +67,7 @@ export default function HomePage() {
       {/* Search Section */}
       <section className="mx-auto max-w-5xl px-4 py-6 sm:py-10">
         <div className="mb-4 flex justify-center">
-          <MobixBadge />
+          <TrustBadge />
         </div>
         <div className="flex justify-center">
           <SearchBar large onSearch={handleSearch} />

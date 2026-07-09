@@ -6,7 +6,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthProvider";
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { auth } from "@/lib/firebase/client";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { auth, db } from "@/lib/firebase/client";
 import { registerSchema, type RegisterInput } from "@/lib/validations/appSchema";
 import toast from "react-hot-toast";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
@@ -46,7 +47,14 @@ export default function RegisterPage() {
 
     setLoading(true);
     try {
-      await createUserWithEmailAndPassword(auth, form.email, form.password);
+      const cred = await createUserWithEmailAndPassword(auth, form.email, form.password);
+      await setDoc(doc(db, "users", cred.user.uid), {
+        uid: cred.user.uid,
+        displayName: form.displayName,
+        email: form.email,
+        photoURL: null,
+        createdAt: serverTimestamp(),
+      });
       toast.success("Registrasi berhasil!");
       router.push("/");
     } catch (err: unknown) {
@@ -67,7 +75,14 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
+      const cred = await signInWithPopup(auth, provider);
+      await setDoc(doc(db, "users", cred.user.uid), {
+        uid: cred.user.uid,
+        displayName: cred.user.displayName || "",
+        email: cred.user.email,
+        photoURL: cred.user.photoURL,
+        createdAt: serverTimestamp(),
+      });
       toast.success("Registrasi berhasil!");
       router.push("/");
     } catch (err: unknown) {
