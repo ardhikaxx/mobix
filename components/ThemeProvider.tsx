@@ -4,20 +4,15 @@ import { useEffect, useState } from "react";
 import { useThemeStore } from "@/store/themeStore";
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const { theme, setTheme } = useThemeStore();
+  const { theme } = useThemeStore();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const saved = localStorage.getItem("mobix-theme") as "system" | "dark" | "light" | null;
-    if (saved) {
-      setTheme(saved);
-    }
-  }, [setTheme]);
+  }, []);
 
   useEffect(() => {
     if (!mounted) return;
-    localStorage.setItem("mobix-theme", theme);
 
     const apply = (isDark: boolean) => {
       document.documentElement.classList.toggle("dark", isDark);
@@ -35,6 +30,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       return () => mq.removeEventListener("change", handler);
     }
   }, [theme, mounted]);
+
+  if (!mounted) {
+    return <>{children}</>;
+  }
 
   return <>{children}</>;
 }
