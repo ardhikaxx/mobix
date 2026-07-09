@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Send, Smartphone, DollarSign, Users, Zap, Shield, CheckCircle, ArrowRight, Mail } from "lucide-react";
+import { Send, Smartphone, DollarSign, Users, Zap, Shield, CheckCircle, ArrowRight, MessageCircle, QrCode } from "lucide-react";
+
+const WA_NUMBER = "085933648537";
+const WA_LINK = `https://wa.me/${WA_NUMBER}`;
 
 export const metadata: Metadata = {
   title: "Untuk Developer — Daftarkan Aplikasi Android Anda di Mobix",
@@ -17,12 +20,12 @@ const faqData = [
   {
     question: "Bagaimana cara mendaftarkan aplikasi saya di Mobix?",
     answer:
-      "Hubungi tim Mobix melalui WhatsApp atau Email. Kirimkan detail aplikasi Anda (nama, deskripsi, logo, file APK, kategori). Tim kami akan mengurus sisanya — upload, setup halaman detail, dan publikasi ke katalog.",
+      `Hubungi admin Mobix via WhatsApp di ${WA_NUMBER}. Kirimkan detail aplikasi Anda (nama, deskripsi, kategori), logo aplikasi (max 2MB), dan file APK (max 200MB). Setelah itu lakukan pembayaran Rp10.000 via QRIS, dan admin akan mengupload aplikasi Anda ke katalog Mobix.`,
   },
   {
     question: "Berapa biaya listing aplikasi di Mobix?",
     answer:
-      "Biaya listing aplikasi di Mobix hanya Rp10.000 SEKALI untuk seumur hidup. Tidak ada biaya berulang, tidak ada potongan dari aplikasi Anda. Cukup bayar sekali, aplikasi Anda akan tampil selamanya.",
+      "Biaya listing aplikasi di Mobix hanya Rp10.000 SEKALI untuk seumur hidup. Tidak ada biaya berulang, tidak ada potongan dari aplikasi Anda. Cukup bayar sekali via QRIS, aplikasi Anda akan tampil selamanya.",
   },
   {
     question: "Apakah ada batasan jumlah aplikasi yang bisa didaftarkan?",
@@ -53,15 +56,18 @@ export default function DevelopersPage() {
           Daftarkan Aplikasi Android <span className="text-store">Anda di Mobix</span>
         </h1>
         <p className="mx-auto mb-6 max-w-2xl text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-          Miliki aplikasi Android tapi bingung cara mempromosikannya? Tim Mobix akan membantu 
+          Punya aplikasi Android tapi bingung cara mempromosikannya? Admin Mobix akan membantu 
           mendaftarkan dan menampilkan aplikasi Anda di platform kami. Cukup Rp10.000 sekali untuk listing seumur hidup.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
           <a
-            href="mailto:mobix@email.com"
+            href={WA_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 min-h-[48px] rounded-full bg-store px-8 py-3 text-base font-bold text-white transition-all hover:bg-store-light active:scale-95 shadow-lg shadow-store/20"
           >
-            Kirim Aplikasi Anda <ArrowRight className="size-5" />
+            <MessageCircle className="size-5" />
+            Hubungi Admin via WhatsApp <ArrowRight className="size-5" />
           </a>
           <Link
             href="/about"
@@ -99,10 +105,10 @@ export default function DevelopersPage() {
         </h2>
         <div className="grid gap-4 sm:gap-6 sm:grid-cols-4">
           {[
-            { step: "1", title: "Hubungi Kami", desc: "Kirim email ke mobix@email.com atau WhatsApp." },
-            { step: "2", title: "Kirim APK", desc: "Berikan file APK, logo, dan deskripsi aplikasi." },
-            { step: "3", title: "Bayar Rp10.000", desc: "Pembayaran sekali untuk listing seumur hidup." },
-            { step: "4", title: "Tayang!", desc: "Aplikasi Anda langsung tampil di katalog Mobix." },
+            { step: "1", title: "Chat WhatsApp", desc: `Hubungi admin di ${WA_NUMBER} via WhatsApp.` },
+            { step: "2", title: "Kirim Data APK", desc: "Kirim nama, deskripsi, kategori, logo, dan file APK." },
+            { step: "3", title: "Bayar via QRIS", desc: "Transfer Rp10.000 via QRIS untuk listing seumur hidup." },
+            { step: "4", title: "Admin Upload", desc: "Admin akan upload aplikasi Anda ke katalog Mobix." },
           ].map((item) => (
             <div key={item.step} className="text-center">
               <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-full bg-store text-lg font-bold text-white">
@@ -169,15 +175,17 @@ export default function DevelopersPage() {
             Punya Aplikasi yang Ingin Didaftarkan?
           </h2>
           <p className="mb-6 text-sm sm:text-base text-gray-600 dark:text-gray-400">
-            Hubungi tim Mobix sekarang. Kami akan bantu daftarkan aplikasi Anda ke platform kami.
+            Hubungi admin via WhatsApp sekarang. Kirim data aplikasi Anda, lakukan pembayaran via QRIS, dan admin akan menguploadnya ke katalog Mobix.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <a
-              href="mailto:mobix@email.com"
+              href={WA_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 min-h-[48px] rounded-full bg-store px-8 py-3 text-base font-bold text-white transition-all hover:bg-store-light active:scale-95 shadow-lg shadow-store/20"
             >
-              <Mail className="size-5" />
-              Kirim Email
+              <MessageCircle className="size-5" />
+              Hubungi Admin via WhatsApp
             </a>
           </div>
         </div>
