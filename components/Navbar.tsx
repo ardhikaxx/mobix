@@ -81,7 +81,7 @@ export function Navbar() {
 
             <button
               onClick={() => setSettingsOpen(true)}
-              className="flex items-center justify-center min-h-[44px] min-w-[44px] rounded-lg p-2 text-gray-600 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+              className="hidden lg:flex items-center justify-center min-h-[44px] min-w-[44px] rounded-lg p-2 text-gray-600 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
               aria-label="Settings"
             >
               <Settings className="size-5" />
@@ -220,6 +220,18 @@ export function Navbar() {
               >
                 Tentang
               </Link>
+              <div className="border-t border-gray-100 pt-2 mt-2 dark:border-gray-700">
+                <button
+                  onClick={() => {
+                    setSettingsOpen(true);
+                    closeDrawer();
+                  }}
+                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-sm text-gray-700 transition hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                >
+                  <Settings className="size-4" />
+                  Pengaturan
+                </button>
+              </div>
             </div>
           </div>
         </>
