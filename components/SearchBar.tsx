@@ -14,6 +14,7 @@ export function SearchBar({
   const [query, setQuery] = useState("");
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+  const debounceTimer = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     if (large && inputRef.current) {
@@ -21,11 +22,31 @@ export function SearchBar({
     }
   }, [large]);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setQuery(value);
+
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    const trimmedValue = value.trim();
+    
+    if (trimmedValue.length >= 2) {
+      debounceTimer.current = setTimeout(() => {
+        if (onSearch) {
+          onSearch(trimmedValue);
+        }
+      }, 300);
+    } else if (trimmedValue.length === 0 && onSearch) {
+      onSearch("");
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const q = query.trim();
-    if (!q) return;
-    if (onSearch) {
+    if (q.length >= 2 && onSearch) {
       onSearch(q);
     }
   };
@@ -36,7 +57,7 @@ export function SearchBar({
         ref={inputRef}
         type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={handleInputChange}
         placeholder="Cari aplikasi..."
         className={`w-full rounded-xl border border-gray-200 bg-white pr-4 text-gray-900 placeholder-gray-400 outline-none transition focus:border-store focus:ring-2 focus:ring-store/20 min-h-[44px] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500 ${
           large ? "py-4 pl-12 text-base sm:text-lg" : "py-2.5 pl-10 text-base sm:text-sm"
