@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useAuth } from "@/context/AuthProvider";
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "@/lib/firebase/client";
@@ -23,6 +24,7 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState<Partial<Record<string, string>>>({});
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (user) router.replace("/");
   }, [user, router]);
@@ -87,29 +89,32 @@ export default function RegisterPage() {
 
   return (
     <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-900">Buat Akun</h1>
-          <p className="mt-2 text-sm text-gray-500">Daftar untuk mulai download aplikasi</p>
+      <div className="w-full max-w-md rounded-3xl border border-gray-100 bg-white p-6 sm:p-8 shadow-[0_20px_50px_rgba(1,135,95,0.08)]">
+        <div className="mb-8 text-center flex flex-col items-center">
+          <div className="relative size-12 mb-3 overflow-hidden rounded-2xl shadow-md ring-1 ring-store/20">
+            <Image src="/images/logo_mobix.png" alt="Mobix Logo" fill className="object-cover" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Buat Akun Mobix</h1>
+          <p className="mt-1 text-sm text-gray-500">Bergabung dengan komunitas <span className="font-semibold text-store">Mobix</span> sekarang</p>
         </div>
 
         <form onSubmit={handleEmailRegister} className="space-y-4">
           <div>
-            <label htmlFor="displayName" className="mb-1 block text-sm font-medium text-gray-700">
+            <label htmlFor="displayName" className="mb-1.5 block text-sm font-semibold text-gray-700">
               Nama Lengkap
             </label>
             <input
               id="displayName"
               value={form.displayName}
               onChange={(e) => setForm({ ...form, displayName: e.target.value })}
-              className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+              className="w-full min-h-[46px] rounded-xl border border-gray-200 px-4 py-2.5 text-base sm:text-sm text-gray-900 outline-none transition focus:border-store focus:ring-2 focus:ring-store/20 placeholder-gray-400"
               placeholder="Nama Anda"
             />
-            {errors.displayName && <p className="mt-1 text-xs text-red-500">{errors.displayName}</p>}
+            {errors.displayName && <p className="mt-1 text-xs font-medium text-red-500">{errors.displayName}</p>}
           </div>
 
           <div>
-            <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-700">
+            <label htmlFor="email" className="mb-1.5 block text-sm font-semibold text-gray-700">
               Email
             </label>
             <input
@@ -117,14 +122,14 @@ export default function RegisterPage() {
               type="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+              className="w-full min-h-[46px] rounded-xl border border-gray-200 px-4 py-2.5 text-base sm:text-sm text-gray-900 outline-none transition focus:border-store focus:ring-2 focus:ring-store/20 placeholder-gray-400"
               placeholder="nama@email.com"
             />
-            {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
+            {errors.email && <p className="mt-1 text-xs font-medium text-red-500">{errors.email}</p>}
           </div>
 
           <div>
-            <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-700">
+            <label htmlFor="password" className="mb-1.5 block text-sm font-semibold text-gray-700">
               Password
             </label>
             <div className="relative">
@@ -133,22 +138,22 @@ export default function RegisterPage() {
                 type={showPassword ? "text" : "password"}
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
-                className="w-full rounded-lg border border-gray-200 px-4 py-2.5 pr-10 text-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                className="w-full min-h-[46px] rounded-xl border border-gray-200 px-4 py-2.5 pr-11 text-base sm:text-sm text-gray-900 outline-none transition focus:border-store focus:ring-2 focus:ring-store/20 placeholder-gray-400"
                 placeholder="Minimal 8 karakter"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-store transition"
               >
-                {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
               </button>
             </div>
-            {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password}</p>}
+            {errors.password && <p className="mt-1 text-xs font-medium text-red-500">{errors.password}</p>}
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="mb-1 block text-sm font-medium text-gray-700">
+            <label htmlFor="confirmPassword" className="mb-1.5 block text-sm font-semibold text-gray-700">
               Konfirmasi Password
             </label>
             <input
@@ -156,34 +161,34 @@ export default function RegisterPage() {
               type="password"
               value={form.confirmPassword}
               onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-              className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+              className="w-full min-h-[46px] rounded-xl border border-gray-200 px-4 py-2.5 text-base sm:text-sm text-gray-900 outline-none transition focus:border-store focus:ring-2 focus:ring-store/20 placeholder-gray-400"
               placeholder="Ulangi password"
             />
-            {errors.confirmPassword && <p className="mt-1 text-xs text-red-500">{errors.confirmPassword}</p>}
+            {errors.confirmPassword && <p className="mt-1 text-xs font-medium text-red-500">{errors.confirmPassword}</p>}
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-2 min-h-[46px] rounded-xl bg-store px-4 py-3 text-sm sm:text-base font-bold text-white transition-all hover:bg-store-light active:scale-[0.98] disabled:opacity-50 shadow-md shadow-store/20 mt-2"
           >
-            {loading && <Loader2 className="size-4 animate-spin" />}
-            {loading ? "Memproses..." : "Daftar"}
+            {loading && <Loader2 className="size-5 animate-spin" />}
+            {loading ? "Memproses..." : "Daftar Akun Sekarang"}
           </button>
         </form>
 
         <div className="my-6 flex items-center gap-3">
-          <div className="flex-1 border-t border-gray-200" />
-          <span className="text-xs text-gray-400">atau</span>
-          <div className="flex-1 border-t border-gray-200" />
+          <div className="flex-1 border-t border-gray-100" />
+          <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">atau daftar dengan</span>
+          <div className="flex-1 border-t border-gray-100" />
         </div>
 
         <button
           onClick={handleGoogleRegister}
           disabled={loading}
-          className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-200 px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:opacity-50"
+          className="flex w-full items-center justify-center gap-3 min-h-[46px] rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm sm:text-base font-semibold text-gray-700 transition-all hover:bg-gray-50 hover:border-store/30 active:scale-[0.98] disabled:opacity-50 shadow-sm"
         >
-          <svg className="size-5" viewBox="0 0 24 24">
+          <svg className="size-5 shrink-0" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
@@ -194,8 +199,8 @@ export default function RegisterPage() {
 
         <p className="mt-6 text-center text-sm text-gray-500">
           Sudah punya akun?{" "}
-          <Link href="/login" className="font-medium text-blue-600 hover:text-blue-700">
-            Login
+          <Link href="/login" className="font-bold text-store hover:text-store-light transition underline underline-offset-4">
+            Login Sekarang
           </Link>
         </p>
       </div>
