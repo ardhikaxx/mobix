@@ -10,6 +10,7 @@ import {
   Menu,
   X,
   LogOut,
+  ChevronDown,
 } from "lucide-react";
 import { CATEGORIES } from "@/lib/constants/categories";
 
@@ -17,6 +18,7 @@ export function Navbar() {
   const { user } = useAuth();
   const { isDrawerOpen, toggleDrawer, closeDrawer } = useUIStore();
   const [profileOpen, setProfileOpen] = useState(false);
+  const [categoryOpen, setCategoryOpen] = useState(false);
 
   return (
     <>
@@ -42,15 +44,43 @@ export function Navbar() {
           </div>
 
           <div className="hidden items-center gap-1 lg:flex">
-            {CATEGORIES.slice(0, 4).map((cat) => (
-              <Link
-                key={cat.slug}
-                href={`/category/${cat.slug}`}
-                className="rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100"
+            {/* Categories Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setCategoryOpen(!categoryOpen)}
+                onMouseEnter={() => setCategoryOpen(true)}
+                onMouseLeave={() => setCategoryOpen(false)}
+                className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100"
               >
-                {cat.label}
-              </Link>
-            ))}
+                Categories
+                <ChevronDown className={`size-4 transition ${categoryOpen ? "rotate-180" : ""}`} />
+              </button>
+              {categoryOpen && (
+                <div
+                  onMouseEnter={() => setCategoryOpen(true)}
+                  onMouseLeave={() => setCategoryOpen(false)}
+                  className="absolute right-0 top-full z-20 mt-1 w-48 rounded-xl border border-gray-100 bg-white py-1 shadow-lg"
+                >
+                  {CATEGORIES.map((cat) => (
+                    <Link
+                      key={cat.slug}
+                      href={`/category/${cat.slug}`}
+                      onClick={() => setCategoryOpen(false)}
+                      className="block px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-50"
+                    >
+                      {cat.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <Link
+              href="/about"
+              className="rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100"
+            >
+              Tentang
+            </Link>
           </div>
 
           <div className="flex items-center gap-2">
@@ -145,8 +175,8 @@ export function Navbar() {
               <SearchBar />
             </div>
             <div className="space-y-1 px-2">
-              <p className="px-3 py-2 text-xs font-medium uppercase text-gray-400">
-                Categories
+              <p className="px-3 py-2 text-xs font-medium uppercase text-gray-500">
+                Menu
               </p>
               {CATEGORIES.map((cat) => (
                 <Link
@@ -158,6 +188,13 @@ export function Navbar() {
                   {cat.label}
                 </Link>
               ))}
+              <Link
+                href="/about"
+                onClick={closeDrawer}
+                className="block rounded-lg px-3 py-2 text-sm text-gray-700 transition hover:bg-gray-100"
+              >
+                Tentang
+              </Link>
             </div>
           </div>
         </>
