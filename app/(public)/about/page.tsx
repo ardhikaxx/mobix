@@ -89,16 +89,16 @@ export default function AboutPage() {
       {/* Developer CTA */}
       <div className="mb-12 text-center rounded-2xl border border-store/20 bg-store/5 p-6 sm:p-8">
         <h2 className="mb-2 text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">
-          Mau Upload Aplikasi Android Buatanmu?
+          Punya Aplikasi Android Buatanmu?
         </h2>
         <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-          Distribusikan aplikasi mobile Anda ke komunitas Indonesia. Cukup Rp10.000 sekali untuk listing seumur hidup.
+          Daftarkan aplikasi mobile Anda ke komunitas Indonesia. Cukup Rp10.000 sekali untuk listing seumur hidup.
         </p>
         <Link
           href="/developers"
           className="inline-flex items-center gap-2 min-h-[44px] rounded-full bg-store px-6 py-2.5 text-sm font-bold text-white transition-all hover:bg-store-light active:scale-95 shadow-md shadow-store/20"
         >
-          Pelajari Cara Upload <ArrowRight className="size-4" />
+          Pelajari Cara Daftar <ArrowRight className="size-4" />
         </Link>
       </div>
 

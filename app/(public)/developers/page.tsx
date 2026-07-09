@@ -1,33 +1,33 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Upload, Smartphone, DollarSign, Users, Zap, Shield, CheckCircle, ArrowRight } from "lucide-react";
+import { Send, Smartphone, DollarSign, Users, Zap, Shield, CheckCircle, ArrowRight, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Untuk Developer — Upload Aplikasi Android di Mobix",
+  title: "Untuk Developer — Daftarkan Aplikasi Android Anda di Mobix",
   description:
-    "Platform distribusi aplikasi Android untuk developer Indonesia. Upload APK gratis atau dengan biaya sekali Rp10.000 untuk listing seumur hidup. Jangkau ribuan pengguna.",
+    "Mobix membantu developer Indonesia mempromosikan aplikasi Android mereka. Biaya listing Rp10.000 sekali seumur hidup. Jangkau ribuan pengguna.",
   openGraph: {
-    title: "Upload Aplikasi Android di Mobix — Untuk Developer",
+    title: "Daftarkan Aplikasi Android di Mobix — Untuk Developer",
     description:
-      "Distribusikan aplikasi Android Anda melalui Mobix. Bayar sekali, listing seumur hidup. Tanpa potongan biaya.",
+      "Promosikan aplikasi Android Anda melalui Mobix. Bayar sekali, listing seumur hidup.",
   },
 };
 
 const faqData = [
   {
-    question: "Bagaimana cara upload aplikasi di Mobix?",
+    question: "Bagaimana cara mendaftarkan aplikasi saya di Mobix?",
     answer:
-      "Daftar akun di Mobix, lalu klik tombol 'Upload Aplikasi' di dashboard. Isi nama, deskripsi, kategori, upload logo (max 2MB) dan file APK (max 200MB). Setelah pembayaran Rp10.000, aplikasi Anda akan tampil di katalog publik.",
+      "Hubungi tim Mobix melalui WhatsApp atau Email. Kirimkan detail aplikasi Anda (nama, deskripsi, logo, file APK, kategori). Tim kami akan mengurus sisanya — upload, setup halaman detail, dan publikasi ke katalog.",
   },
   {
-    question: "Berapa biaya upload aplikasi di Mobix?",
+    question: "Berapa biaya listing aplikasi di Mobix?",
     answer:
-      "Biaya upload aplikasi di Mobix hanya Rp10.000 SEKALI untuk seumur hidup. Tidak ada biaya berulang, tidak ada potongan dari aplikasi Anda. Cukup bayar sekali, aplikasi Anda akan tampil selamanya.",
+      "Biaya listing aplikasi di Mobix hanya Rp10.000 SEKALI untuk seumur hidup. Tidak ada biaya berulang, tidak ada potongan dari aplikasi Anda. Cukup bayar sekali, aplikasi Anda akan tampil selamanya.",
   },
   {
-    question: "Apakah ada batasan jumlah aplikasi yang bisa diupload?",
+    question: "Apakah ada batasan jumlah aplikasi yang bisa didaftarkan?",
     answer:
-      "Tidak ada batasan. Developer bisa mengupload banyak aplikasi dengan biaya Rp10.000 per aplikasi. Setiap aplikasi akan mendapatkan halaman detail sendiri dengan sistem rating dan ulasan.",
+      "Tidak ada batasan. Anda bisa mendaftarkan banyak aplikasi dengan biaya Rp10.000 per aplikasi. Setiap aplikasi akan mendapatkan halaman detail sendiri dengan sistem rating dan ulasan.",
   },
   {
     question: "Bagaimana cara pengguna mendownload aplikasi saya?",
@@ -37,7 +37,7 @@ const faqData = [
   {
     question: "Apakah aplikasi saya akan aman di Mobix?",
     answer:
-      "Ya. Mobix menyediakan enkripsi data dalam transit, sistem rating dan ulasan untuk membangun kepercayaan, serta informasi data safety yang transparan. Setiap aplikasi melalui proses verifikasi komunitas.",
+      "Ya. Mobix menyediakan enkripsi data dalam transit, sistem rating dan ulasan untuk membangun kepercayaan, serta informasi data safety yang transparan.",
   },
 ];
 
@@ -47,22 +47,22 @@ export default function DevelopersPage() {
       {/* Hero Section */}
       <div className="mb-16 text-center">
         <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl bg-store/15 shadow-sm border border-store/20">
-          <Upload className="size-7 text-store" />
+          <Send className="size-7 text-store" />
         </div>
         <h1 className="mb-4 text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight">
-          Upload Aplikasi Android <span className="text-store">Mudah & Murah</span>
+          Daftarkan Aplikasi Android <span className="text-store">Anda di Mobix</span>
         </h1>
         <p className="mx-auto mb-6 max-w-2xl text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-          Distribusikan aplikasi mobile buatan Anda ke ribuan pengguna Indonesia melalui Mobix. 
-          Cukup Rp10.000 sekali untuk listing seumur hidup, tanpa potongan biaya.
+          Miliki aplikasi Android tapi bingung cara mempromosikannya? Tim Mobix akan membantu 
+          mendaftarkan dan menampilkan aplikasi Anda di platform kami. Cukup Rp10.000 sekali untuk listing seumur hidup.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <Link
-            href="/register"
+          <a
+            href="mailto:mobix@email.com"
             className="inline-flex items-center gap-2 min-h-[48px] rounded-full bg-store px-8 py-3 text-base font-bold text-white transition-all hover:bg-store-light active:scale-95 shadow-lg shadow-store/20"
           >
-            Upload Aplikasi Sekarang <ArrowRight className="size-5" />
-          </Link>
+            Kirim Aplikasi Anda <ArrowRight className="size-5" />
+          </a>
           <Link
             href="/about"
             className="inline-flex items-center gap-2 min-h-[48px] rounded-full border border-gray-200 bg-white px-8 py-3 text-base font-bold text-gray-700 transition-all hover:border-store/30 hover:bg-store/5 active:scale-95 shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-store/30"
@@ -80,7 +80,7 @@ export default function DevelopersPage() {
           { icon: Zap, title: "Download Cepat via CDN", desc: "File APK Anda dihosting langsung tanpa link shortener atau iklan. Pengguna download dengan kecepatan penuh." },
           { icon: Smartphone, title: "Halaman Detail Profesional", desc: "Setiap aplikasi mendapat halaman detail dengan logo, screenshot, deskripsi, rating, dan ulasan pengguna." },
           { icon: Shield, title: "Aman & Transparan", desc: "Data safety, sistem rating, dan ulasan membangun kepercayaan pengguna terhadap aplikasi Anda." },
-          { icon: CheckCircle, title: "Mudah & Cepat", desc: "Proses upload sederhana. Cukup daftar, upload APK, bayar, dan aplikasi Anda langsung tayang." },
+          { icon: CheckCircle, title: "Mudah & Cepat", desc: "Cukup hubungi kami, kirim APK, dan tim Mobix yang akan mengurus sisanya." },
         ].map((item, i) => (
           <div key={i} className="rounded-2xl border border-gray-100 bg-white p-5 sm:p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 hover:shadow-md transition">
             <div className="mb-3 sm:mb-4 flex size-10 sm:size-11 items-center justify-center rounded-xl bg-store/10 text-store">
@@ -95,14 +95,14 @@ export default function DevelopersPage() {
       {/* How It Works */}
       <div className="mb-16 rounded-2xl border border-gray-100 bg-white p-6 sm:p-8 shadow-sm dark:border-gray-800 dark:bg-gray-900">
         <h2 className="mb-6 text-center text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">
-          Cara Upload Aplikasi di <span className="text-store">Mobix</span>
+          Cara Daftarkan Aplikasi di <span className="text-store">Mobix</span>
         </h2>
         <div className="grid gap-4 sm:gap-6 sm:grid-cols-4">
           {[
-            { step: "1", title: "Daftar Akun", desc: "Buat akun Mobix免费 dengan email atau Google." },
-            { step: "2", title: "Upload APK", desc: "Isi detail aplikasi dan upload file APK (max 200MB)." },
+            { step: "1", title: "Hubungi Kami", desc: "Kirim email ke mobix@email.com atau WhatsApp." },
+            { step: "2", title: "Kirim APK", desc: "Berikan file APK, logo, dan deskripsi aplikasi." },
             { step: "3", title: "Bayar Rp10.000", desc: "Pembayaran sekali untuk listing seumur hidup." },
-            { step: "4", title: "Tayang!", desc: "Aplikasi Anda langsung tampil di katalog publik." },
+            { step: "4", title: "Tayang!", desc: "Aplikasi Anda langsung tampil di katalog Mobix." },
           ].map((item) => (
             <div key={item.step} className="text-center">
               <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-full bg-store text-lg font-bold text-white">
@@ -162,21 +162,24 @@ export default function DevelopersPage() {
         />
       </div>
 
-      {/* CTA */}
+      {/* Contact CTA */}
       <div className="text-center">
         <div className="rounded-2xl border border-store/20 bg-store/5 p-8 sm:p-10">
           <h2 className="mb-3 text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">
-            Siap Upload Aplikasi Anda?
+            Punya Aplikasi yang Ingin Didaftarkan?
           </h2>
           <p className="mb-6 text-sm sm:text-base text-gray-600 dark:text-gray-400">
-            Bergabung dengan developer Indonesia lainnya dan distribusikan aplikasi Anda melalui Mobix.
+            Hubungi tim Mobix sekarang. Kami akan bantu daftarkan aplikasi Anda ke platform kami.
           </p>
-          <Link
-            href="/register"
-            className="inline-flex items-center gap-2 min-h-[48px] rounded-full bg-store px-8 py-3 text-base font-bold text-white transition-all hover:bg-store-light active:scale-95 shadow-lg shadow-store/20"
-          >
-            Daftar & Upload Sekarang <ArrowRight className="size-5" />
-          </Link>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <a
+              href="mailto:mobix@email.com"
+              className="inline-flex items-center gap-2 min-h-[48px] rounded-full bg-store px-8 py-3 text-base font-bold text-white transition-all hover:bg-store-light active:scale-95 shadow-lg shadow-store/20"
+            >
+              <Mail className="size-5" />
+              Kirim Email
+            </a>
+          </div>
         </div>
       </div>
     </div>
