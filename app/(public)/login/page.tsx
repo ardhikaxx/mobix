@@ -69,14 +69,14 @@ function LoginForm() {
       router.replace(redirect);
     } catch (err: unknown) {
       const e = err as { code?: string; message?: string };
-      console.error("Google login error:", e);
       if (e.code === "auth/popup-blocked") {
         toast.error("Popup diblokir browser. Izinkan popup untuk situs ini.");
       } else if (e.code === "auth/unauthorized-domain") {
         toast.error("Domain tidak terdaftar. Tambahkan domain ini di Firebase Console.");
       } else if (e.code === "auth/cancelled-popup-request") {
-        // User cancelled
+        return;
       } else {
+        console.error("Google login error:", e);
         toast.error(`Gagal login dengan Google: ${e.message || "Unknown error"}`);
       }
     } finally {

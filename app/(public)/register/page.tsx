@@ -87,14 +87,14 @@ export default function RegisterPage() {
       router.push("/");
     } catch (err: unknown) {
       const e = err as { code?: string; message?: string };
-      console.error("Google register error:", e);
       if (e.code === "auth/popup-blocked") {
         toast.error("Popup diblokir browser. Izinkan popup untuk situs ini.");
       } else if (e.code === "auth/unauthorized-domain") {
         toast.error("Domain tidak terdaftar. Tambahkan domain ini di Firebase Console.");
       } else if (e.code === "auth/cancelled-popup-request") {
-        // User cancelled
+        return;
       } else {
+        console.error("Google register error:", e);
         toast.error(`Gagal registrasi dengan Google: ${e.message || "Unknown error"}`);
       }
     } finally {
