@@ -27,22 +27,16 @@ export function Navbar() {
   return (
     <>
       <nav className="sticky top-0 z-40 border-b border-gray-100 bg-white/80 backdrop-blur-lg dark:border-gray-800 dark:bg-gray-900/90">
-        <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4">
-          <button
-            onClick={toggleDrawer}
-            className="flex items-center justify-center min-h-[44px] min-w-[44px] rounded-lg p-2 text-gray-600 hover:bg-gray-100 lg:hidden dark:text-gray-400 dark:hover:bg-gray-800"
-            aria-label="Menu"
-          >
-            {isDrawerOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
-
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
+          {/* Left: Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0" onClick={closeDrawer}>
             <div className="relative size-8 shrink-0 overflow-hidden rounded-lg shadow-sm">
               <Image src="/images/logo_mobix.png" alt="Mobix Logo" fill sizes="32px" className="object-cover" />
             </div>
-          <span className="text-xl font-bold text-gray-900 dark:text-gray-100">Mobix</span>
+            <span className="text-xl font-bold text-gray-900 dark:text-gray-100">Mobix</span>
           </Link>
 
+          {/* Center/Right: Menu (Desktop) */}
           <div className="hidden items-center gap-1 lg:flex">
             {/* Categories Dropdown */}
             <div className="relative">
@@ -59,7 +53,7 @@ export function Navbar() {
                 <div
                   onMouseEnter={() => setCategoryOpen(true)}
                   onMouseLeave={() => setCategoryOpen(false)}
-                  className="absolute right-0 top-full z-20 mt-1 w-48 rounded-xl border border-gray-100 bg-white py-1 shadow-lg dark:border-gray-700 dark:bg-gray-900"
+                  className="absolute left-0 top-full z-20 mt-1 w-48 rounded-xl border border-gray-100 bg-white py-1 shadow-lg dark:border-gray-700 dark:bg-gray-900"
                 >
                   {CATEGORIES.map((cat) => (
                     <Link
@@ -83,7 +77,16 @@ export function Navbar() {
             </Link>
           </div>
 
+          {/* Right: User/Auth + Mobile Menu */}
           <div className="flex items-center gap-2">
+            <button
+              onClick={toggleDrawer}
+              className="flex items-center justify-center min-h-[44px] min-w-[44px] rounded-lg p-2 text-gray-600 hover:bg-gray-100 lg:hidden dark:text-gray-400 dark:hover:bg-gray-800"
+              aria-label="Menu"
+            >
+              {isDrawerOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            </button>
+
             <button
               onClick={() => setSettingsOpen(true)}
               className="flex items-center justify-center min-h-[44px] min-w-[44px] rounded-lg p-2 text-gray-600 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
