@@ -81,7 +81,7 @@ Setelah aplikasi terpasang, kamu bisa pasang badge Mobix di website-mu:
 Mobix dikembangkan dan dioperasikan secara mandiri. Jika kamu terbantu dengan adanya platform ini, bisa traktir kopi via QRIS:
 
 <p align="center">
-  <img src="public/assets/qris.png" alt="QRIS Donasi" width="128" height="180">
+  <img src="public/assets/qris.png" alt="QRIS Donasi" width="200" height="282">
 </p>
 
 <p align="center">
