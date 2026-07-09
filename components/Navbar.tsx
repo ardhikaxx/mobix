@@ -33,8 +33,8 @@ export function Navbar() {
           </button>
 
           <Link href="/" className="flex items-center gap-2 shrink-0" onClick={closeDrawer}>
-            <div className="flex size-8 items-center justify-center rounded-lg bg-store text-white text-sm font-bold shadow-sm">
-              M
+            <div className="relative size-8 shrink-0 overflow-hidden rounded-lg shadow-sm">
+              <Image src="/images/logo_mobix.png" alt="Mobix Logo" fill className="object-cover" />
             </div>
             <span className="text-xl font-bold text-gray-900">Mobix</span>
           </Link>
@@ -166,8 +166,8 @@ export function Navbar() {
           <div className="fixed inset-0 z-30 bg-black/30 lg:hidden" onClick={closeDrawer} />
           <div className="fixed inset-y-0 left-0 z-40 w-72 border-r border-gray-100 bg-white lg:hidden">
             <div className="flex h-16 items-center gap-2 border-b border-gray-100 px-4">
-              <div className="flex size-8 items-center justify-center rounded-lg bg-store text-white text-sm font-bold shadow-sm">
-                M
+              <div className="relative size-8 shrink-0 overflow-hidden rounded-lg shadow-sm">
+                <Image src="/images/logo_mobix.png" alt="Mobix Logo" fill className="object-cover" />
               </div>
               <span className="text-xl font-bold text-gray-900">Mobix</span>
             </div>
