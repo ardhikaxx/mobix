@@ -65,6 +65,9 @@ export default function HomePage() {
     <div>
       {/* Search Section */}
       <section className="mx-auto max-w-5xl px-4 py-6 sm:py-10">
+        <div className="mb-4 flex justify-center">
+          <MobixBadge />
+        </div>
         <div className="flex justify-center">
           <SearchBar large onSearch={handleSearch} />
         </div>
