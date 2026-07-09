@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
+import { useTranslation } from "@/lib/hooks/useTranslation";
 
 export function SearchBar({
   large = false,
@@ -15,6 +16,7 @@ export function SearchBar({
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const debounceTimer = useRef<NodeJS.Timeout>();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (large && inputRef.current) {
@@ -56,7 +58,7 @@ export function SearchBar({
         type="text"
         value={query}
         onChange={handleInputChange}
-        placeholder="Cari aplikasi..."
+        placeholder={t.home.search}
         className={`w-full rounded-xl border border-gray-200 bg-white pr-4 text-gray-900 placeholder-gray-400 outline-none transition focus:border-store focus:ring-2 focus:ring-store/20 min-h-[44px] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500 ${
           large ? "py-4 pl-12 text-base sm:text-lg" : "py-2.5 pl-10 text-base sm:text-sm"
         }`}

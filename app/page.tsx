@@ -5,10 +5,12 @@ import { AppGrid } from "@/components/AppGrid";
 import { SearchBar } from "@/components/SearchBar";
 import { CategoryPill } from "@/components/CategoryPill";
 import { useLatestApps } from "@/lib/hooks/useApps";
+import { useTranslation } from "@/lib/hooks/useTranslation";
 import { CATEGORIES } from "@/lib/constants/categories";
 
 export default function HomePage() {
   const { data: latest, error: latestErr, isLoading: latestLoad } = useLatestApps();
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -56,7 +58,7 @@ export default function HomePage() {
       {!isSearching && searchQuery === "" && (
         <section id="categories" className="mx-auto max-w-5xl px-4 pb-2 scroll-mt-20">
           <div className="mb-3 sm:mb-4 flex items-center justify-between">
-            <h2 className="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-200">Categories</h2>
+            <h2 className="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-200">{t.home.categories}</h2>
           </div>
           <div className="flex flex-wrap gap-2">
             {CATEGORIES.map((cat) => (
@@ -71,13 +73,13 @@ export default function HomePage() {
         <section className="mx-auto max-w-5xl px-4 py-4 sm:py-6">
           <div className="mb-3 sm:mb-4 flex items-center justify-between">
             <h2 className="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-200">
-              Hasil pencarian untuk "{searchQuery}"
+              {t.home.searchResults} "{searchQuery}"
             </h2>
             <button
               onClick={handleClearSearch}
               className="text-sm font-medium text-gray-500 transition hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             >
-              Bersihkan
+              {t.home.clear}
             </button>
           </div>
           <AppGrid
@@ -89,7 +91,7 @@ export default function HomePage() {
       ) : (
         <section className="mx-auto max-w-5xl px-4 py-4 sm:py-6">
           <div className="mb-3 sm:mb-4 flex items-center justify-between">
-            <h2 className="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-200">New updates</h2>
+            <h2 className="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-200">{t.home.newUpdates}</h2>
           </div>
           <AppGrid
             apps={latest}

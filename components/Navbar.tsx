@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthProvider";
 import { useUIStore } from "@/store/uiStore";
+import { useTranslation } from "@/lib/hooks/useTranslation";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { SettingsDialog } from "./SettingsDialog";
 import {
@@ -19,6 +20,7 @@ import { CATEGORIES } from "@/lib/constants/categories";
 export function Navbar() {
   const { user } = useAuth();
   const { isDrawerOpen, toggleDrawer, closeDrawer } = useUIStore();
+  const { t } = useTranslation();
   const [profileOpen, setProfileOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [confirmLogout, setConfirmLogout] = useState(false);
@@ -48,7 +50,7 @@ export function Navbar() {
                   onMouseLeave={() => setCategoryOpen(false)}
                   className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
                 >
-                  Categories
+                  {t.navbar.categories}
                   <ChevronDown className={`size-4 transition ${categoryOpen ? "rotate-180" : ""}`} />
                 </button>
                 {categoryOpen && (
@@ -75,7 +77,7 @@ export function Navbar() {
                 href="/about"
                 className="rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
               >
-                Tentang
+                {t.navbar.about}
               </Link>
             </div>
 
@@ -145,13 +147,13 @@ export function Navbar() {
                   href="/login"
                   className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
                 >
-                  Login
+                  {t.navbar.login}
                 </Link>
                 <Link
                   href="/register"
                   className="rounded-lg bg-store px-4 py-2 text-sm font-medium text-white transition hover:bg-store-light"
                 >
-                  Register
+                  {t.navbar.register}
                 </Link>
               </>
             )}
@@ -218,7 +220,7 @@ export function Navbar() {
                 onClick={closeDrawer}
                 className="block truncate rounded-lg px-3 py-2.5 text-sm text-gray-700 transition hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               >
-                Tentang
+                {t.navbar.about}
               </Link>
               <div className="border-t border-gray-100 pt-2 mt-2 dark:border-gray-700">
                 <button

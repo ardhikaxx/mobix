@@ -2,13 +2,10 @@
 
 import { useState } from "react";
 import { useThemeStore, type ThemeMode } from "@/store/themeStore";
+import { useLanguageStore, type Language } from "@/store/languageStore";
 import { Monitor, Moon, Sun, Check, Globe, Info } from "lucide-react";
 
-const themeOptions: { mode: ThemeMode; label: string; icon: typeof Monitor }[] = [
-  { mode: "system", label: "Sesuai Device", icon: Monitor },
-  { mode: "dark", label: "Dark Mode", icon: Moon },
-  { mode: "light", label: "Light Mode", icon: Sun },
-];
+const themeOptions: { mode: ThemeMode; label: string; icon: typeof Monitor }[] = [];
 
 type SettingsTab = "theme" | "language" | "about";
 
@@ -20,10 +17,36 @@ export function SettingsDialog({
   onClose: () => void;
 }) {
   const { theme, setTheme } = useThemeStore();
+  const { language, setLanguage } = useLanguageStore();
   const [activeTab, setActiveTab] = useState<SettingsTab>("theme");
-  const [language, setLanguage] = useState("id");
+
+  // Dynamic theme options based on language
+  const getThemeOptions = () => [
+    { mode: "system" as ThemeMode, label: language === "id" ? "Sesuai Device" : "System Default", icon: Monitor },
+    { mode: "dark" as ThemeMode, label: language === "id" ? "Dark Mode" : "Dark Mode", icon: Moon },
+    { mode: "light" as ThemeMode, label: language === "id" ? "Light Mode" : "Light Mode", icon: Sun },
+  ];
+
+  const languageOptions: { code: Language; label: string }[] = [
+    { code: "id", label: "Bahasa Indonesia" },
+    { code: "en", label: "English" },
+  ];
 
   if (!isOpen) return null;
+
+  const isIndonesian = language === "id";
+  const settingsTitle = isIndonesian ? "Pengaturan" : "Settings";
+  const themeTabLabel = isIndonesian ? "Tema" : "Theme";
+  const languageTabLabel = isIndonesian ? "Bahasa" : "Language";
+  const aboutTabLabel = isIndonesian ? "Tentang" : "About";
+  const selectThemeText = isIndonesian ? "Pilih tema tampilan aplikasi" : "Select app theme";
+  const selectLanguageText = isIndonesian ? "Pilih bahasa aplikasi" : "Select app language";
+  const descriptionText = isIndonesian 
+    ? "Platform distribusi aplikasi mobile berbasis komunitas. Upload dan download aplikasi Android buatan komunitas."
+    : "Community-based mobile app distribution platform. Upload and download Android apps created by the community.";
+  const privacyLabel = isIndonesian ? "Kebijakan Privasi" : "Privacy Policy";
+  const termsLabel = isIndonesian ? "Syarat & Ketentuan" : "Terms & Conditions";
+  const contactLabel = isIndonesian ? "Hubungi Kami" : "Contact Us";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -31,7 +54,7 @@ export function SettingsDialog({
       <div className="relative z-10 w-full max-w-md rounded-2xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 dark:border-gray-700">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Pengaturan</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{settingsTitle}</h2>
           <button
             onClick={onClose}
             className="rounded-lg p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-400"
@@ -54,7 +77,7 @@ export function SettingsDialog({
           >
             <div className="flex items-center justify-center gap-2">
               <Moon className="size-4" />
-              <span className="hidden sm:inline">Tema</span>
+              <span className="hidden sm:inline">{themeTabLabel}</span>
             </div>
           </button>
           <button
@@ -67,7 +90,7 @@ export function SettingsDialog({
           >
             <div className="flex items-center justify-center gap-2">
               <Globe className="size-4" />
-              <span className="hidden sm:inline">Bahasa</span>
+              <span className="hidden sm:inline">{languageTabLabel}</span>
             </div>
           </button>
           <button
@@ -80,7 +103,7 @@ export function SettingsDialog({
           >
             <div className="flex items-center justify-center gap-2">
               <Info className="size-4" />
-              <span className="hidden sm:inline">Tentang</span>
+              <span className="hidden sm:inline">{aboutTabLabel}</span>
             </div>
           </button>
         </div>
@@ -90,8 +113,8 @@ export function SettingsDialog({
           {/* Theme Tab */}
           {activeTab === "theme" && (
             <div className="space-y-2">
-              <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">Pilih tema tampilan aplikasi</p>
-              {themeOptions.map(({ mode, label, icon: Icon }) => (
+              <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">{selectThemeText}</p>
+              {getThemeOptions().map(({ mode, label, icon: Icon }) => (
                 <button
                   key={mode}
                   onClick={() => setTheme(mode)}
@@ -112,11 +135,8 @@ export function SettingsDialog({
           {/* Language Tab */}
           {activeTab === "language" && (
             <div className="space-y-2">
-              <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">Pilih bahasa aplikasi</p>
-              {[
-                { code: "id", label: "Bahasa Indonesia" },
-                { code: "en", label: "English" },
-              ].map(({ code, label }) => (
+              <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">{selectLanguageText}</p>
+              {languageOptions.map(({ code, label }) => (
                 <button
                   key={code}
                   onClick={() => setLanguage(code)}
@@ -143,7 +163,7 @@ export function SettingsDialog({
               </div>
               
               <p className="text-xs text-gray-600 dark:text-gray-400">
-                Platform distribusi aplikasi mobile berbasis komunitas. Upload dan download aplikasi Android buatan komunitas.
+                {descriptionText}
               </p>
 
               <div className="space-y-2 pt-2">
@@ -151,19 +171,19 @@ export function SettingsDialog({
                   href="#"
                   className="block rounded-lg px-3 py-2 text-sm text-store hover:bg-gray-50 dark:hover:bg-gray-800"
                 >
-                  Kebijakan Privasi
+                  {privacyLabel}
                 </a>
                 <a
                   href="#"
                   className="block rounded-lg px-3 py-2 text-sm text-store hover:bg-gray-50 dark:hover:bg-gray-800"
                 >
-                  Syarat & Ketentuan
+                  {termsLabel}
                 </a>
                 <a
                   href="#"
                   className="block rounded-lg px-3 py-2 text-sm text-store hover:bg-gray-50 dark:hover:bg-gray-800"
                 >
-                  Hubungi Kami
+                  {contactLabel}
                 </a>
               </div>
             </div>
