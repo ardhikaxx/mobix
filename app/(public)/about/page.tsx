@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Smartphone, Shield, Users, Zap, Heart, QrCode, Sparkles } from "lucide-react";
+import { Shield, Users, Zap, Heart, QrCode, Sparkles } from "lucide-react";
 
 export default function AboutPage() {
   return (
@@ -7,7 +7,13 @@ export default function AboutPage() {
       {/* Header Section */}
       <div className="mb-14 text-center">
         <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl bg-store/15 shadow-sm border border-store/20">
-          <Smartphone className="size-8 text-store" />
+          <Image
+            src="/images/logo_mobix_transparent.png"
+            alt="Mobix Logo"
+            width={40}
+            height={40}
+            className="object-contain"
+          />
         </div>
         <h1 className="mb-3 text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight">
           Tentang <span className="text-store">Mobix</span>
@@ -68,47 +74,36 @@ export default function AboutPage() {
       </div>
 
       {/* Donasi QRIS Section (Khusus Untuk Donasi Saja) */}
-      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-store/30 bg-gradient-to-b from-store/10 via-white to-store/5 dark:from-store/20 dark:via-gray-900 dark:to-store/10 p-5 sm:p-10 text-center shadow-xl">
-        <div className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full bg-store/15 px-3 sm:px-4 py-1.5 text-[10px] sm:text-xs font-extrabold text-store tracking-wide">
-          <Heart className="size-3 fill-store text-store animate-pulse" />
-          <span className="truncate">DUKUNGAN KOMUNITAS • KHUSUS DONASI SAJA</span>
+      <div className="rounded-xl border border-store/20 bg-store/5 dark:bg-store/10 p-6 text-center">
+        <div className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-store">
+          <Heart className="size-3 fill-store text-store" />
+          <span>DONASI UNTUK PENGEMBANGAN</span>
         </div>
 
-        <h2 className="mb-3 text-xl sm:text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight">
+        <h2 className="mb-2 text-lg font-bold text-gray-900 dark:text-gray-100">
           Donasi Pengembangan <span className="text-store">Mobix</span>
         </h2>
-        <p className="mx-auto mb-6 sm:mb-8 max-w-xl text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
-          Mobix didanai oleh biaya pendaftaran developer sekali bayar serta dukungan 
-          sukarela komunitas. Untuk membantu biaya operasional server, bandwidth CDN, 
-          serta pemeliharaan platform, Anda dapat berdonasi melalui scan QRIS di bawah ini.
+        <p className="mx-auto mb-4 max-w-md text-sm text-gray-600 dark:text-gray-400">
+          Bantu kami menjaga operasional server dan CDN dengan donasi melalui QRIS.
         </p>
 
-        {/* QRIS Card Box */}
-        <div className="mx-auto w-full max-w-sm rounded-2xl border border-gray-200 bg-white p-4 sm:p-5 shadow-lg dark:border-gray-700 dark:bg-gray-900">
-          <div className="mb-3 flex items-center justify-center gap-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 dark:text-gray-500 border-b border-gray-100 pb-2.5 dark:border-gray-700">
-            <QrCode className="size-3.5 sm:size-4 text-store shrink-0" />
-            <span>QRIS Resmi Donasi Mobix</span>
-          </div>
-
-          <div className="relative mx-auto my-3 w-full max-w-[200px] sm:max-w-[280px] aspect-[4/5] overflow-hidden rounded-xl border border-gray-100 bg-white shadow-inner dark:border-gray-700 dark:bg-gray-800 flex items-center justify-center p-2">
+        {/* QRIS - Simplified */}
+        <div className="mx-auto w-full max-w-xs">
+          <div className="relative mx-auto w-max">
             <Image
               src="/assets/qris.png"
-              alt="QRIS Donasi Mobix - Untuk Donasi Saja"
-              width={280}
-              height={360}
+              alt="QRIS Donasi Mobix"
+              width={240}
+              height={240}
               priority
-              className="object-contain size-full rounded-lg"
+              className="object-contain"
             />
           </div>
-
-          <p className="mt-3 text-[10px] sm:text-[11px] font-semibold text-gray-400 dark:text-gray-500 leading-relaxed">
-            *Dapat dipindai/scan menggunakan semua aplikasi e-Wallet (GoPay, OVO, DANA, ShopeePay) & Mobile Banking.
-          </p>
         </div>
 
-        <div className="mt-6 sm:mt-8 flex items-center justify-center gap-2 text-xs font-bold text-gray-500 dark:text-gray-400 dark:text-gray-500">
-          <span>Terima kasih atas kontribusi Anda untuk kemajuan ekosistem Android komunitas!</span>
-        </div>
+        <p className="mt-4 text-xs text-gray-500 dark:text-gray-400">
+          Terima kasih atas kontribusi Anda! 💚
+        </p>
       </div>
     </div>
   );
