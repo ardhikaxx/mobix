@@ -20,13 +20,14 @@ export default function AboutPage() {
       {/* Header Section */}
       <div className="mb-14 text-center">
         <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl bg-store/15 shadow-sm border border-store/20">
-          <Image
-            src="/images/logo_mobix_transparent.png"
-            alt="Mobix Logo"
-            width={40}
-            height={40}
-            className="object-contain"
-          />
+            <Image
+              src="/images/logo_mobix_transparent.png"
+              alt="Mobix Logo"
+              width={40}
+              height={40}
+              className="object-contain"
+              style={{ width: "auto", height: "auto" }}
+            />
         </div>
         <h1 className="mb-3 text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight">
           Tentang <span className="text-store">Mobix</span>
@@ -126,6 +127,7 @@ export default function AboutPage() {
               height={240}
               priority
               className="object-contain"
+              style={{ width: "auto", height: "auto" }}
             />
           </div>
         </div>
