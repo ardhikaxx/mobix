@@ -286,7 +286,7 @@ export default function AppDetailPage({
               <button
                 key={idx}
                 onClick={() => setLightboxIdx(idx)}
-                className="relative h-64 w-[140px] shrink-0 snap-center overflow-hidden rounded-xl border border-gray-200 bg-gray-100"
+                className="relative h-48 sm:h-64 w-[120px] sm:w-[140px] shrink-0 snap-center overflow-hidden rounded-xl border border-gray-200 bg-gray-100"
               >
                 <Image
                   src={url}
@@ -327,22 +327,22 @@ export default function AppDetailPage({
         </div>
 
         {reviews.length > 0 && (
-          <div className="mb-6 flex items-center gap-6">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-gray-800">{avgRating.toFixed(1)}</div>
+          <div className="mb-6 flex flex-col sm:flex-row items-center gap-6">
+            <div className="text-center shrink-0">
+              <div className="text-3xl sm:text-4xl font-bold text-gray-800">{avgRating.toFixed(1)}</div>
               <div className="mt-1 flex justify-center">
                 <ReviewStars rating={Math.round(avgRating)} size="sm" />
               </div>
-              <p className="mt-1 text-xs text-gray-500">{reviews.length} ulasan</p>
+              <p className="mt-1 text-xs text-gray-500 whitespace-nowrap">{reviews.length} ulasan</p>
             </div>
-            <div className="flex-1">
+            <div className="w-full sm:flex-1">
               {[5, 4, 3, 2, 1].map((num) => {
                 const count = ratingDistribution[num - 1] || 0;
                 const pct = (count / maxCount) * 100;
                 return (
                   <div key={num} className="mb-1 flex items-center gap-2 text-xs text-gray-500">
-                    <span className="w-3">{num}</span>
-                    <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-100">
+                    <span className="w-3 text-right sm:text-left">{num}</span>
+                    <div className="h-2.5 sm:h-2 flex-1 overflow-hidden rounded-full bg-gray-100">
                       <div className="h-full rounded-full bg-store" style={{ width: `${pct}%` }} />
                     </div>
                     <span className="w-5 text-right">{count}</span>
@@ -354,11 +354,11 @@ export default function AppDetailPage({
         )}
 
         {user ? (
-          <form onSubmit={handleSubmitReview} className="mb-6 rounded-xl border border-gray-100 bg-gray-50 p-4">
+          <form onSubmit={handleSubmitReview} className="mb-6 rounded-xl border border-gray-100 bg-gray-50 p-4 sm:p-5">
             <h3 className="mb-3 text-sm font-semibold text-gray-800">
               {myReview ? "Edit Ulasan" : "Berikan Ulasan"}
             </h3>
-            <div className="mb-3 flex items-center gap-2">
+            <div className="mb-3 flex flex-wrap items-center gap-2">
               <span className="text-xs text-gray-500">Rating:</span>
               <ReviewStars rating={reviewRating} size="sm" interactive onChange={setReviewRating} />
             </div>
@@ -366,14 +366,14 @@ export default function AppDetailPage({
               value={reviewText}
               onChange={(e) => setReviewText(e.target.value)}
               rows={3}
-              className="mb-3 w-full resize-none rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-store focus:ring-2 focus:ring-store/20"
+              className="mb-3 w-full resize-none rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-store focus:ring-2 focus:ring-store/20"
               placeholder="Ceritakan pendapat Anda tentang aplikasi ini..."
             />
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
               <button
                 type="submit"
                 disabled={submitting}
-                className="inline-flex items-center gap-2 rounded-lg bg-store px-4 py-2 text-sm font-medium text-white transition hover:bg-store-light disabled:opacity-50"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-store px-4 py-2.5 text-sm font-medium text-white transition hover:bg-store-light disabled:opacity-50"
               >
                 <Send className="size-3.5" />
                 {submitting ? "Mengirim..." : myReview ? "Perbarui Ulasan" : "Kirim Ulasan"}
@@ -385,7 +385,7 @@ export default function AppDetailPage({
                     setReviewRating(myReview.rating);
                     setReviewText(myReview.text);
                   }}
-                  className="text-xs text-gray-500 hover:text-gray-700"
+                  className="text-sm text-gray-500 hover:text-gray-700"
                 >
                   Batal
                 </button>
@@ -404,7 +404,7 @@ export default function AppDetailPage({
         )}
 
         {loadingReviews ? (
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {[1, 2].map((i) => (
               <div key={i} className="animate-pulse rounded-lg border border-gray-100 p-4">
                 <div className="mb-2 h-4 w-32 rounded bg-gray-200" />
@@ -414,29 +414,29 @@ export default function AppDetailPage({
             ))}
           </div>
         ) : reviews.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {reviews.map((r) => (
-              <div key={r.id} className="rounded-lg border border-gray-100 p-4">
+              <div key={r.id} className="rounded-lg border border-gray-100 p-3 sm:p-4">
                 <div className="mb-2 flex items-center gap-3">
                   {r.userPhoto ? (
                     <Image
                       src={r.userPhoto}
                       alt={r.userName}
-                      width={32}
-                      height={32}
-                      className="size-8 rounded-full object-cover"
+                      width={36}
+                      height={36}
+                      className="size-8 sm:size-9 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="flex size-8 items-center justify-center rounded-full bg-gray-200 text-xs font-bold text-gray-600 uppercase">
+                    <div className="flex size-8 sm:size-9 items-center justify-center rounded-full bg-gray-200 text-xs font-bold text-gray-600 uppercase">
                       {r.userName.charAt(0)}
                     </div>
                   )}
-                  <div>
-                    <p className="text-sm font-medium text-gray-800">{r.userName}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium text-gray-800">{r.userName}</p>
                     <ReviewStars rating={r.rating} size="sm" />
                   </div>
                 </div>
-                <p className="text-sm text-gray-600">{r.text}</p>
+                <p className="text-sm text-gray-600 break-words">{r.text}</p>
               </div>
             ))}
           </div>
@@ -449,16 +449,16 @@ export default function AppDetailPage({
 
       {lightboxIdx !== null && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-2 sm:p-4"
           onClick={() => setLightboxIdx(null)}
         >
-          <div className="relative aspect-[9/16] h-[80vh]">
+          <div className="relative aspect-[9/16] h-[60vh] sm:h-[80vh] max-h-[90vw] w-auto">
             <Image
               src={screenshots[lightboxIdx]}
               alt={`Screenshot ${lightboxIdx + 1}`}
               fill
               className="object-contain"
-              sizes="80vh"
+              sizes="(max-width: 640px) 90vw, 80vh"
             />
           </div>
         </div>

@@ -94,7 +94,7 @@ export default function RegisterPage() {
           <div className="relative size-14 mb-3">
             <Image src="/images/logo_mobix.png" alt="Mobix Logo" fill className="object-contain" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Buat Akun Mobix</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">Buat Akun Mobix</h1>
           <p className="mt-1 text-sm text-gray-500">Bergabung dengan komunitas <span className="font-semibold text-store">Mobix</span> sekarang</p>
         </div>
 

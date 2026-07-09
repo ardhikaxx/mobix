@@ -27,7 +27,7 @@ export function AppGrid({
     return <EmptyState title="Belum ada aplikasi" description="Jadi yang pertama upload!" />;
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {apps.map((app) => (
         <AppCard key={app.appId} app={app} />
       ))}
