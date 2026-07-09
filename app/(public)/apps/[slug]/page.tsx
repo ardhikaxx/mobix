@@ -51,7 +51,7 @@ function ReviewStars({ rating, size = "sm", interactive = false, onChange }: {
         className={`${interactive ? "cursor-pointer" : "cursor-default"} ${cls}`}
       >
         <Star
-          className={`${cls} ${i <= rating ? "fill-store text-store" : "fill-gray-200 text-gray-200"} ${interactive ? "transition hover:scale-110" : ""}`}
+          className={`${cls} ${i <= rating ? "fill-store text-store" : "fill-gray-200 text-gray-200 dark:fill-gray-600 dark:text-gray-600"} ${interactive ? "transition hover:scale-110" : ""}`}
         />
       </button>
     );
@@ -227,7 +227,7 @@ export default function AppDetailPage({
     <div className="mx-auto max-w-4xl px-4 py-6">
       <Link
         href="/"
-        className="mb-4 inline-flex items-center gap-1 min-h-[40px] rounded-xl px-3 py-1.5 -ml-3 text-sm font-bold text-gray-600 hover:bg-gray-100 hover:text-gray-900 active:scale-95 transition-all"
+        className="mb-4 inline-flex items-center gap-1 min-h-[40px] rounded-xl px-3 py-1.5 -ml-3 text-sm font-bold text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100 active:scale-95 transition-all"
       >
         <ChevronLeft className="size-4 text-store" /> Kembali ke Beranda
       </Link>
@@ -244,7 +244,7 @@ export default function AppDetailPage({
           />
         </div>
         <div className="flex min-w-0 flex-1 flex-col justify-center text-center sm:text-left">
-          <h1 className="text-xl font-bold text-gray-900 md:text-2xl">{app.name}</h1>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100 md:text-2xl">{app.name}</h1>
           <p className="mt-0.5 text-sm font-medium text-store">{app.ownerName}</p>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5 sm:justify-start w-full sm:w-auto">
             <button
@@ -256,7 +256,7 @@ export default function AppDetailPage({
             </button>
             <button 
               onClick={handleShare} 
-              className="flex items-center justify-center min-h-[46px] min-w-[46px] rounded-full border border-gray-200 bg-white p-3 text-gray-700 transition-all hover:bg-gray-50 active:scale-95 shadow-sm"
+              className="flex items-center justify-center min-h-[46px] min-w-[46px] rounded-full border border-gray-200 bg-white p-3 text-gray-700 transition-all hover:bg-gray-50 active:scale-95 shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
               title="Bagikan Aplikasi"
             >
               <Share2 className="size-5 text-store" />
@@ -265,28 +265,28 @@ export default function AppDetailPage({
         </div>
       </div>
 
-      <div className="mb-8 flex items-center justify-around gap-2 border-y border-gray-100 py-4 text-center">
+      <div className="mb-8 flex items-center justify-around gap-2 border-y border-gray-100 py-4 text-center dark:border-gray-800">
         <div className="min-w-0 px-2">
-          <div className="flex items-center justify-center gap-1 text-sm sm:text-base font-bold text-gray-800">
+          <div className="flex items-center justify-center gap-1 text-sm sm:text-base font-bold text-gray-800 dark:text-gray-200">
             {avgRating > 0 ? avgRating.toFixed(1) : "-"} <Star className="size-3.5 fill-store text-store" />
           </div>
           <p className="mt-0.5 text-[10px] sm:text-[11px] text-gray-500 whitespace-nowrap">{reviews.length} ulasan</p>
         </div>
         <div className="min-w-0 px-2">
-          <div className="text-sm sm:text-base font-bold text-gray-800">{formatBytes(app.apkSizeBytes)}</div>
-          <p className="mt-0.5 text-[10px] sm:text-[11px] text-gray-500">Size</p>
+          <div className="text-sm sm:text-base font-bold text-gray-800 dark:text-gray-200">{formatBytes(app.apkSizeBytes)}</div>
+          <p className="mt-0.5 text-[10px] sm:text-[11px] text-gray-500 dark:text-gray-400">Size</p>
         </div>
       </div>
 
       {screenshots.length > 0 && (
         <div className="mb-8 w-full overflow-hidden">
-          <h2 className="mb-3 text-sm font-bold text-gray-800">About this app</h2>
+          <h2 className="mb-3 text-sm font-bold text-gray-800 dark:text-gray-200">About this app</h2>
           <div className="flex gap-3 overflow-x-auto pb-2 hide-scrollbar snap-x snap-mandatory">
             {screenshots.map((url, idx) => (
               <button
                 key={idx}
                 onClick={() => setLightboxIdx(idx)}
-                className="relative h-48 sm:h-64 w-[120px] sm:w-[140px] shrink-0 snap-center overflow-hidden rounded-xl border border-gray-200 bg-gray-100"
+                className="relative h-48 sm:h-64 w-[120px] sm:w-[140px] shrink-0 snap-center overflow-hidden rounded-xl border border-gray-200 bg-gray-100 dark:border-gray-700 dark:bg-gray-800"
               >
                 <Image
                   src={url}
@@ -303,46 +303,46 @@ export default function AppDetailPage({
       )}
 
       <div className="mb-8">
-        <p className="text-sm leading-relaxed text-gray-600">{app.description}</p>
+        <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">{app.description}</p>
       </div>
 
-      <div className="mb-8 rounded-xl border border-gray-100 bg-white p-5 shadow-sm">
-        <h2 className="mb-2 text-sm font-bold text-gray-800">Data Safety</h2>
-        <p className="mb-4 text-xs text-gray-500">
+      <div className="mb-8 rounded-xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <h2 className="mb-2 text-sm font-bold text-gray-800 dark:text-gray-200">Data Safety</h2>
+        <p className="mb-4 text-xs text-gray-500 dark:text-gray-400">
           Safety starts with understanding how developers collect and share your data. Data privacy and security practices may vary based on your use, region, and age.
         </p>
         <div className="mb-3 flex items-start gap-3">
-          <Shield className="mt-0.5 size-4 shrink-0 text-gray-400" />
-          <p className="text-xs font-medium text-gray-700">No data shared with third parties</p>
+          <Shield className="mt-0.5 size-4 shrink-0 text-gray-400 dark:text-gray-500" />
+          <p className="text-xs font-medium text-gray-700 dark:text-gray-300">No data shared with third parties</p>
         </div>
         <div className="flex items-start gap-3">
-          <Shield className="mt-0.5 size-4 shrink-0 text-gray-400" />
-          <p className="text-xs font-medium text-gray-700">Data encrypted in transit</p>
+          <Shield className="mt-0.5 size-4 shrink-0 text-gray-400 dark:text-gray-500" />
+          <p className="text-xs font-medium text-gray-700 dark:text-gray-300">Data encrypted in transit</p>
         </div>
       </div>
 
       <div className="mb-8">
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-sm font-bold text-gray-800">Rating & Ulasan</h2>
+          <h2 className="text-sm font-bold text-gray-800 dark:text-gray-200">Rating & Ulasan</h2>
         </div>
 
         {reviews.length > 0 && (
           <div className="mb-6 flex flex-col sm:flex-row items-center gap-6">
             <div className="text-center shrink-0">
-              <div className="text-3xl sm:text-4xl font-bold text-gray-800">{avgRating.toFixed(1)}</div>
+              <div className="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-gray-200">{avgRating.toFixed(1)}</div>
               <div className="mt-1 flex justify-center">
                 <ReviewStars rating={Math.round(avgRating)} size="sm" />
               </div>
-              <p className="mt-1 text-xs text-gray-500 whitespace-nowrap">{reviews.length} ulasan</p>
+              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">{reviews.length} ulasan</p>
             </div>
             <div className="w-full sm:flex-1">
               {[5, 4, 3, 2, 1].map((num) => {
                 const count = ratingDistribution[num - 1] || 0;
                 const pct = (count / maxCount) * 100;
                 return (
-                  <div key={num} className="mb-1 flex items-center gap-2 text-xs text-gray-500">
+                  <div key={num} className="mb-1 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                     <span className="w-3 text-right sm:text-left">{num}</span>
-                    <div className="h-2.5 sm:h-2 flex-1 overflow-hidden rounded-full bg-gray-100">
+                    <div className="h-2.5 sm:h-2 flex-1 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
                       <div className="h-full rounded-full bg-store" style={{ width: `${pct}%` }} />
                     </div>
                     <span className="w-5 text-right">{count}</span>
@@ -354,19 +354,19 @@ export default function AppDetailPage({
         )}
 
         {user ? (
-          <form onSubmit={handleSubmitReview} className="mb-6 rounded-xl border border-gray-100 bg-gray-50 p-4 sm:p-5">
-            <h3 className="mb-3 text-sm font-semibold text-gray-800">
+          <form onSubmit={handleSubmitReview} className="mb-6 rounded-xl border border-gray-100 bg-gray-50 p-4 sm:p-5 dark:border-gray-800 dark:bg-gray-800">
+            <h3 className="mb-3 text-sm font-semibold text-gray-800 dark:text-gray-200">
               {myReview ? "Edit Ulasan" : "Berikan Ulasan"}
             </h3>
             <div className="mb-3 flex flex-wrap items-center gap-2">
-              <span className="text-xs text-gray-500">Rating:</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">Rating:</span>
               <ReviewStars rating={reviewRating} size="sm" interactive onChange={setReviewRating} />
             </div>
             <textarea
               value={reviewText}
               onChange={(e) => setReviewText(e.target.value)}
               rows={3}
-              className="mb-3 w-full resize-none rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-store focus:ring-2 focus:ring-store/20"
+              className="mb-3 w-full resize-none rounded-lg border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-store focus:ring-2 focus:ring-store/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
               placeholder="Ceritakan pendapat Anda tentang aplikasi ini..."
             />
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
@@ -385,7 +385,7 @@ export default function AppDetailPage({
                     setReviewRating(myReview.rating);
                     setReviewText(myReview.text);
                   }}
-                  className="text-sm text-gray-500 hover:text-gray-700"
+                  className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                 >
                   Batal
                 </button>
@@ -406,17 +406,17 @@ export default function AppDetailPage({
         {loadingReviews ? (
           <div className="space-y-3 sm:space-y-4">
             {[1, 2].map((i) => (
-              <div key={i} className="animate-pulse rounded-lg border border-gray-100 p-4">
-                <div className="mb-2 h-4 w-32 rounded bg-gray-200" />
-                <div className="mb-2 h-3 w-24 rounded bg-gray-200" />
-                <div className="h-3 w-full rounded bg-gray-200" />
+              <div key={i} className="animate-pulse rounded-lg border border-gray-100 p-4 dark:border-gray-800">
+                <div className="mb-2 h-4 w-32 rounded bg-gray-200 dark:bg-gray-700" />
+                <div className="mb-2 h-3 w-24 rounded bg-gray-200 dark:bg-gray-700" />
+                <div className="h-3 w-full rounded bg-gray-200 dark:bg-gray-700" />
               </div>
             ))}
           </div>
         ) : reviews.length > 0 ? (
           <div className="space-y-3 sm:space-y-4">
             {reviews.map((r) => (
-              <div key={r.id} className="rounded-lg border border-gray-100 p-3 sm:p-4">
+              <div key={r.id} className="rounded-lg border border-gray-100 p-3 sm:p-4 dark:border-gray-800">
                 <div className="mb-2 flex items-center gap-3">
                   {r.userPhoto ? (
                     <Image
@@ -427,21 +427,21 @@ export default function AppDetailPage({
                       className="size-8 sm:size-9 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="flex size-8 sm:size-9 items-center justify-center rounded-full bg-gray-200 text-xs font-bold text-gray-600 uppercase">
+                    <div className="flex size-8 sm:size-9 items-center justify-center rounded-full bg-gray-200 text-xs font-bold text-gray-600 uppercase dark:bg-gray-700 dark:text-gray-400">
                       {r.userName.charAt(0)}
                     </div>
                   )}
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-gray-800">{r.userName}</p>
+                    <p className="truncate text-sm font-medium text-gray-800 dark:text-gray-200">{r.userName}</p>
                     <ReviewStars rating={r.rating} size="sm" />
                   </div>
                 </div>
-                <p className="text-sm text-gray-600 break-words">{r.text}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 break-words">{r.text}</p>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-center text-xs text-gray-400 italic">Belum ada ulasan. Jadilah yang pertama!</p>
+          <p className="text-center text-xs text-gray-400 dark:text-gray-500 italic">Belum ada ulasan. Jadilah yang pertama!</p>
         )}
       </div>
 

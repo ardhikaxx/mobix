@@ -27,7 +27,7 @@ export default function HomePage() {
       {/* Recommended Section */}
       <section id="recommended" className="mx-auto max-w-5xl px-4 py-4 sm:py-6 scroll-mt-20">
         <div className="mb-3 sm:mb-4 flex items-center justify-between">
-          <h2 className="text-sm sm:text-lg font-bold text-gray-800">Recommended for you</h2>
+          <h2 className="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-200">Recommended for you</h2>
           <Link href="/search" className="text-sm font-medium text-store transition hover:text-store-light">
             <ArrowRight className="size-5" />
           </Link>
@@ -42,7 +42,7 @@ export default function HomePage() {
       {/* Categories */}
       <section id="categories" className="mx-auto max-w-5xl px-4 pb-2 scroll-mt-20">
         <div className="mb-3 sm:mb-4 flex items-center justify-between">
-          <h2 className="text-sm sm:text-lg font-bold text-gray-800">Categories</h2>
+          <h2 className="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-200">Categories</h2>
         </div>
         <div className="flex flex-wrap gap-2">
           {CATEGORIES.map((cat) => (
@@ -54,7 +54,7 @@ export default function HomePage() {
       {/* Latest Apps */}
       <section className="mx-auto max-w-5xl px-4 py-4 sm:py-6">
         <div className="mb-3 sm:mb-4 flex items-center justify-between">
-          <h2 className="text-sm sm:text-lg font-bold text-gray-800">New updates</h2>
+          <h2 className="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-200">New updates</h2>
           <Link href="/search" className="text-sm font-medium text-store transition hover:text-store-light">
             <ArrowRight className="size-5" />
           </Link>

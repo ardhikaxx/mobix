@@ -10,12 +10,12 @@ export function StatsCard({
   trend?: { value: string; positive: boolean };
 }) {
   return (
-    <div className="rounded-xl border border-gray-100 bg-white p-6 transition hover:shadow-md">
+    <div className="rounded-xl border border-gray-100 bg-white p-6 transition hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
       <div className="mb-2 flex items-center justify-between">
-        <span className="text-sm font-medium text-gray-500">{title}</span>
-        {icon && <span className="text-gray-400">{icon}</span>}
+        <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</span>
+        {icon && <span className="text-gray-400 dark:text-gray-500">{icon}</span>}
       </div>
-      <div className="text-2xl font-bold text-gray-900">{value}</div>
+      <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{value}</div>
       {trend && (
         <div className={`mt-1 text-xs ${trend.positive ? "text-green-600" : "text-red-600"}`}>
           {trend.positive ? "↑" : "↓"} {trend.value}

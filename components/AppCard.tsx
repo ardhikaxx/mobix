@@ -15,7 +15,7 @@ function RatingStars({ rating }: { rating: number }) {
     stars.push(
       <Star
         key={i}
-        className={`size-3.5 ${filled ? "fill-amber-400 text-amber-400" : "fill-gray-200 text-gray-200"}`}
+        className={`size-3.5 ${filled ? "fill-amber-400 text-amber-400" : "fill-gray-200 text-gray-200 dark:fill-gray-600 dark:text-gray-600"}`}
       />
     );
   }
@@ -30,27 +30,27 @@ export function AppCard({ app }: { app: AppDoc }) {
   return (
     <Link
       href={`/apps/${app.slug}`}
-      className="group block rounded-2xl border border-gray-100 bg-white p-3 sm:p-4 transition-all duration-200 hover:border-store/30 hover:shadow-lg active:scale-[0.98] active:bg-gray-50/50"
+      className="group block rounded-2xl border border-gray-100 bg-white p-3 sm:p-4 transition-all duration-200 hover:border-store/30 hover:shadow-lg active:scale-[0.98] active:bg-gray-50/50 dark:border-gray-800 dark:bg-gray-900 dark:hover:border-store/30 dark:active:bg-gray-800/50"
     >
       <div className="flex items-start gap-3 sm:gap-4">
-        <div className="relative size-14 sm:size-16 shrink-0 rounded-2xl overflow-hidden ring-1 ring-black/5 shadow-sm">
+        <div className="relative size-14 sm:size-16 shrink-0 rounded-2xl overflow-hidden ring-1 ring-black/5 shadow-sm dark:ring-white/10">
           <Image src={app.logoURL} alt={app.name} fill className="object-cover" sizes="64px" loading="eager" />
         </div>
 
         <div className="flex min-w-0 flex-1 flex-col gap-1 sm:gap-1.5">
-          <h3 className="text-sm font-semibold text-gray-900 line-clamp-1" title={app.name}>
+          <h3 className="text-sm font-semibold text-gray-900 line-clamp-1 dark:text-gray-100" title={app.name}>
             {app.name}
           </h3>
 
-          <span className="text-xs text-gray-400">{category}</span>
+          <span className="text-xs text-gray-400 dark:text-gray-500">{category}</span>
 
-          <span className="text-xs text-gray-400">{formatBytes(app.apkSizeBytes)}</span>
+          <span className="text-xs text-gray-400 dark:text-gray-500">{formatBytes(app.apkSizeBytes)}</span>
 
           {hasRating && (
             <div className="flex items-center gap-1.5">
               <RatingStars rating={rating} />
-              <span className="text-xs font-semibold text-gray-600">{rating.toFixed(1)}</span>
-              <span className="text-[11px] text-gray-400">({totalReviews})</span>
+              <span className="text-xs font-semibold text-gray-600 dark:text-gray-400">{rating.toFixed(1)}</span>
+              <span className="text-[11px] text-gray-400 dark:text-gray-500">({totalReviews})</span>
             </div>
           )}
 

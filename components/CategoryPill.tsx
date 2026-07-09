@@ -7,7 +7,7 @@ export function CategoryPill({ slug, label, active }: { slug: string; label: str
       className={`inline-flex items-center justify-center min-h-[36px] sm:min-h-[40px] rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold transition-all duration-200 active:scale-95 ${
         active
           ? "bg-store text-white shadow-sm ring-2 ring-store/30"
-          : "bg-gray-100/90 text-gray-700 hover:bg-store/10 hover:text-store"
+          : "bg-gray-100/90 text-gray-700 hover:bg-store/10 hover:text-store dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-store/20"
       }`}
     >
       {label}
