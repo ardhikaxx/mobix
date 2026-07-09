@@ -5,6 +5,7 @@ export interface AppDoc {
   name: string;
   slug: string;
   description: string;
+  shortDescription?: string;
   category: string;
   tags: string[];
   searchKeywords: string[];
