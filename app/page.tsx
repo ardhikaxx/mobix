@@ -1,29 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { AppGrid } from "@/components/AppGrid";
 import { CategoryPill } from "@/components/CategoryPill";
-import { MobixHeroBanner } from "@/components/MobixHeroBanner";
 import { usePopularApps, useLatestApps } from "@/lib/hooks/useApps";
-import { useTopApps } from "@/lib/hooks/useTopApps";
 import { CATEGORIES } from "@/lib/constants/categories";
 import { ArrowRight } from "lucide-react";
 
 export default function HomePage() {
   const { data: popular, error: popularErr, isLoading: popularLoad } = usePopularApps();
   const { data: latest, error: latestErr, isLoading: latestLoad } = useLatestApps();
-  const { data: topApps } = useTopApps();
-
-  const featuredApp = topApps?.[0];
 
   return (
     <div>
-      {/* Hero Banner - Mobix Explainer & Promo Carousel */}
-      <section className="mx-auto max-w-6xl px-4 pt-4 sm:pt-6 pb-2">
-        <MobixHeroBanner featuredApp={featuredApp} />
-      </section>
-
       {/* Recommended Section */}
       <section id="recommended" className="mx-auto max-w-5xl px-4 py-4 sm:py-6 scroll-mt-20">
         <div className="mb-3 sm:mb-4 flex items-center justify-between">
