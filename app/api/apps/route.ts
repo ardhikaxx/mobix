@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { AppDoc } from "@/types/app";
+import { readFile } from "fs/promises";
+import { join } from "path";
 
 async function fetchAllApps(): Promise<AppDoc[]> {
   try {
-    const response = await fetch(
-      new URL("../../data/apps.json", import.meta.url)
-    );
-    if (!response.ok) {
-      return [];
-    }
-    const data = await response.json();
+    const filePath = join(process.cwd(), "public", "data", "apps.json");
+    const fileContent = await readFile(filePath, "utf-8");
+    const data = JSON.parse(fileContent);
     return data.apps || [];
   } catch (error) {
     console.error("Error fetching apps:", error);
@@ -33,7 +31,7 @@ export async function GET(request: NextRequest) {
     const filtered = allApps.filter((app) => {
       if (app.status !== "published") return false;
 
-      const searchableText = `${app.name} ${app.description} ${app.category}`.toLowerCase();
+      const searchableText = `${app.name} ${app.description} ${app.category} ${(app.searchKeywords || []).join(" ")}`.toLowerCase();
       return searchableText.includes(search);
     });
 
@@ -51,3 +49,4 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
