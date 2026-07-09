@@ -167,6 +167,28 @@
       "createdAt": "2026-07-08T00:00:00.000Z",
       "updatedAt": "2026-07-08T00:00:00.000Z",
       "lastVersionUpdateAt": "2026-07-08T00:00:00.000Z"
+    },
+    {
+      "appId": "mida",
+      "name": "MIDA",
+      "slug": "mida",
+      "description": "MIDA (Mobile ICD Database Application) adalah aplikasi referensi kode ICD offline untuk tenaga kesehatan Indonesia. Menyediakan 33.000+ kode ICD dalam 5 klasifikasi (ICD-10, ICD-9-CM, ICD-MM, ICD-PM, ICD-O) yang dapat diakses kapan saja tanpa internet. Fitur pencarian cepat dengan debounce & autocomplete, penelusuran kode hierarkis (chapter -> kategori -> subkategori), rekomendasi diagnosis ke kode ICD, pencarian berdasarkan gejala (pemetaan ID->EN), validasi kode, panduan pengkodean per klasifikasi, glosarium medis Indonesia, serta mode gelap.",
+      "category": "health",
+      "tags": ["health", "medical", "icd", "reference", "offline"],
+      "searchKeywords": ["mida", "icd", "icd-10", "icd-9-cm", "icd-mm", "icd-pm", "icd-o", "kode diagnosis", "kode tindakan", "kesehatan", "medis", "tenaga kesehatan", "coding", "koding", "rumah sakit", "puskesmas"],
+      "status": "published",
+      "version": "1.0.0",
+      "versionCode": 1,
+      "apkURL": "/apk/MIDA.apk",
+      "apkFileName": "MIDA.apk",
+      "apkSizeBytes": 99383219,
+      "logoURL": "/images/logo_mida.png",
+      "screenshots": [],
+      "ownerId": "admin",
+      "ownerName": "ardhikaxx",
+      "createdAt": "2026-07-09T00:00:00.000Z",
+      "updatedAt": "2026-07-09T00:00:00.000Z",
+      "lastVersionUpdateAt": "2026-07-09T00:00:00.000Z"
     }
   ]
 }
