@@ -27,8 +27,6 @@ export function SearchBar({
     if (!q) return;
     if (onSearch) {
       onSearch(q);
-    } else {
-      router.push(`/search?q=${encodeURIComponent(q)}`);
     }
   };
 
