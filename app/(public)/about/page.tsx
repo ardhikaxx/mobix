@@ -15,7 +15,7 @@ export default function AboutPage() {
         <p className="mx-auto max-w-2xl text-sm sm:text-base text-gray-600 dark:text-gray-400 dark:text-gray-500 leading-relaxed">
           Mobix adalah platform distribusi aplikasi mobile berbasis komunitas. 
           Tempat di mana developer dan pengguna bertemu dalam satu ekosistem 
-          yang terbuka, cepat, gratis, dan 100% tanpa iklan pop-up.
+          yang terbuka, cepat, dan 100% tanpa iklan pop-up.
         </p>
       </div>
 
@@ -58,10 +58,11 @@ export default function AboutPage() {
           <div className="mb-3 sm:mb-4 flex size-10 sm:size-11 items-center justify-center rounded-xl bg-store/10 text-store font-bold">
             <Sparkles className="size-5" />
           </div>
-          <h3 className="mb-1.5 sm:mb-2 text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100">Gratis Selamanya</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 leading-relaxed">
-            Tidak ada biaya untuk upload maupun download. Mobix berkomitmen untuk tetap gratis 
-            dan bebas iklan yang mengganggu bagi seluruh pengguna.
+          <h3 className="mb-1.5 sm:mb-2 text-base sm:text-lg font-bold text-gray-900 dark:text-gray-100">Bayar Sekali, Selamanya</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+            Cukup Rp10.000 sekali saja, Anda bisa upload dan menampilkan aplikasi 
+            mobile Anda disini untuk selamanya. Tanpa biaya berulang, tanpa potongan, 
+            untuk kebutuhan apapun.
           </p>
         </div>
       </div>
@@ -76,10 +77,10 @@ export default function AboutPage() {
         <h2 className="mb-3 text-xl sm:text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight">
           Donasi Pengembangan <span className="text-store">Mobix</span>
         </h2>
-        <p className="mx-auto mb-6 sm:mb-8 max-w-xl text-sm sm:text-base text-gray-600 dark:text-gray-400 dark:text-gray-500 leading-relaxed">
-          Mobix disediakan 100% gratis tanpa iklan bagi developer dan pengguna. 
-          Untuk mendukung biaya operasional server, bandwidth CDN, serta pemeliharaan platform, 
-          Anda dapat berdonasi secara sukarela melalui scan QRIS di bawah ini.
+        <p className="mx-auto mb-6 sm:mb-8 max-w-xl text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+          Mobix didanai oleh biaya pendaftaran developer sekali bayar serta dukungan 
+          sukarela komunitas. Untuk membantu biaya operasional server, bandwidth CDN, 
+          serta pemeliharaan platform, Anda dapat berdonasi melalui scan QRIS di bawah ini.
         </p>
 
         {/* QRIS Card Box */}
