@@ -68,6 +68,7 @@ export default function AppDetailPage({
   const { data: app, isLoading, error } = useAppBySlug(slug);
   const { user } = useAuth();
   const [authOpen, setAuthOpen] = useState(false);
+  const [restrictedOpen, setRestrictedOpen] = useState(false);
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewRating, setReviewRating] = useState(5);
@@ -126,6 +127,10 @@ export default function AppDetailPage({
   const handleDownload = () => {
     if (!user) {
       setAuthOpen(true);
+      return;
+    }
+    if (app.isExclusive) {
+      setRestrictedOpen(true);
       return;
     }
     window.open(app.apkURL, "_blank");
@@ -446,6 +451,36 @@ export default function AppDetailPage({
       </div>
 
       <AuthDialog isOpen={authOpen} onClose={() => setAuthOpen(false)} />
+
+      {restrictedOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/50" onClick={() => setRestrictedOpen(false)} />
+          <div className="relative z-10 w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 shadow-xl dark:border-gray-700 dark:bg-gray-900">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Aplikasi Khusus</h2>
+              <button
+                onClick={() => setRestrictedOpen(false)}
+                className="rounded-lg p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600 dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-400"
+              >
+                <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="space-y-4">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Aplikasi mobile ini khusus dan tidak digunakan untuk umum.
+              </p>
+              <button
+                onClick={() => setRestrictedOpen(false)}
+                className="w-full rounded-lg bg-store px-4 py-2.5 text-center text-sm font-medium text-white transition hover:bg-store-light"
+              >
+                Mengerti
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {lightboxIdx !== null && (
         <div

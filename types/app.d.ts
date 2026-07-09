@@ -17,6 +17,7 @@ export interface AppDoc {
   version: string;
   versionCode: number;
   status: "published" | "draft" | "suspended";
+  isExclusive?: boolean;
   createdAt: string;
   updatedAt: string;
   lastVersionUpdateAt: string;
