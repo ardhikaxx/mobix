@@ -23,6 +23,15 @@ export function usePopularApps() {
   }, { revalidateOnFocus: false });
 }
 
+export function usePublishedApps() {
+  return useSWR("apps:published", async () => {
+    const apps = await fetchAllApps();
+    return apps
+      .filter((a) => a.status === "published")
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }, { revalidateOnFocus: false });
+}
+
 export function useLatestApps() {
   return useSWR("apps:latest", async () => {
     const apps = await fetchAllApps();
@@ -77,6 +86,20 @@ export function useMyApps(uid: string | undefined) {
       return apps
         .filter((a) => a.ownerId === uid)
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    },
+    { revalidateOnFocus: false }
+  );
+}
+
+export function useRelatedApps(slug: string, category: string) {
+  return useSWR(
+    slug && category ? `apps:related:${category}:${slug}` : null,
+    async () => {
+      const apps = await fetchAllApps();
+      return apps
+        .filter((a) => a.status === "published" && a.category === category && a.slug !== slug)
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        .slice(0, 6);
     },
     { revalidateOnFocus: false }
   );

@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import Image from "next/image";
-import { Shield, Users, Zap, Heart, QrCode, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { Shield, Users, Zap, Heart, Sparkles, ArrowRight } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Tentang Mobix — Platform Distribusi Aplikasi Android Komunitas",
+  description:
+    "Mobix adalah platform distribusi aplikasi mobile berbasis komunitas untuk developer Indonesia. Upload dan download APK Android gratis, cepat, dan aman.",
+  openGraph: {
+    title: "Tentang Mobix — Platform Aplikasi Komunitas Indonesia",
+    description:
+      "Platform distribusi aplikasi mobile berbasis komunitas. Upload dan download aplikasi Android buatan komunitas Indonesia.",
+  },
+};
 
 export default function AboutPage() {
   return (
@@ -71,6 +84,22 @@ export default function AboutPage() {
             untuk kebutuhan apapun.
           </p>
         </div>
+      </div>
+
+      {/* Developer CTA */}
+      <div className="mb-12 text-center rounded-2xl border border-store/20 bg-store/5 p-6 sm:p-8">
+        <h2 className="mb-2 text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">
+          Mau Upload Aplikasi Android Buatanmu?
+        </h2>
+        <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+          Distribusikan aplikasi mobile Anda ke komunitas Indonesia. Cukup Rp10.000 sekali untuk listing seumur hidup.
+        </p>
+        <Link
+          href="/developers"
+          className="inline-flex items-center gap-2 min-h-[44px] rounded-full bg-store px-6 py-2.5 text-sm font-bold text-white transition-all hover:bg-store-light active:scale-95 shadow-md shadow-store/20"
+        >
+          Pelajari Cara Upload <ArrowRight className="size-4" />
+        </Link>
       </div>
 
       {/* Donasi QRIS Section (Khusus Untuk Donasi Saja) */}

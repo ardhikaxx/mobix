@@ -15,7 +15,7 @@ export function SearchBar({
   const [query, setQuery] = useState("");
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
-  const debounceTimer = useRef<NodeJS.Timeout>();
+  const debounceTimer = useRef<NodeJS.Timeout>(undefined);
   const { t } = useTranslation();
 
   useEffect(() => {

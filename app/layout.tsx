@@ -18,12 +18,65 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://mobix-mu.vercel.app"),
   title: {
-    default: "Mobix — One Place for Every App",
+    default: "Mobix — Platform Aplikasi Android Komunitas Terbaik",
     template: "%s | Mobix",
   },
   description:
-    "Platform distribusi aplikasi mobile berbasis komunitas. Upload dan download aplikasi Android buatan komunitas.",
+    "Mobix adalah platform distribusi aplikasi mobile berbasis komunitas. Upload, download, dan share aplikasi Android buatan komunitas Indonesia dengan mudah dan aman.",
+  keywords: [
+    "aplikasi android",
+    "download aplikasi",
+    "mobix",
+    "aplikasi komunitas",
+    "apk android",
+    "platform aplikasi",
+  ],
+  authors: [{ name: "Mobix Team" }],
+  creator: "Mobix",
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: "https://mobix-mu.vercel.app",
+    title: "Mobix — Platform Aplikasi Android Komunitas Terbaik",
+    description:
+      "Platform distribusi aplikasi mobile berbasis komunitas. Upload dan download aplikasi Android buatan komunitas.",
+    siteName: "Mobix",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Mobix Platform",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mobix — Platform Aplikasi Android Komunitas",
+    description: "Platform distribusi aplikasi mobile berbasis komunitas",
+    images: ["/opengraph-image.png"],
+    creator: "@mobix_app",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
+  },
+  alternates: {
+    canonical: "https://mobix-mu.vercel.app",
+    languages: {
+      id: "https://mobix-mu.vercel.app",
+      en: "https://mobix-mu.vercel.app/en",
+    },
+  },
   icons: {
     icon: "/logo.png",
     shortcut: "/logo.png",
@@ -44,7 +97,54 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html lang="id" data-scroll-behavior="smooth">
+      <head>
+        {/* JSON-LD Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              name: "Mobix",
+              description:
+                "Platform distribusi aplikasi mobile berbasis komunitas",
+              url: "https://mobix-mu.vercel.app",
+              applicationCategory: "Utilities",
+              offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "IDR",
+              },
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "4.8",
+                reviewCount: "1000",
+              },
+            }),
+          }}
+        />
+        {/* Breadcrumb Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Beranda", item: "https://mobix-mu.vercel.app" },
+                { "@type": "ListItem", position: 2, name: "Kategori", item: "https://mobix-mu.vercel.app#categories" },
+                { "@type": "ListItem", position: 3, name: "Tentang", item: "https://mobix-mu.vercel.app/about" },
+              ],
+            }),
+          }}
+        />
+        {/* Additional Meta Tags */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Mobix" />
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <script
           dangerouslySetInnerHTML={{

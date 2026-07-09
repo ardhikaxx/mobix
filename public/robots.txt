@@ -1,0 +1,25 @@
+# Robots.txt for Mobix
+# Allow all search engines
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /private
+Disallow: /api
+Disallow: /*.json$
+Disallow: /?*sort=
+Disallow: /search?*sort=
+
+# Google Bot specific
+User-agent: Googlebot
+Allow: /
+
+# Bing Bot specific
+User-agent: Bingbot
+Allow: /
+
+# Sitemap
+Sitemap: https://mobix.app/sitemap.xml
+
+# Crawl delay (optional, in seconds)
+Crawl-delay: 0

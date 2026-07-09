@@ -1,19 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { AppGrid } from "@/components/AppGrid";
 import { SearchBar } from "@/components/SearchBar";
 import { CategoryPill } from "@/components/CategoryPill";
-import { useLatestApps } from "@/lib/hooks/useApps";
+import { usePublishedApps } from "@/lib/hooks/useApps";
 import { useTranslation } from "@/lib/hooks/useTranslation";
 import { CATEGORIES } from "@/lib/constants/categories";
+import { Loader2 } from "lucide-react";
+
+const PAGE_SIZE = 8;
 
 export default function HomePage() {
-  const { data: latest, error: latestErr, isLoading: latestLoad } = useLatestApps();
+  const { data: allApps, error: publishedErr, isLoading: publishedLoad } = usePublishedApps();
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const handleSearch = async (q: string) => {
     setSearchQuery(q);
@@ -43,6 +47,17 @@ export default function HomePage() {
   const handleClearSearch = () => {
     setSearchQuery("");
     setSearchResults([]);
+  };
+
+  const visibleApps = useMemo(() => {
+    if (!allApps) return [];
+    return allApps.slice(0, visibleCount);
+  }, [allApps, visibleCount]);
+
+  const hasMore = allApps ? visibleCount < allApps.length : false;
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => Math.min(prev + PAGE_SIZE, allApps?.length ?? prev));
   };
 
   return (
@@ -85,7 +100,7 @@ export default function HomePage() {
           <AppGrid
             apps={searchResults}
             isLoading={isSearching}
-            error={searchResults.length === 0 && !isSearching ? new Error("Tidak ada hasil") : null}
+            error={searchResults.length === 0 && !isSearching ? new Error("Tidak ada hasil") : undefined}
           />
         </section>
       ) : (
@@ -94,10 +109,21 @@ export default function HomePage() {
             <h2 className="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-200">{t.home.newUpdates}</h2>
           </div>
           <AppGrid
-            apps={latest}
-            isLoading={latestLoad}
-            error={latestErr}
+            apps={visibleApps}
+            isLoading={publishedLoad}
+            error={publishedErr}
           />
+          {hasMore && (
+            <div className="mt-6 sm:mt-8 flex justify-center">
+              <button
+                onClick={handleLoadMore}
+                className="inline-flex items-center gap-2 min-h-[46px] rounded-full border border-gray-200 bg-white px-8 py-3 text-sm font-bold text-gray-700 transition-all hover:border-store/30 hover:bg-store/5 hover:text-store active:scale-95 shadow-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-store/30 dark:hover:bg-store/10"
+              >
+                <Loader2 className="size-4" />
+                Load More ({allApps!.length - visibleCount} remaining)
+              </button>
+            </div>
+          )}
         </section>
       )}
     </div>

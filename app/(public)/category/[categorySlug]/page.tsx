@@ -1,31 +1,33 @@
-"use client";
-
-import { use } from "react";
-import { useAppsByCategory } from "@/lib/hooks/useApps";
-import { AppGrid } from "@/components/AppGrid";
+import type { Metadata } from "next";
 import { getCategoryLabel } from "@/lib/constants/categories";
-import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import appsData from "@/public/data/apps.json";
+import CategoryPageClient from "./page.client";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ categorySlug: string }>;
+}): Promise<Metadata> {
+  const { categorySlug } = await params;
+  const label = getCategoryLabel(categorySlug);
+  const appCount = appsData.apps.filter(
+    (a) => a.status === "published" && a.category === categorySlug
+  ).length;
+
+  return {
+    title: `Kategori ${label} — ${appCount} Aplikasi Android`,
+    description: `Kumpulan ${appCount} aplikasi Android terbaik dalam kategori ${label} di Mobix. Unduh gratis aplikasi buatan komunitas Indonesia.`,
+    openGraph: {
+      title: `Kategori ${label} — Mobix`,
+      description: `Download aplikasi Android kategori ${label} gratis di Mobix. Platform distribusi aplikasi komunitas Indonesia.`,
+    },
+  };
+}
 
 export default function CategoryPage({
   params,
 }: {
   params: Promise<{ categorySlug: string }>;
 }) {
-  const { categorySlug } = use(params);
-  const { data: apps, isLoading, error } = useAppsByCategory(categorySlug);
-  const label = getCategoryLabel(categorySlug);
-
-  return (
-    <div className="mx-auto max-w-7xl px-4 py-6 sm:py-8">
-      <Link
-        href="/"
-        className="mb-3 sm:mb-4 inline-flex items-center gap-1 min-h-[44px] rounded-xl px-3 py-1.5 -ml-3 text-sm font-bold text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100 active:scale-95 transition-all"
-      >
-        <ChevronLeft className="size-4 text-store" /> Kembali ke Beranda
-      </Link>
-      <h1 className="mb-6 sm:mb-8 text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 break-words">Kategori: {label}</h1>
-      <AppGrid apps={apps} isLoading={isLoading} error={error} />
-    </div>
-  );
+  return <CategoryPageClient params={params} />;
 }

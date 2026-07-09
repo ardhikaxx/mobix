@@ -74,6 +74,12 @@ export function Navbar() {
               </div>
 
               <Link
+                href="/developers"
+                className="rounded-lg px-3 py-2 text-sm font-medium text-store transition hover:bg-store/10"
+              >
+                Untuk Developer
+              </Link>
+              <Link
                 href="/about"
                 className="rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
               >
@@ -215,6 +221,13 @@ export function Navbar() {
                   {cat.label}
                 </Link>
               ))}
+              <Link
+                href="/developers"
+                onClick={closeDrawer}
+                className="block truncate rounded-lg px-3 py-2.5 text-sm font-medium text-store transition hover:bg-store/10"
+              >
+                Untuk Developer
+              </Link>
               <Link
                 href="/about"
                 onClick={closeDrawer}

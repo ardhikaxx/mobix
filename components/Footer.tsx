@@ -19,6 +19,7 @@ export function Footer() {
           </div>
           <div className="flex gap-6 text-sm text-gray-500 dark:text-gray-400">
             <Link href="/" className="hover:text-store transition">{t.footer.home}</Link>
+            <Link href="/developers" className="hover:text-store transition">Developer</Link>
             <Link href="/about" className="hover:text-store transition">{t.footer.about}</Link>
           </div>
         </div>

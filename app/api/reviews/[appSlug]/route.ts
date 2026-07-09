@@ -55,10 +55,10 @@ const mockReviews: Record<string, any[]> = {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { appSlug: string } }
+  { params }: { params: Promise<{ appSlug: string }> }
 ) {
   try {
-    const appSlug = params.appSlug;
+    const { appSlug } = await params;
     const reviews = mockReviews[appSlug] || [];
 
     // Calculate rating statistics
