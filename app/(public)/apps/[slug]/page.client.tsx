@@ -7,6 +7,7 @@ import { useAppBySlug, useRelatedApps } from "@/lib/hooks/useApps";
 import { formatBytes } from "@/lib/utils/slug";
 import { useAuth } from "@/context/AuthProvider";
 import { AuthDialog } from "@/components/AuthDialog";
+import { ShareDialog } from "@/components/ShareDialog";
 import { DetailSkeleton } from "@/components/Skeleton";
 import { ErrorState } from "@/components/ErrorState";
 import {
@@ -70,6 +71,7 @@ export default function AppDetailPageClient({
   const { data: relatedApps } = useRelatedApps(slug, app?.category ?? "");
   const { user } = useAuth();
   const [authOpen, setAuthOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const [restrictedOpen, setRestrictedOpen] = useState(false);
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -139,16 +141,12 @@ export default function AppDetailPageClient({
     toast.success("Download dimulai!");
   };
 
-  const handleShare = async () => {
-    const url = `${window.location.origin}/apps/${app.slug}`;
-    const title = app.name;
-    const text = `Download ${app.name} di Mobix!`;
-
+  const handleShare = () => {
     if (navigator.share) {
-      await navigator.share({ title, text, url });
+      const url = `${window.location.origin}/apps/${app.slug}`;
+      navigator.share({ title: app.name, text: `Download ${app.name} di Mobix!`, url });
     } else {
-      await navigator.clipboard.writeText(url);
-      toast.success("Link disalin!");
+      setShareOpen(true);
     }
   };
 
@@ -471,6 +469,13 @@ export default function AppDetailPageClient({
           </div>
         </section>
       )}
+
+      <ShareDialog
+        isOpen={shareOpen}
+        onClose={() => setShareOpen(false)}
+        appName={app.name}
+        appSlug={app.slug}
+      />
 
       <AuthDialog isOpen={authOpen} onClose={() => setAuthOpen(false)} />
 
