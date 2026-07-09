@@ -20,7 +20,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
-import { ChevronLeft, Star, Download, Shield, Share2, Send } from "lucide-react";
+import { ChevronLeft, Star, Download, Shield, Share2, Send, Link as LinkIcon } from "lucide-react";
 import toast from "react-hot-toast";
 
 interface Review {
@@ -132,6 +132,19 @@ export default function AppDetailPage({
     toast.success("Download dimulai!");
   };
 
+  const handleShare = async () => {
+    const url = `${window.location.origin}/apps/${app.slug}`;
+    const title = app.name;
+    const text = `Download ${app.name} di Mobix!`;
+
+    if (navigator.share) {
+      await navigator.share({ title, text, url });
+    } else {
+      await navigator.clipboard.writeText(url);
+      toast.success("Link disalin!");
+    }
+  };
+
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
@@ -241,7 +254,7 @@ export default function AppDetailPage({
               <Download className="size-4" />
               Install
             </button>
-            <button className="rounded-full border border-gray-200 bg-white p-2.5 text-gray-600 transition hover:bg-gray-50">
+            <button onClick={handleShare} className="rounded-full border border-gray-200 bg-white p-2.5 text-gray-600 transition hover:bg-gray-50">
               <Share2 className="size-4" />
             </button>
           </div>
