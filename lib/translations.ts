@@ -43,6 +43,15 @@ export const translations = {
       terms: "Syarat & Ketentuan",
       contact: "Hubungi Kami",
     },
+    // Rating & Review
+    rating: {
+      title: "Rating & Review",
+      reviews: "ulasan",
+      writeReview: "Tulis Ulasan",
+      customerReviews: "Ulasan Pelanggan",
+      noReviews: "Belum ada ulasan. Jadilah yang pertama!",
+      helpful: "Membantu",
+    },
   },
   en: {
     // Navbar
@@ -87,6 +96,15 @@ export const translations = {
       privacy: "Privacy Policy",
       terms: "Terms & Conditions",
       contact: "Contact Us",
+    },
+    // Rating & Review
+    rating: {
+      title: "Rating & Review",
+      reviews: "reviews",
+      writeReview: "Write a Review",
+      customerReviews: "Customer Reviews",
+      noReviews: "No reviews yet. Be the first to review!",
+      helpful: "Helpful",
     },
   },
 } as const;
