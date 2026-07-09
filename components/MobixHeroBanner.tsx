@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { AppDoc } from "@/types/app";
 
 interface MobixHeroBannerProps {
@@ -46,18 +45,6 @@ export function MobixHeroBanner({ featuredApp }: MobixHeroBannerProps) {
     return () => clearInterval(interval);
   }, [isPaused, slides.length]);
 
-  const handlePrev = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setActiveSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-  const handleNext = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setActiveSlide((prev) => (prev + 1) % slides.length);
-  };
-
   const current = slides[activeSlide];
 
   return (
@@ -73,7 +60,7 @@ export function MobixHeroBanner({ featuredApp }: MobixHeroBannerProps) {
       >
         {/* Inner Screen Container yang Bersih dari Elemen yang Terlalu Rame */}
         <div className="relative w-full aspect-[16/9] sm:aspect-[21/9] lg:aspect-[24/9] max-h-[480px] overflow-hidden rounded-[20px] sm:rounded-[28px] bg-[#0a382a] shadow-inner">
-          {/* Full Image Banner tanpa Tertutup Elemen Teks/Badge */}
+          {/* Full Image Banner tanpa Tertutup Elemen Tombol Navigasi atau Badge */}
           <AnimatePresence mode="wait">
             <motion.div
               key={current.id}
@@ -99,24 +86,7 @@ export function MobixHeroBanner({ featuredApp }: MobixHeroBannerProps) {
           {/* Vignette Inner Shadow halus */}
           <div className="absolute inset-0 rounded-[20px] sm:rounded-[28px] ring-1 ring-inset ring-white/15 pointer-events-none shadow-[inset_0_0_80px_rgba(0,0,0,0.35)]" />
 
-          {/* Tombol Navigasi Kiri / Kanan (Hanya muncul saat hover secara halus) */}
-          <button
-            onClick={handlePrev}
-            className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-20 flex size-10 sm:size-11 items-center justify-center rounded-full bg-black/45 hover:bg-store border border-white/25 text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100 shadow-xl active:scale-95"
-            aria-label="Previous Banner"
-          >
-            <ChevronLeft className="size-5 sm:size-6" />
-          </button>
-
-          <button
-            onClick={handleNext}
-            className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-20 flex size-10 sm:size-11 items-center justify-center rounded-full bg-black/45 hover:bg-store border border-white/25 text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100 shadow-xl active:scale-95"
-            aria-label="Next Banner"
-          >
-            <ChevronRight className="size-5 sm:size-6" />
-          </button>
-
-          {/* 3. Hanya Indicator Saja di Bawah (Minimalis & Elegan) */}
+          {/* 3. Hanya Indicator Saja di Bawah (Minimalis Tanpa Tombol Next/Prev) */}
           <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 rounded-full bg-black/45 border border-white/20 px-3 py-1.5 backdrop-blur-md shadow-lg">
             {slides.map((_, idx) => (
               <button
