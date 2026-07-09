@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useThemeStore, type ThemeMode } from "@/store/themeStore";
-import { Monitor, Moon, Sun, Check, Bell, Globe, Info, Volume2, Eye } from "lucide-react";
+import { Monitor, Moon, Sun, Check, Globe, Info } from "lucide-react";
 
 const themeOptions: { mode: ThemeMode; label: string; icon: typeof Monitor }[] = [
   { mode: "system", label: "Sesuai Device", icon: Monitor },
@@ -10,7 +10,7 @@ const themeOptions: { mode: ThemeMode; label: string; icon: typeof Monitor }[] =
   { mode: "light", label: "Light Mode", icon: Sun },
 ];
 
-type SettingsTab = "theme" | "notification" | "language" | "about";
+type SettingsTab = "theme" | "language" | "about";
 
 export function SettingsDialog({
   isOpen,
@@ -21,8 +21,6 @@ export function SettingsDialog({
 }) {
   const { theme, setTheme } = useThemeStore();
   const [activeTab, setActiveTab] = useState<SettingsTab>("theme");
-  const [notifications, setNotifications] = useState(true);
-  const [soundEnabled, setSoundEnabled] = useState(true);
   const [language, setLanguage] = useState("id");
 
   if (!isOpen) return null;
@@ -57,19 +55,6 @@ export function SettingsDialog({
             <div className="flex items-center justify-center gap-2">
               <Moon className="size-4" />
               <span className="hidden sm:inline">Tema</span>
-            </div>
-          </button>
-          <button
-            onClick={() => setActiveTab("notification")}
-            className={`flex-1 border-b-2 px-4 py-3 text-sm font-medium transition ${
-              activeTab === "notification"
-                ? "border-store text-store dark:text-store"
-                : "border-transparent text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
-            }`}
-          >
-            <div className="flex items-center justify-center gap-2">
-              <Bell className="size-4" />
-              <span className="hidden sm:inline">Notif</span>
             </div>
           </button>
           <button
@@ -121,42 +106,6 @@ export function SettingsDialog({
                   {theme === mode && <Check className="size-4 shrink-0" />}
                 </button>
               ))}
-            </div>
-          )}
-
-          {/* Notification Tab */}
-          {activeTab === "notification" && (
-            <div className="space-y-4">
-              <p className="text-sm text-gray-600 dark:text-gray-400">Kelola notifikasi aplikasi</p>
-              
-              <div className="space-y-3">
-                <label className="flex items-center gap-3 rounded-lg px-3 py-3 hover:bg-gray-50 dark:hover:bg-gray-800">
-                  <input
-                    type="checkbox"
-                    checked={notifications}
-                    onChange={(e) => setNotifications(e.target.checked)}
-                    className="size-4 cursor-pointer rounded border-gray-300"
-                  />
-                  <div className="flex-1">
-                    <div className="text-sm font-medium text-gray-900 dark:text-gray-100">Notifikasi Push</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">Terima notifikasi aplikasi</div>
-                  </div>
-                </label>
-
-                <label className="flex items-center gap-3 rounded-lg px-3 py-3 hover:bg-gray-50 dark:hover:bg-gray-800">
-                  <input
-                    type="checkbox"
-                    checked={soundEnabled}
-                    onChange={(e) => setSoundEnabled(e.target.checked)}
-                    className="size-4 cursor-pointer rounded border-gray-300"
-                    disabled={!notifications}
-                  />
-                  <div className="flex-1">
-                    <div className="text-sm font-medium text-gray-900 dark:text-gray-100">Suara Notifikasi</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">Mainkan suara saat notifikasi</div>
-                  </div>
-                </label>
-              </div>
             </div>
           )}
 
