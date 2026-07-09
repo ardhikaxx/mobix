@@ -27,9 +27,8 @@ export function useUserCount() {
         const users: UserPhoto[] = [];
         docsSnap.forEach((doc) => {
           const data = doc.data() as UserPhoto;
-          if (data.photoURL) {
-            users.push({ uid: data.uid, photoURL: data.photoURL, displayName: data.displayName });
-          }
+          const photoURL = data.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.displayName || "User")}&bold=true&background=01875f&color=fff&size=64`;
+          users.push({ uid: data.uid, photoURL, displayName: data.displayName });
         });
         setAvatars(users);
       } catch {
