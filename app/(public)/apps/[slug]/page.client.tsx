@@ -25,7 +25,8 @@ import {
 import { db } from "@/lib/firebase/client";
 import { AppCard } from "@/components/AppCard";
 import { useDownloadCount, incrementDownload } from "@/lib/hooks/useDownloadCount";
-import { ChevronLeft, Star, Download, Shield, Share2, Send, ArrowRight, Flag, BadgeCheck } from "lucide-react";
+import { ChevronLeft, Star, Download, Shield, Share2, Send, ArrowRight, Flag, BadgeCheck, ShieldCheck } from "lucide-react";
+import { slugify } from "@/lib/utils/slug";
 import toast from "react-hot-toast";
 
 interface Review {
@@ -258,7 +259,9 @@ export default function AppDetailPageClient({
             <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100 md:text-2xl">{app.name}</h1>
             {app.isVerified && <BadgeCheck className="size-5 text-blue-500 shrink-0" />}
           </div>
-          <p className="mt-0.5 text-sm font-medium text-store">{app.ownerName}</p>
+          <Link href={`/developer/${slugify(app.ownerName)}`} className="mt-0.5 text-sm font-medium text-store hover:text-store-light transition">
+            {app.ownerName}
+          </Link>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5 sm:justify-start w-full sm:w-auto">
             <button
               onClick={handleDownload}
@@ -332,10 +335,16 @@ export default function AppDetailPageClient({
           <Shield className="mt-0.5 size-4 shrink-0 text-gray-400 dark:text-gray-500" />
           <p className="text-xs font-medium text-gray-700 dark:text-gray-300">No data shared with third parties</p>
         </div>
-        <div className="flex items-start gap-3">
+        <div className="mb-3 flex items-start gap-3">
           <Shield className="mt-0.5 size-4 shrink-0 text-gray-400 dark:text-gray-500" />
           <p className="text-xs font-medium text-gray-700 dark:text-gray-300">Data encrypted in transit</p>
         </div>
+        {app.isScanned && (
+          <div className="flex items-start gap-3">
+            <ShieldCheck className="mt-0.5 size-4 shrink-0 text-green-500" />
+            <p className="text-xs font-medium text-green-600 dark:text-green-400">Security scan passed — no viruses detected</p>
+          </div>
+        )}
       </div>
 
       {/* Laporkan Aplikasi */}

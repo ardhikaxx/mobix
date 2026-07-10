@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
     const filtered = allApps.filter((app) => {
       if (app.status !== "published") return false;
 
-      const searchableText = `${app.name} ${app.description} ${app.category} ${(app.searchKeywords || []).join(" ")}`.toLowerCase();
+      const searchableText = `${app.name} ${app.description} ${app.category} ${app.ownerName} ${(app.searchKeywords || []).join(" ")}`.toLowerCase();
       return searchableText.includes(search);
     });
 

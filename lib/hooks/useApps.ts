@@ -91,6 +91,19 @@ export function useMyApps(uid: string | undefined) {
   );
 }
 
+export function useAppsByDeveloper(ownerName: string) {
+  return useSWR(
+    ownerName ? `apps:dev:${ownerName}` : null,
+    async () => {
+      const apps = await fetchAllApps();
+      return apps
+        .filter((a) => a.status === "published" && a.ownerName.toLowerCase().includes(ownerName.toLowerCase()))
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    },
+    { revalidateOnFocus: false }
+  );
+}
+
 export function useRelatedApps(slug: string, category: string) {
   return useSWR(
     slug && category ? `apps:related:${category}:${slug}` : null,

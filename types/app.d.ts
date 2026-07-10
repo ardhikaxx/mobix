@@ -19,6 +19,7 @@ export interface AppDoc {
   status: "published" | "draft" | "suspended";
   isExclusive?: boolean;
   isVerified?: boolean;
+  isScanned?: boolean;
   createdAt: string;
   updatedAt: string;
   lastVersionUpdateAt: string;
