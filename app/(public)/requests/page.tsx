@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthProvider";
+import Link from "next/link";
 import {
   collection,
   query,
@@ -29,21 +29,12 @@ interface RequestData {
 
 export default function RequestsPage() {
   const { user, loading: authLoading } = useAuth();
-  const router = useRouter();
   const [requests, setRequests] = useState<(RequestData & { id: string })[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [submitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
-    if (!authLoading && !user) {
-      router.replace("/login");
-    }
-  }, [user, authLoading, router]);
-
-  if (authLoading || !user) return null;
 
   useEffect(() => {
     const q = query(collection(db, "requests"), orderBy("createdAt", "desc"));
@@ -54,6 +45,8 @@ export default function RequestsPage() {
     });
     return unsub;
   }, []);
+
+  if (authLoading) return null;
 
   const myRequest = user ? requests.find((r) => r.userId === user.uid) : null;
 
@@ -116,6 +109,17 @@ export default function RequestsPage() {
           </button>
         )}
       </div>
+
+      {/* Guest message */}
+      {!user && (
+        <div className="mb-8 rounded-2xl border border-dashed border-gray-200 bg-gray-50 p-10 text-center dark:border-gray-700 dark:bg-gray-800/30">
+          <MessageSquare className="mx-auto mb-4 size-10 text-gray-300 dark:text-gray-600" />
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            <Link href="/login" className="font-semibold text-store hover:underline">Login</Link> atau{" "}
+            <Link href="/register" className="font-semibold text-store hover:underline">Daftar</Link> dulu untuk menambahkan request aplikasi
+          </p>
+        </div>
+      )}
 
       {/* Add Form */}
       {showForm && user && !myRequest && (
