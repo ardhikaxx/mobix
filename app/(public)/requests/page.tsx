@@ -21,6 +21,7 @@ import {
 import { db } from "@/lib/firebase/client";
 import { Loader2, Plus, X, MessageSquare, Trash2, ThumbsUp, Pencil } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
+import { validateRequestContent } from "@/lib/utils/badWords";
 import toast from "react-hot-toast";
 
 interface RequestData {
@@ -73,6 +74,12 @@ export default function RequestsPage() {
     if (!user) return;
     if (!title.trim() || !description.trim()) {
       toast.error("Judul dan deskripsi harus diisi");
+      return;
+    }
+
+    const validationError = validateRequestContent(title, description);
+    if (validationError) {
+      toast.error(validationError);
       return;
     }
 
