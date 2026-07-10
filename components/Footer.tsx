@@ -17,10 +17,12 @@ export function Footer() {
             </div>
             <span className="text-base font-bold text-gray-800 dark:text-gray-100">Mobix</span>
           </div>
-          <div className="flex gap-6 text-sm text-gray-500 dark:text-gray-400">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-gray-500 dark:text-gray-400">
             <Link href="/" className="hover:text-store transition">{t.footer.home}</Link>
             <Link href="/developers" className="hover:text-store transition">Developer</Link>
             <Link href="/about" className="hover:text-store transition">{t.footer.about}</Link>
+            <Link href="/privacy" className="hover:text-store transition">{t.footer.privacy}</Link>
+            <Link href="/terms" className="hover:text-store transition">{t.footer.terms}</Link>
           </div>
         </div>
         <div className="border-t border-gray-100 pt-6 text-center text-xs text-gray-400 dark:border-gray-800 dark:text-gray-500">

@@ -13,6 +13,8 @@ export const translations = {
     footer: {
       home: "Beranda",
       about: "Tentang",
+      privacy: "Kebijakan Privasi",
+      terms: "Syarat & Ketentuan",
       copyright: "Hak Cipta",
     },
     // Home Page
@@ -84,6 +86,8 @@ export const translations = {
     footer: {
       home: "Home",
       about: "About",
+      privacy: "Privacy Policy",
+      terms: "Terms & Conditions",
       copyright: "Copyright",
     },
     // Home Page
