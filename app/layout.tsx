@@ -5,6 +5,7 @@ import { AuthProvider } from "@/context/AuthProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { FloatingWA } from "@/components/FloatingWA";
 import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
@@ -166,6 +167,7 @@ export default function RootLayout({
               <Navbar />
               <main className="flex-1">{children}</main>
               <Footer />
+              <FloatingWA />
             </div>
           </ThemeProvider>
           <Toaster
