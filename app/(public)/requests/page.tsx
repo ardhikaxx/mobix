@@ -18,7 +18,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
-import { Loader2, Plus, X, MessageSquare, Trash2, ThumbsUp } from "lucide-react";
+import { Loader2, Plus, X, MessageSquare, Trash2, ThumbsUp, Pencil } from "lucide-react";
 import toast from "react-hot-toast";
 
 interface RequestData {
@@ -28,6 +28,7 @@ interface RequestData {
   title: string;
   description: string;
   createdAt: Timestamp | null;
+  editedAt: Timestamp | null;
   voteCount: number;
   voters: Record<string, boolean>;
 }
@@ -40,6 +41,7 @@ export default function RequestsPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     const q = query(collection(db, "requests"), orderBy("createdAt", "desc"));
@@ -55,6 +57,14 @@ export default function RequestsPage() {
 
   const myRequest = user ? requests.find((r) => r.userId === user.uid) : null;
 
+  const startEdit = () => {
+    if (!myRequest) return;
+    setTitle(myRequest.title);
+    setDescription(myRequest.description);
+    setEditing(true);
+    setShowForm(true);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
@@ -65,25 +75,43 @@ export default function RequestsPage() {
 
     setSubmitting(true);
     try {
-      await setDoc(doc(db, "requests", user.uid), {
-        userId: user.uid,
-        userName: user.displayName || user.email || "User",
-        userPhoto: user.photoURL || null,
-        title: title.trim(),
-        description: description.trim(),
-        createdAt: serverTimestamp(),
-        voteCount: 0,
-        voters: {},
-      });
-      toast.success("Request berhasil ditambahkan!");
+      if (editing) {
+        await updateDoc(doc(db, "requests", user.uid), {
+          title: title.trim(),
+          description: description.trim(),
+          editedAt: serverTimestamp(),
+        });
+        toast.success("Request berhasil diedit!");
+      } else {
+        await setDoc(doc(db, "requests", user.uid), {
+          userId: user.uid,
+          userName: user.displayName || user.email || "User",
+          userPhoto: user.photoURL || null,
+          title: title.trim(),
+          description: description.trim(),
+          createdAt: serverTimestamp(),
+          editedAt: null,
+          voteCount: 0,
+          voters: {},
+        });
+        toast.success("Request berhasil ditambahkan!");
+      }
       setTitle("");
       setDescription("");
       setShowForm(false);
+      setEditing(false);
     } catch {
-      toast.error("Gagal menambahkan request");
+      toast.error(editing ? "Gagal mengedit request" : "Gagal menambahkan request");
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const cancelForm = () => {
+    setShowForm(false);
+    setEditing(false);
+    setTitle("");
+    setDescription("");
   };
 
   const handleDelete = async () => {
@@ -130,9 +158,9 @@ export default function RequestsPage() {
             Minta aplikasi yang kamu butuhin, biar developer bikin
           </p>
         </div>
-        {user && !myRequest && (
+        {user && !myRequest && !editing && (
           <button
-            onClick={() => setShowForm(!showForm)}
+            onClick={() => { setShowForm(!showForm); setEditing(false); }}
             className="inline-flex items-center gap-2 rounded-full bg-store px-5 py-2.5 text-sm font-bold text-white transition hover:bg-store-light active:scale-95 shadow-sm"
           >
             {showForm ? <X className="size-4" /> : <Plus className="size-4" />}
@@ -152,8 +180,8 @@ export default function RequestsPage() {
         </div>
       )}
 
-      {/* Add Form */}
-      {showForm && user && !myRequest && (
+      {/* Add / Edit Form */}
+      {showForm && user && (editing || !myRequest) && (
         <form onSubmit={handleSubmit} className="mb-8 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
           <div className="mb-4">
             <label className="mb-1.5 block text-sm font-semibold text-gray-700 dark:text-gray-300">Judul Aplikasi</label>
@@ -174,33 +202,56 @@ export default function RequestsPage() {
               className="w-full resize-none rounded-xl border border-gray-200 px-4 py-2.5 text-sm outline-none focus:border-store focus:ring-2 focus:ring-store/20 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             />
           </div>
-          <button
-            type="submit"
-            disabled={submitting}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-store py-2.5 text-sm font-bold text-white transition hover:bg-store-light disabled:opacity-50"
-          >
-            {submitting && <Loader2 className="size-4 animate-spin" />}
-            {submitting ? "Mengirim..." : "Kirim Request"}
-          </button>
+          <div className="flex gap-2">
+            <button
+              type="submit"
+              disabled={submitting}
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-store py-2.5 text-sm font-bold text-white transition hover:bg-store-light disabled:opacity-50"
+            >
+              {submitting && <Loader2 className="size-4 animate-spin" />}
+              {submitting ? "Menyimpan..." : editing ? "Simpan Perubahan" : "Kirim Request"}
+            </button>
+            <button
+              type="button"
+              onClick={cancelForm}
+              className="rounded-xl bg-gray-100 px-5 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600"
+            >
+              Batal
+            </button>
+          </div>
         </form>
       )}
 
       {/* My Request Banner */}
-      {myRequest && (
+      {myRequest && !editing && (
         <div className="mb-6 rounded-2xl border border-store/20 bg-store/5 p-4 dark:border-store/10 dark:bg-store/5">
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">
               <p className="text-xs font-semibold uppercase tracking-wider text-store">Request Kamu</p>
               <h3 className="mt-1 text-sm font-bold text-gray-900 dark:text-gray-100">{myRequest.title}</h3>
               <p className="mt-0.5 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">{myRequest.description}</p>
+              {myRequest.editedAt && (
+                <p className="mt-1 text-[10px] text-gray-400">
+                  diedit {myRequest.editedAt.toDate ? new Date(myRequest.editedAt.toDate()).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : ""}
+                </p>
+              )}
             </div>
-            <button
-              onClick={handleDelete}
-              className="shrink-0 rounded-full p-2 text-gray-400 transition hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20"
-              title="Hapus request"
-            >
-              <Trash2 className="size-4" />
-            </button>
+            <div className="flex shrink-0 gap-1">
+              <button
+                onClick={startEdit}
+                className="rounded-full p-2 text-gray-400 transition hover:bg-store/10 hover:text-store"
+                title="Edit request"
+              >
+                <Pencil className="size-4" />
+              </button>
+              <button
+                onClick={handleDelete}
+                className="rounded-full p-2 text-gray-400 transition hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20"
+                title="Hapus request"
+              >
+                <Trash2 className="size-4" />
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -252,6 +303,11 @@ export default function RequestsPage() {
                   </div>
                   <h3 className="mt-1 text-sm font-bold text-gray-800 dark:text-gray-200">{req.title}</h3>
                   <p className="mt-0.5 text-sm text-gray-600 dark:text-gray-400">{req.description}</p>
+                  {req.editedAt && (
+                    <p className="mt-0.5 text-[10px] text-gray-400">
+                      diedit {req.editedAt.toDate ? new Date(req.editedAt.toDate()).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : ""}
+                    </p>
+                  )}
                   <button
                     onClick={() => handleVote(req)}
                     className={`mt-2 inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold transition active:scale-95 ${
