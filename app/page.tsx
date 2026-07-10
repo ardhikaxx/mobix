@@ -17,7 +17,7 @@ import { useAllDownloadStats } from "@/lib/hooks/useAllDownloadStats";
 
 const PAGE_SIZE = 8;
 
-type SortMode = "newest" | "popular";
+type SortMode = "newest" | "popular" | "rating";
 
 export default function HomePage() {
   const { data: allApps, error: publishedErr, isLoading: publishedLoad } = usePublishedApps();
@@ -74,10 +74,16 @@ export default function HomePage() {
       list = list.filter((a) => a.category === filterCategory);
     }
     if (sortMode === "popular") {
-      list.sort((a, b) => (b as any).downloadCount ?? 0 - ((a as any).downloadCount ?? 0));
+      list.sort((a, b) => (downloadMap[b.slug] ?? 0) - (downloadMap[a.slug] ?? 0));
+    } else if (sortMode === "rating") {
+      list.sort((a, b) => {
+        const aRating = ratingMap[a.slug]?.rating ?? 0;
+        const bRating = ratingMap[b.slug]?.rating ?? 0;
+        return bRating - aRating;
+      });
     }
     return list;
-  }, [allApps, filterCategory, sortMode]);
+  }, [allApps, filterCategory, sortMode, ratingMap, downloadMap]);
 
   const visibleApps = useMemo(() => {
     return sortedAndFiltered.slice(0, visibleCount);
@@ -89,8 +95,8 @@ export default function HomePage() {
     setVisibleCount((prev) => Math.min(prev + PAGE_SIZE, sortedAndFiltered.length));
   };
 
-  const toggleSort = () => {
-    setSortMode((prev) => (prev === "newest" ? "popular" : "newest"));
+  const cycleSort = (mode: SortMode) => {
+    setSortMode(mode);
     setVisibleCount(PAGE_SIZE);
     setSortOpen(false);
   };
@@ -176,23 +182,29 @@ export default function HomePage() {
                 className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-4 py-1.5 text-xs font-semibold text-gray-600 transition hover:border-store/50 hover:text-store dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
               >
                 <ArrowUpDown className="size-3.5" />
-                {sortMode === "newest" ? t.home.sortNewest : t.home.sortPopular}
+                {sortMode === "newest" ? t.home.sortNewest : sortMode === "popular" ? t.home.sortPopular : t.home.sortRating}
               </button>
               {sortOpen && (
                 <>
                   <div className="fixed inset-0 z-10" onClick={() => setSortOpen(false)} />
                   <div className="absolute right-0 top-full z-20 mt-1 w-36 rounded-xl border border-gray-100 bg-white py-1 shadow-lg dark:border-gray-700 dark:bg-gray-800">
                     <button
-                      onClick={toggleSort}
+                      onClick={() => cycleSort("newest")}
                       className={`w-full px-4 py-2 text-left text-xs font-semibold transition hover:bg-gray-50 dark:hover:bg-gray-700 ${sortMode === "newest" ? "text-store" : "text-gray-600 dark:text-gray-400"}`}
                     >
                       {t.home.sortNewest}
                     </button>
                     <button
-                      onClick={toggleSort}
+                      onClick={() => cycleSort("popular")}
                       className={`w-full px-4 py-2 text-left text-xs font-semibold transition hover:bg-gray-50 dark:hover:bg-gray-700 ${sortMode === "popular" ? "text-store" : "text-gray-600 dark:text-gray-400"}`}
                     >
                       {t.home.sortPopular}
+                    </button>
+                    <button
+                      onClick={() => cycleSort("rating")}
+                      className={`w-full px-4 py-2 text-left text-xs font-semibold transition hover:bg-gray-50 dark:hover:bg-gray-700 ${sortMode === "rating" ? "text-store" : "text-gray-600 dark:text-gray-400"}`}
+                    >
+                      {t.home.sortRating}
                     </button>
                   </div>
                 </>
