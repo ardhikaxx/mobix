@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { useChat, sendMessage, toggleLike, editMessage, deleteMessage, type ChatMessage } from "@/lib/hooks/useChat";
 import { useTranslation } from "@/lib/hooks/useTranslation";
@@ -35,6 +35,20 @@ export default function ChatClient() {
 
   const devUserIds = new Set(publishedApps?.map((a) => a.ownerId) ?? []);
 
+  const chatUsers = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const m of messages) {
+      if (!map.has(m.userId) && m.userId !== user?.uid) {
+        map.set(m.userId, m.userName);
+      }
+    }
+    return Array.from(map.entries()).map(([id, name]) => ({ id, name }));
+  }, [messages, user?.uid]);
+
+  const [mentionQuery, setMentionQuery] = useState("");
+  const [mentionStart, setMentionStart] = useState(-1);
+  const [mentionIndex, setMentionIndex] = useState(0);
+
   const extractUrl = (text: string): string | null => {
     const m = text.match(/https?:\/\/[^\s]+/);
     return m ? m[0] : null;
@@ -50,6 +64,20 @@ export default function ChatClient() {
     }
   }, [messages]);
 
+  const extractMentions = (t: string): Record<string, string> => {
+    const result: Record<string, string> = {};
+    const ats = t.match(/@(\w+)/g);
+    if (!ats) return result;
+    for (const at of ats) {
+      const name = at.slice(1);
+      const found = chatUsers.find((u) => u.name.toLowerCase() === name.toLowerCase());
+      if (found) {
+        result[found.id] = found.name;
+      }
+    }
+    return result;
+  };
+
   const handleSend = async () => {
     const trimmed = text.trim();
     if (!trimmed || !user) return;
@@ -62,12 +90,14 @@ export default function ChatClient() {
 
     setSending(true);
     try {
+      const mentions = extractMentions(trimmed);
       await sendMessage(
         user.uid,
         user.displayName || user.email || "User",
         user.photoURL,
         trimmed,
-        replyTo
+        replyTo,
+        mentions
       );
       setText("");
       setReplyTo(null);
@@ -79,11 +109,69 @@ export default function ChatClient() {
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setText(val);
+
+    const pos = e.target.selectionStart ?? val.length;
+    const before = val.slice(0, pos);
+    const atIdx = before.lastIndexOf("@");
+
+    if (atIdx !== -1 && (atIdx === 0 || before[atIdx - 1] === " ")) {
+      const after = val.slice(atIdx + 1, pos);
+      if (!after.includes(" ") && after.length <= 30) {
+        setMentionQuery(after);
+        setMentionStart(atIdx);
+        setMentionIndex(0);
+        return;
+      }
+    }
+    setMentionQuery("");
+    setMentionStart(-1);
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (mentionStart !== -1) {
+      const filtered = chatUsers.filter((u) =>
+        u.name.toLowerCase().includes(mentionQuery.toLowerCase()) && u.id !== user?.uid
+      );
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setMentionIndex((i) => Math.min(i + 1, filtered.length - 1));
+        return;
+      }
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setMentionIndex((i) => Math.max(i - 1, 0));
+        return;
+      }
+      if (e.key === "Enter" || e.key === "Tab") {
+        e.preventDefault();
+        if (filtered.length > 0) {
+          insertMention(filtered[mentionIndex]);
+        }
+        return;
+      }
+      if (e.key === "Escape") {
+        setMentionQuery("");
+        setMentionStart(-1);
+        return;
+      }
+    }
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSend();
     }
+  };
+
+  const insertMention = (u: { id: string; name: string }) => {
+    const before = text.slice(0, mentionStart);
+    const after = text.slice(mentionStart + mentionQuery.length + 1);
+    const newText = `${before}@${u.name} ${after}`;
+    setText(newText);
+    setMentionQuery("");
+    setMentionStart(-1);
+    setTimeout(() => inputRef.current?.focus(), 0);
   };
 
   const handleEdit = async (msgId: string) => {
@@ -139,6 +227,20 @@ export default function ChatClient() {
           m.userName.toLowerCase().includes(q)
       )
     : sortedMessages;
+
+  const renderText = (t: string) => {
+    const parts = t.split(/(@\w+)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith("@") && chatUsers.some((u) => u.name.toLowerCase() === part.slice(1).toLowerCase())) {
+        return (
+          <span key={i} className="font-semibold text-store">
+            {part}
+          </span>
+        );
+      }
+      return part;
+    });
+  };
 
   const highlightMatch = (text: string, query: string) => {
     if (!query) return text;
@@ -248,7 +350,7 @@ export default function ChatClient() {
                       <div className="mb-1 flex items-center gap-1 text-[11px] text-gray-400 dark:text-gray-500">
                         <Reply className="size-3" />
                         <span className="truncate max-w-[200px]">
-                          {msg.replyTo.userName}: {searchQuery ? highlightMatch(msg.replyTo.text, searchQuery) : msg.replyTo.text}
+                          {msg.replyTo.userName}: {searchQuery ? highlightMatch(msg.replyTo.text, searchQuery) : renderText(msg.replyTo.text)}
                         </span>
                       </div>
                     )}
@@ -279,7 +381,7 @@ export default function ChatClient() {
                       </div>
                     ) : (
                       <p className={`text-sm text-gray-700 dark:text-gray-300 ${msg.deleted ? "italic text-gray-400" : ""}`}>
-                        {searchQuery ? highlightMatch(msg.text, searchQuery) : msg.text}
+                        {searchQuery ? highlightMatch(msg.text, searchQuery) : renderText(msg.text)}
                       </p>
                     )}
 
@@ -365,24 +467,49 @@ export default function ChatClient() {
 
       {/* Input */}
       {user ? (
-        <div className="mt-3 flex gap-2">
-          <input
-            ref={inputRef}
-            type="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Ketik pesan..."
-            disabled={sending}
-            className="min-h-[44px] flex-1 rounded-xl border border-gray-200 bg-white px-4 text-sm text-gray-900 outline-none transition focus:border-store focus:ring-2 focus:ring-store/20 placeholder-gray-400 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
-          />
-          <button
-            onClick={handleSend}
-            disabled={!text.trim() || sending}
-            className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl bg-store text-white transition hover:bg-store-light disabled:opacity-50"
-          >
-            {sending ? <Loader2 className="size-5 animate-spin" /> : <Send className="size-5" />}
-          </button>
+        <div className="relative mt-3">
+          {mentionStart !== -1 && mentionQuery.length >= 0 && (
+            <div className="absolute bottom-full left-0 right-0 mb-1 max-h-40 overflow-y-auto rounded-xl border border-gray-100 bg-white p-1 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+              {chatUsers
+                .filter((u) => u.name.toLowerCase().includes(mentionQuery.toLowerCase()) && u.id !== user?.uid)
+                .slice(0, 8)
+                .map((u, i) => (
+                  <button
+                    key={u.id}
+                    onClick={() => insertMention(u)}
+                    className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition ${
+                      i === mentionIndex
+                        ? "bg-store/10 text-store"
+                        : "text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    <div className="flex size-6 items-center justify-center rounded-full bg-gray-200 text-[10px] font-bold text-gray-500 dark:bg-gray-700 dark:text-gray-400">
+                      {u.name.charAt(0).toUpperCase()}
+                    </div>
+                    <span>@{u.name}</span>
+                  </button>
+                ))}
+            </div>
+          )}
+          <div className="flex gap-2">
+            <input
+              ref={inputRef}
+              type="text"
+              value={text}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              placeholder="Ketik pesan... (@ untuk mention)"
+              disabled={sending}
+              className="min-h-[44px] flex-1 rounded-xl border border-gray-200 bg-white px-4 text-sm text-gray-900 outline-none transition focus:border-store focus:ring-2 focus:ring-store/20 placeholder-gray-400 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+            />
+            <button
+              onClick={handleSend}
+              disabled={!text.trim() || sending}
+              className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl bg-store text-white transition hover:bg-store-light disabled:opacity-50"
+            >
+              {sending ? <Loader2 className="size-5 animate-spin" /> : <Send className="size-5" />}
+            </button>
+          </div>
         </div>
       ) : (
         <div className="mt-3 rounded-xl border border-dashed border-gray-200 bg-gray-50 p-4 text-center text-sm text-gray-500 dark:border-gray-700 dark:bg-gray-800/30">

@@ -30,6 +30,7 @@ export interface ChatMessage {
   createdAt: { seconds: number } | null;
   editedAt: { seconds: number } | null;
   deleted?: boolean;
+  mentions?: Record<string, string>;
 }
 
 export function useChat() {
@@ -57,6 +58,7 @@ export function useChat() {
           createdAt: data.createdAt ?? null,
           editedAt: data.editedAt ?? null,
           deleted: data.deleted ?? false,
+          mentions: data.mentions ?? {},
         } as ChatMessage;
       });
       setMessages(list);
@@ -73,7 +75,8 @@ export async function sendMessage(
   userName: string,
   userPhoto: string | null,
   text: string,
-  replyTo: ChatMessage["replyTo"] = null
+  replyTo: ChatMessage["replyTo"] = null,
+  mentions: Record<string, string> = {}
 ) {
   await addDoc(collection(db, "chat"), {
     userId,
@@ -81,6 +84,7 @@ export async function sendMessage(
     userPhoto,
     text: text.trim(),
     replyTo,
+    mentions: Object.keys(mentions).length > 0 ? mentions : {},
     likes: {},
     likeCount: 0,
     createdAt: serverTimestamp(),
