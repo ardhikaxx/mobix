@@ -80,6 +80,12 @@ export function Navbar() {
                 {t.navbar.request}
               </Link>
               <Link
+                href="/chat"
+                className="rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+              >
+                {t.navbar.chat}
+              </Link>
+              <Link
                 href="/developers"
                 className="rounded-lg px-3 py-2 text-sm font-medium text-store transition hover:bg-store/10"
               >
@@ -233,6 +239,13 @@ export function Navbar() {
                 className="block truncate rounded-lg px-3 py-2.5 text-sm text-gray-700 transition hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 {t.navbar.request}
+              </Link>
+              <Link
+                href="/chat"
+                onClick={closeDrawer}
+                className="block truncate rounded-lg px-3 py-2.5 text-sm text-gray-700 transition hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+              >
+                {t.navbar.chat}
               </Link>
               <Link
                 href="/developers"

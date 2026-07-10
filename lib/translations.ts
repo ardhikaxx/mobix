@@ -4,6 +4,7 @@ export const translations = {
     navbar: {
       categories: "Kategori",
       request: "Request",
+      chat: "Komunitas",
       about: "Tentang",
       settings: "Pengaturan",
       login: "Login",
@@ -78,6 +79,7 @@ export const translations = {
     navbar: {
       categories: "Categories",
       request: "Request",
+      chat: "Community",
       about: "About",
       settings: "Settings",
       login: "Login",
