@@ -77,7 +77,42 @@ export function ReviewsCarousel() {
     return () => clearInterval(timer);
   }, [nextSlide, enriched.length]);
 
-  if (loading || enriched.length === 0) return null;
+  if (loading) {
+    return (
+      <section className="border-t border-gray-100 bg-white py-10 sm:py-14 dark:border-gray-800 dark:bg-gray-900">
+        <div className="mx-auto max-w-5xl px-4">
+          <div className="mb-8 text-center">
+            <div className="mx-auto h-5 w-32 animate-pulse rounded bg-gray-200 sm:hidden dark:bg-gray-700" />
+            <div className="mx-auto hidden h-6 w-40 animate-pulse rounded bg-gray-200 sm:block dark:bg-gray-700" />
+            <div className="mx-auto mt-1 h-3 w-48 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="animate-pulse rounded-xl border border-gray-100 bg-gray-50 p-5 dark:border-gray-700 dark:bg-gray-800/50">
+                <div className="mb-3 flex items-center gap-3">
+                  <div className="size-9 rounded-full bg-gray-200 dark:bg-gray-700" />
+                  <div className="flex-1 space-y-1">
+                    <div className="h-4 w-24 rounded bg-gray-200 dark:bg-gray-700" />
+                    <div className="h-3 w-16 rounded bg-gray-200 dark:bg-gray-700" />
+                  </div>
+                </div>
+                <div className="space-y-1.5">
+                  <div className="h-3 w-full rounded bg-gray-200 dark:bg-gray-700" />
+                  <div className="h-3 w-3/4 rounded bg-gray-200 dark:bg-gray-700" />
+                </div>
+                <div className="mt-3 flex items-center gap-2">
+                  <div className="size-6 rounded-md bg-gray-200 dark:bg-gray-700" />
+                  <div className="h-3 w-20 rounded bg-gray-200 dark:bg-gray-700" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (enriched.length === 0) return null;
 
   const getSlideItems = (slideIndex: number) => {
     const start = slideIndex * 3;
