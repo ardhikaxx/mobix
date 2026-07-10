@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useThemeStore, type ThemeMode } from "@/store/themeStore";
 import { useLanguageStore, type Language } from "@/store/languageStore";
 import { Monitor, Moon, Sun, Check, Globe, Info } from "lucide-react";
+
+const WA_LINK = "https://wa.me/6285933648537";
 
 const themeOptions: { mode: ThemeMode; label: string; icon: typeof Monitor }[] = [];
 
@@ -167,20 +170,22 @@ export function SettingsDialog({
               </p>
 
               <div className="space-y-2 pt-2">
-                <a
-                  href="#"
+                <Link
+                  href="/privacy"
                   className="block rounded-lg px-3 py-2 text-sm text-store hover:bg-gray-50 dark:hover:bg-gray-800"
                 >
                   {privacyLabel}
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  href="/terms"
                   className="block rounded-lg px-3 py-2 text-sm text-store hover:bg-gray-50 dark:hover:bg-gray-800"
                 >
                   {termsLabel}
-                </a>
+                </Link>
                 <a
-                  href="#"
+                  href={WA_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="block rounded-lg px-3 py-2 text-sm text-store hover:bg-gray-50 dark:hover:bg-gray-800"
                 >
                   {contactLabel}

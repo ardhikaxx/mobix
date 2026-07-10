@@ -25,7 +25,7 @@ import {
 import { db } from "@/lib/firebase/client";
 import { AppCard } from "@/components/AppCard";
 import { useDownloadCount, incrementDownload } from "@/lib/hooks/useDownloadCount";
-import { ChevronLeft, Star, Download, Shield, Share2, Send, ArrowRight } from "lucide-react";
+import { ChevronLeft, Star, Download, Shield, Share2, Send, ArrowRight, Flag } from "lucide-react";
 import toast from "react-hot-toast";
 
 interface Review {
@@ -320,7 +320,7 @@ export default function AppDetailPageClient({
         <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">{app.description}</p>
       </div>
 
-      <div className="mb-8 rounded-xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <div className="mb-4 rounded-xl border border-gray-100 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
         <h2 className="mb-2 text-sm font-bold text-gray-800 dark:text-gray-200">Data Safety</h2>
         <p className="mb-4 text-xs text-gray-500 dark:text-gray-400">
           Safety starts with understanding how developers collect and share your data. Data privacy and security practices may vary based on your use, region, and age.
@@ -334,6 +334,17 @@ export default function AppDetailPageClient({
           <p className="text-xs font-medium text-gray-700 dark:text-gray-300">Data encrypted in transit</p>
         </div>
       </div>
+
+      {/* Laporkan Aplikasi */}
+      <a
+        href={`https://wa.me/6285933648537?text=Halo%20admin%2C%20saya%20ingin%20melaporkan%20aplikasi%20berikut%3A%20https://mobix-mu.vercel.app/apps/${app.slug}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mb-8 flex items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50/50 px-4 py-3 text-xs font-semibold text-red-600 transition hover:bg-red-50 active:scale-95 dark:border-red-900/30 dark:bg-red-950/20 dark:text-red-400 dark:hover:bg-red-950/30"
+      >
+        <Flag className="size-3.5" />
+        Laporkan Aplikasi
+      </a>
 
       <div className="mb-8">
         <div className="mb-6 flex items-center justify-between">
