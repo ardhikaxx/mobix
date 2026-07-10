@@ -11,6 +11,9 @@ import { Loader2, ArrowUpDown } from "lucide-react";
 import { TrustBadge } from "@/components/TrustBadge";
 import { MobixBadge } from "@/components/MobixBadge";
 import { ReviewsCarousel } from "@/components/ReviewsCarousel";
+import { StatsBar } from "@/components/StatsBar";
+import { useAllReviewStats } from "@/lib/hooks/useAllReviewStats";
+import { useAllDownloadStats } from "@/lib/hooks/useAllDownloadStats";
 
 const PAGE_SIZE = 8;
 
@@ -19,6 +22,8 @@ type SortMode = "newest" | "popular";
 export default function HomePage() {
   const { data: allApps, error: publishedErr, isLoading: publishedLoad } = usePublishedApps();
   const { t } = useTranslation();
+  const ratingMap = useAllReviewStats();
+  const downloadMap = useAllDownloadStats();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -102,6 +107,11 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Stats Bar */}
+      {!isSearching && searchQuery === "" && (
+        <StatsBar totalApps={allApps?.length ?? 0} />
+      )}
+
       {/* Categories Section */}
       {!isSearching && searchQuery === "" && (
         <section id="categories" className="mx-auto max-w-5xl px-4 pb-2 scroll-mt-20">
@@ -152,6 +162,8 @@ export default function HomePage() {
             apps={searchResults}
             isLoading={isSearching}
             error={searchResults.length === 0 && !isSearching ? new Error("Tidak ada hasil") : undefined}
+            ratingMap={ratingMap}
+            downloadMap={downloadMap}
           />
         </section>
       ) : (
