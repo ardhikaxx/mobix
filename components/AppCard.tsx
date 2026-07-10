@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Star, Download, Share2, Sparkles, Flame, BadgeCheck } from "lucide-react";
+import { Star, Download, Share2, Sparkles, Flame } from "lucide-react";
 import type { AppDoc } from "@/types/app";
 import { getCategoryLabel } from "@/lib/constants/categories";
 import { formatBytes } from "@/lib/utils/slug";
@@ -84,7 +84,7 @@ export function AppCard({ app }: { app: AppDoc }) {
           <div className="flex min-w-0 flex-1 flex-col gap-1 sm:gap-1.5">
             <h3 className="flex items-center gap-1 text-sm font-semibold text-gray-900 dark:text-gray-100" title={app.name}>
               <span className="truncate">{app.name}</span>
-              {app.isVerified && <BadgeCheck className="size-4 shrink-0 text-blue-500" />}
+              {app.isVerified && <span className="inline-flex size-4 shrink-0 items-center justify-center rounded-full bg-blue-500"><svg viewBox="0 0 16 16" className="size-3 text-white" fill="none" stroke="currentColor" strokeWidth="3"><path d="M3 8l3 3 7-7" /></svg></span>}
             </h3>
 
             <span className="text-xs text-gray-400 dark:text-gray-500">{category}</span>
