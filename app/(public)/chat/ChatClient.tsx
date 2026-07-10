@@ -6,11 +6,13 @@ import { useChat, sendMessage, toggleLike, editMessage, deleteMessage, type Chat
 import { useTranslation } from "@/lib/hooks/useTranslation";
 import { usePublishedApps } from "@/lib/hooks/useApps";
 import {
-  Loader2, Send, ThumbsUp, MessageSquare, Reply, Trash2,
-  MessageCircle, BadgeCheck, User as UserIcon,
+  Loader2, Send, ThumbsUp, MessageSquare, Reply,
+  MessageCircle, BadgeCheck,
 } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { LinkPreview } from "@/components/LinkPreview";
+import { markChatSeen } from "@/lib/hooks/useUnreadChat";
 import toast from "react-hot-toast";
 import { filterBadWords } from "@/lib/utils/badWords";
 
@@ -30,6 +32,15 @@ export default function ChatClient() {
   const editInputRef = useRef<HTMLInputElement>(null);
 
   const devUserIds = new Set(publishedApps?.map((a) => a.ownerId) ?? []);
+
+  const extractUrl = (text: string): string | null => {
+    const m = text.match(/https?:\/\/[^\s]+/);
+    return m ? m[0] : null;
+  };
+
+  useEffect(() => {
+    markChatSeen();
+  }, []);
 
   useEffect(() => {
     if (listRef.current) {
@@ -230,6 +241,10 @@ export default function ChatClient() {
                           hour: "2-digit", minute: "2-digit",
                         })}
                       </span>
+                    )}
+
+                    {!msg.deleted && extractUrl(msg.text) && (
+                      <LinkPreview url={extractUrl(msg.text)!} />
                     )}
 
                     <div className="mt-1.5 flex items-center gap-2">

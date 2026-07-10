@@ -8,6 +8,7 @@ import { useUIStore } from "@/store/uiStore";
 import { useTranslation } from "@/lib/hooks/useTranslation";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { SettingsDialog } from "./SettingsDialog";
+import { useUnreadChat } from "@/lib/hooks/useUnreadChat";
 import {
   Menu,
   X,
@@ -21,6 +22,7 @@ export function Navbar() {
   const { user } = useAuth();
   const { isDrawerOpen, toggleDrawer, closeDrawer } = useUIStore();
   const { t } = useTranslation();
+  const hasUnreadChat = useUnreadChat();
   const [profileOpen, setProfileOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [confirmLogout, setConfirmLogout] = useState(false);
@@ -81,9 +83,12 @@ export function Navbar() {
               </Link>
               <Link
                 href="/chat"
-                className="rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+                className="relative rounded-lg px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
               >
                 {t.navbar.chat}
+                {hasUnreadChat && (
+                  <span className="absolute -right-0.5 -top-0.5 size-2 rounded-full bg-red-500" />
+                )}
               </Link>
               <Link
                 href="/developers"
@@ -243,9 +248,12 @@ export function Navbar() {
               <Link
                 href="/chat"
                 onClick={closeDrawer}
-                className="block truncate rounded-lg px-3 py-2.5 text-sm text-gray-700 transition hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                className="relative block truncate rounded-lg px-3 py-2.5 text-sm text-gray-700 transition hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 {t.navbar.chat}
+                {hasUnreadChat && (
+                  <span className="ml-1 inline-block size-2 rounded-full bg-red-500 align-middle" />
+                )}
               </Link>
               <Link
                 href="/developers"
