@@ -36,16 +36,19 @@ export default function ChatClient() {
   const devUserIds = new Set(publishedApps?.map((a) => a.ownerId) ?? []);
 
   const chatUsers = useMemo(() => {
-    const map = new Map<string, string>();
+    const map = new Map<string, { name: string; photo: string | null }>();
     for (const m of messages) {
       if (!map.has(m.userId)) {
-        map.set(m.userId, m.userName);
+        map.set(m.userId, { name: m.userName, photo: m.userPhoto });
       }
     }
     if (user && !map.has(user.uid)) {
-      map.set(user.uid, user.displayName || user.email || "User");
+      map.set(user.uid, {
+        name: user.displayName || user.email || "User",
+        photo: user.photoURL,
+      });
     }
-    return Array.from(map.entries()).map(([id, name]) => ({ id, name }));
+    return Array.from(map.entries()).map(([id, data]) => ({ id, ...data }));
   }, [messages, user]);
 
   const [mentionQuery, setMentionQuery] = useState("");
@@ -486,10 +489,14 @@ export default function ChatClient() {
                         : "text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700"
                     }`}
                   >
-                    <div className="flex size-6 items-center justify-center rounded-full bg-gray-200 text-[10px] font-bold text-gray-500 dark:bg-gray-700 dark:text-gray-400">
-                      {u.name.charAt(0).toUpperCase()}
-                    </div>
-                    <span>@{u.name}</span>
+                    {u.photo ? (
+                      <img src={u.photo} alt="" className="size-6 shrink-0 rounded-full object-cover" referrerPolicy="no-referrer" />
+                    ) : (
+                      <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-gray-200 text-[10px] font-bold text-gray-500 dark:bg-gray-700 dark:text-gray-400">
+                        {u.name.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <span className="truncate">@{u.name}</span>
                   </button>
                 ))}
             </div>
