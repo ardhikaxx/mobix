@@ -256,7 +256,7 @@ export default function AppDetailPageClient({
         <div className="flex min-w-0 flex-1 flex-col justify-center text-center sm:text-left">
           <div className="flex items-center justify-center gap-1.5 sm:justify-start">
             <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100 md:text-2xl">{app.name}</h1>
-            {app.isVerified && <span className="inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-blue-500"><svg viewBox="0 0 16 16" className="size-3.5 text-white" fill="none" stroke="currentColor" strokeWidth="3"><path d="M3 8l3 3 7-7" /></svg></span>}
+            {app.isVerified && <span className="inline-flex size-5 shrink-0 items-center justify-center rounded-full border-2 border-blue-500"><svg viewBox="0 0 16 16" className="size-3.5 text-blue-500" fill="none" stroke="currentColor" strokeWidth="3"><path d="M3 8l3 3 7-7" /></svg></span>}
           </div>
           <p className="mt-0.5 text-sm font-medium text-store">{app.ownerName}</p>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5 sm:justify-start w-full sm:w-auto">
