@@ -11,7 +11,6 @@ import { Loader2, ArrowUpDown } from "lucide-react";
 import { TrustBadge } from "@/components/TrustBadge";
 import { MobixBadge } from "@/components/MobixBadge";
 import { ReviewsCarousel } from "@/components/ReviewsCarousel";
-import { StatsBar } from "@/components/StatsBar";
 import { useAllReviewStats } from "@/lib/hooks/useAllReviewStats";
 import { useAllDownloadStats } from "@/lib/hooks/useAllDownloadStats";
 
@@ -112,11 +111,6 @@ export default function HomePage() {
           <SearchBar large onSearch={handleSearch} />
         </div>
       </section>
-
-      {/* Stats Bar */}
-      {!isSearching && searchQuery === "" && (
-        <StatsBar totalApps={allApps?.length ?? 0} />
-      )}
 
       {/* Categories Section */}
       {!isSearching && searchQuery === "" && (
