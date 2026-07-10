@@ -104,7 +104,7 @@ export function ShareDialog({ isOpen, onClose, appName, appSlug }: ShareDialogPr
     plain: appUrl,
     badgeLiveMarkdown: `[![${appName} downloads](${BASE_URL}/api/badge/${appSlug})](${appUrl})`,
     badgeLiveHtml: `<a href="${appUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${BASE_URL}/api/badge/${appSlug}" alt="${appName} downloads" />\n</a>`,
-    iframeHtml: `<iframe src="${BASE_URL}/embed/${appSlug}" width="320" height="150" frameborder="0" style="border:none;overflow:auto;" allowfullscreen></iframe>`,
+    iframeHtml: `<iframe src="${BASE_URL}/embed/${appSlug}" width="320" height="450" frameborder="0" style="border:none;overflow:auto;" allowfullscreen></iframe>`,
   };
 
   const downloadQR = () => {
