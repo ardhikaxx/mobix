@@ -9,7 +9,7 @@ const WA_LINK = `https://wa.me/${WA_NUMBER}`;
 export const metadata: Metadata = {
   title: "Untuk Developer — Daftarkan Aplikasi Android Anda di Mobix",
   description:
-    "Mobix membantu developer Indonesia mempromosikan aplikasi Android mereka. Biaya listing Rp10.000 sekali seumur hidup. Jangkau ribuan pengguna.",
+    "Mobix membantu developer Indonesia mempromosikan aplikasi Android mereka. Biaya listing Rp10.000 per aplikasi, seumur hidup. Jangkau ribuan pengguna.",
   openGraph: {
     title: "Daftarkan Aplikasi Android di Mobix — Untuk Developer",
     description:
@@ -26,7 +26,7 @@ const faqData = [
   {
     question: "Berapa biaya listing aplikasi di Mobix?",
     answer:
-      "Biaya listing aplikasi di Mobix hanya Rp10.000 SEKALI untuk seumur hidup. Tidak ada biaya berulang, tidak ada potongan dari aplikasi Anda. Cukup bayar sekali via QRIS, aplikasi Anda akan tampil selamanya.",
+      "Biaya listing aplikasi di Mobix hanya Rp10.000 per aplikasi untuk seumur hidup. Tidak ada biaya berulang, tidak ada potongan dari aplikasi Anda. Cukup bayar Rp10.000 via QRIS per aplikasi, aplikasi Anda akan tampil selamanya.",
   },
   {
     question: "Apakah ada batasan jumlah aplikasi yang bisa didaftarkan?",
@@ -59,7 +59,7 @@ export default function DevelopersPage() {
         </h1>
         <p className="mx-auto mb-6 max-w-2xl text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
           Punya aplikasi Android tapi bingung cara mempromosikannya? Admin Mobix akan membantu 
-          mendaftarkan dan menampilkan aplikasi Anda di platform kami. Cukup Rp10.000 sekali untuk listing seumur hidup.
+          mendaftarkan dan menampilkan aplikasi Anda di platform kami. Cukup Rp10.000 per aplikasi untuk listing seumur hidup.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
           <a
@@ -83,7 +83,7 @@ export default function DevelopersPage() {
       {/* Value Propositions */}
       <div className="mb-16 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {[
-          { icon: DollarSign, title: "Bayar Sekali, Selamanya", desc: "Cukup Rp10.000 sekali saja untuk listing aplikasi Anda seumur hidup. Tanpa biaya berulang atau potongan." },
+          { icon: DollarSign, title: "Rp10.000 Per Aplikasi", desc: "Cukup Rp10.000 per aplikasi untuk listing seumur hidup. Mau daftar 5 aplikasi? Cukup Rp50.000 sekali saja. Tanpa biaya berulang." },
           { icon: Users, title: "Jangkau Ribuan Pengguna", desc: "Aplikasi Anda akan tampil di katalog publik Mobix yang dikunjungi ribuan pengguna Android Indonesia." },
           { icon: Zap, title: "Download Cepat via CDN", desc: "File APK Anda dihosting langsung tanpa link shortener atau iklan. Pengguna download dengan kecepatan penuh." },
           { icon: Smartphone, title: "Halaman Detail Profesional", desc: "Setiap aplikasi mendapat halaman detail dengan logo, screenshot, deskripsi, rating, dan ulasan pengguna." },
@@ -109,7 +109,7 @@ export default function DevelopersPage() {
           {[
             { step: "1", title: "Chat WhatsApp", desc: `Hubungi admin di ${WA_NUMBER} via WhatsApp.` },
             { step: "2", title: "Kirim Data APK", desc: "Kirim nama, deskripsi, kategori, logo, dan file APK." },
-            { step: "3", title: "Bayar via QRIS", desc: "Transfer Rp10.000 via QRIS untuk listing seumur hidup." },
+            { step: "3", title: "Bayar via QRIS", desc: "Transfer Rp10.000 per aplikasi via QRIS untuk listing seumur hidup." },
             { step: "4", title: "Admin Upload", desc: "Admin akan upload aplikasi Anda ke katalog Mobix." },
           ].map((item) => (
             <div key={item.step} className="text-center">
@@ -177,7 +177,7 @@ export default function DevelopersPage() {
             Punya Aplikasi yang Ingin Didaftarkan?
           </h2>
           <p className="mb-6 text-sm sm:text-base text-gray-600 dark:text-gray-400">
-            Hubungi admin via WhatsApp sekarang. Kirim data aplikasi Anda, lakukan pembayaran via QRIS, dan admin akan menguploadnya ke katalog Mobix.
+            Hubungi admin via WhatsApp sekarang. Kirim data aplikasi Anda, lakukan pembayaran Rp10.000 per aplikasi via QRIS, dan admin akan menguploadnya ke katalog Mobix.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <a
