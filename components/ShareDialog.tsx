@@ -60,11 +60,6 @@ const platforms = [
   },
 ];
 
-const FORUMS = [
-  { label: "Kaskus", url: (url: string, text: string) => `https://www.kaskus.co.id/forum/thread/new?title=${encodeURIComponent(text)}&body=${encodeURIComponent(url)}` },
-  { label: "Reddit", url: (url: string, text: string) => `https://www.reddit.com/submit?title=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}` },
-];
-
 export function ShareDialog({ isOpen, onClose, appName, appSlug }: ShareDialogProps) {
   const [tab, setTab] = useState<Tab>("share");
   const [copied, setCopied] = useState<string | null>(null);
@@ -187,25 +182,6 @@ export function ShareDialog({ isOpen, onClose, appName, appSlug }: ShareDialogPr
                     {p.name}
                   </a>
                 ))}
-              </div>
-
-              <div>
-                <p className="mb-2 text-xs font-medium text-gray-500 dark:text-gray-400">
-                  Share ke forum
-                </p>
-                <div className="flex gap-2">
-                  {FORUMS.map((f) => (
-                    <a
-                      key={f.label}
-                      href={f.url(appUrl, text)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 rounded-xl border border-gray-200 px-3 py-2 text-center text-xs font-semibold text-gray-600 transition hover:bg-gray-50 hover:border-store/30 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-800"
-                    >
-                      {f.label}
-                    </a>
-                  ))}
-                </div>
               </div>
 
               <button
