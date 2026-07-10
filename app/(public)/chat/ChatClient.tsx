@@ -489,7 +489,7 @@ export default function ChatClient() {
                             key={emoji}
                             onClick={() => {
                               if (!user) { toast.error("Login dulu"); return; }
-                              toggleReaction(msg.id, emoji, user.uid);
+                              toggleReaction(msg.id, emoji, user.uid, reacted).catch(() => toast.error("Gagal react"));
                             }}
                             className={`inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-xs transition ${
                               reacted

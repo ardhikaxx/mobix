@@ -7,10 +7,10 @@ import {
   doc,
   addDoc,
   updateDoc,
-  getDoc,
   increment,
   deleteField,
   serverTimestamp,
+  FieldPath,
   limit,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
@@ -97,20 +97,13 @@ export async function sendMessage(
 const EMOJIS = ["👍", "❤️", "😂", "😮", "😢"] as const;
 export type Emoji = (typeof EMOJIS)[number];
 
-export async function toggleReaction(messageId: string, emoji: Emoji, userId: string) {
+export async function toggleReaction(messageId: string, emoji: Emoji, userId: string, hasReacted: boolean) {
   const ref = doc(db, "chat", messageId);
-  const snap = await getDoc(ref);
-  const reactions = snap.data()?.reactions ?? {};
-  const hasReacted = reactions[emoji]?.[userId] === true;
-
+  const field = `reactions.${emoji}.${userId}`;
   if (hasReacted) {
-    await updateDoc(ref, {
-      [`reactions.${emoji}.${userId}`]: deleteField(),
-    });
+    await updateDoc(ref, { [field]: deleteField() });
   } else {
-    await updateDoc(ref, {
-      [`reactions.${emoji}.${userId}`]: true,
-    });
+    await updateDoc(ref, { [field]: true });
   }
 }
 
