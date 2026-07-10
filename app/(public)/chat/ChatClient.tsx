@@ -7,12 +7,13 @@ import { useTranslation } from "@/lib/hooks/useTranslation";
 import { usePublishedApps } from "@/lib/hooks/useApps";
 import {
   Loader2, Send, ThumbsUp, MessageSquare, Reply,
-  MessageCircle, BadgeCheck, Search, X,
+  MessageCircle, BadgeCheck, Search, X, Users,
 } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { LinkPreview } from "@/components/LinkPreview";
 import { markChatSeen } from "@/lib/hooks/useUnreadChat";
+import { usePresence, useOnlineUsers } from "@/lib/hooks/usePresence";
 import toast from "react-hot-toast";
 import { filterBadWords } from "@/lib/utils/badWords";
 
@@ -54,6 +55,9 @@ export default function ChatClient() {
   const [mentionQuery, setMentionQuery] = useState("");
   const [mentionStart, setMentionStart] = useState(-1);
   const [mentionIndex, setMentionIndex] = useState(0);
+
+  usePresence(user);
+  const onlineUsers = useOnlineUsers();
 
   const extractUrl = (text: string): string | null => {
     const m = text.match(/https?:\/\/[^\s]+/);
@@ -335,6 +339,37 @@ export default function ChatClient() {
             autoFocus
             className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-store focus:ring-2 focus:ring-store/20 placeholder-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
           />
+        </div>
+      )}
+
+      {/* Online Users */}
+      {onlineUsers.length > 1 && (
+        <div className="mb-2 flex items-center gap-2.5 overflow-x-auto rounded-xl border border-gray-100 bg-white px-4 py-2 dark:border-gray-700 dark:bg-gray-900">
+          <Users className="size-3.5 shrink-0 text-green-500" />
+          <span className="shrink-0 text-[11px] font-medium text-gray-500 dark:text-gray-400">
+            {onlineUsers.length} online
+          </span>
+          <div className="flex items-center gap-1.5">
+            {onlineUsers.map((u) => (
+              <div key={u.id} className="group relative shrink-0">
+                {u.userPhoto ? (
+                  <img
+                    src={u.userPhoto}
+                    alt={u.userName}
+                    className="size-7 rounded-full object-cover ring-2 ring-green-400"
+                    referrerPolicy="no-referrer"
+                  />
+                ) : (
+                  <div className="flex size-7 items-center justify-center rounded-full bg-green-100 text-[10px] font-bold text-green-700 ring-2 ring-green-400 dark:bg-green-900 dark:text-green-300">
+                    {u.userName.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <div className="absolute -bottom-1 left-1/2 z-10 hidden -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-900 px-2 py-1 text-[10px] text-white group-hover:block dark:bg-gray-700">
+                  {u.userName}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
