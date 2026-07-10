@@ -10,6 +10,7 @@ import { CATEGORIES } from "@/lib/constants/categories";
 import { Loader2, ArrowUpDown } from "lucide-react";
 import { TrustBadge } from "@/components/TrustBadge";
 import { MobixBadge } from "@/components/MobixBadge";
+import { ReviewsCarousel } from "@/components/ReviewsCarousel";
 
 const PAGE_SIZE = 8;
 
@@ -204,6 +205,9 @@ export default function HomePage() {
           )}
         </section>
       )}
+
+      {/* Reviews Carousel */}
+      <ReviewsCarousel />
 
       {/* Developer CTA Section */}
       <section className="border-t border-gray-100 bg-gradient-to-b from-gray-50 to-white py-10 sm:py-14 dark:border-gray-800 dark:from-gray-900/50 dark:to-gray-900">
