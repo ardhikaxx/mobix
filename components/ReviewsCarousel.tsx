@@ -11,7 +11,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
 import { usePublishedApps } from "@/lib/hooks/useApps";
-import { Star } from "lucide-react";
+import { Star, MessageSquareText } from "lucide-react";
 import Link from "next/link";
 
 interface ReviewDoc {
@@ -124,7 +124,8 @@ export function ReviewsCarousel() {
       <div className="mx-auto max-w-5xl px-4">
         <div className="mb-8 text-center">
           <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">
-            💬 Ulasan Pengguna
+            <MessageSquareText className="mr-2 inline-block size-5 text-store" />
+            Ulasan Pengguna
           </h2>
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Apa kata mereka tentang aplikasi di Mobix
