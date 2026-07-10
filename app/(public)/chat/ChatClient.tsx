@@ -2,11 +2,11 @@
 
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import { useAuth } from "@/context/AuthProvider";
-import { useChat, sendMessage, toggleLike, editMessage, deleteMessage, type ChatMessage } from "@/lib/hooks/useChat";
+import { useChat, sendMessage, toggleReaction, editMessage, deleteMessage, type ChatMessage, type Emoji } from "@/lib/hooks/useChat";
 import { useTranslation } from "@/lib/hooks/useTranslation";
 import { usePublishedApps } from "@/lib/hooks/useApps";
 import {
-  Loader2, Send, ThumbsUp, MessageSquare, Reply,
+  Loader2, Send, MessageSquare, Reply,
   MessageCircle, BadgeCheck, Search, X, Users,
 } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -391,7 +391,6 @@ export default function ChatClient() {
           filteredMessages.map((msg) => {
             const isDev = devUserIds.has(msg.userId);
             const isOwner = user?.uid === msg.userId;
-            const hasLiked = user ? !!msg.likes?.[user.uid] : false;
 
             return (
               <div
@@ -481,21 +480,28 @@ export default function ChatClient() {
                       <LinkPreview url={extractUrl(msg.text)!} />
                     )}
 
-                    <div className="mt-1.5 flex items-center gap-2">
-                      <button
-                        onClick={() => {
-                          if (!user) { toast.error("Login dulu"); return; }
-                          toggleLike(msg.id, user.uid, hasLiked);
-                        }}
-                        className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] transition ${
-                          hasLiked
-                            ? "bg-store/10 text-store"
-                            : "text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-                        }`}
-                      >
-                        <ThumbsUp className="size-3" />
-                        {msg.likeCount > 0 && <span>{msg.likeCount}</span>}
-                      </button>
+                    <div className="mt-1.5 flex items-center gap-1">
+                      {(["👍", "❤️", "😂", "😮", "😢"] as Emoji[]).map((emoji) => {
+                        const reacted = user ? !!msg.reactions?.[emoji]?.[user.uid] : false;
+                        const count = Object.keys(msg.reactions?.[emoji] ?? {}).length;
+                        return (
+                          <button
+                            key={emoji}
+                            onClick={() => {
+                              if (!user) { toast.error("Login dulu"); return; }
+                              toggleReaction(msg.id, emoji, user.uid);
+                            }}
+                            className={`inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-xs transition ${
+                              reacted
+                                ? "bg-store/10"
+                                : "text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                            }`}
+                          >
+                            <span className={reacted ? "scale-110" : ""}>{emoji}</span>
+                            {count > 0 && <span className="text-[10px]">{count}</span>}
+                          </button>
+                        );
+                      })}
 
                       {user && !msg.deleted && (
                         <button

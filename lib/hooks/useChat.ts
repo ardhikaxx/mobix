@@ -7,6 +7,7 @@ import {
   doc,
   addDoc,
   updateDoc,
+  getDoc,
   increment,
   deleteField,
   serverTimestamp,
@@ -27,6 +28,7 @@ export interface ChatMessage {
   } | null;
   likes: Record<string, boolean>;
   likeCount: number;
+  reactions?: Record<string, Record<string, boolean>>;
   createdAt: { seconds: number } | null;
   editedAt: { seconds: number } | null;
   deleted?: boolean;
@@ -55,6 +57,7 @@ export function useChat() {
           replyTo: data.replyTo ?? null,
           likes: data.likes ?? {},
           likeCount: data.likeCount ?? 0,
+          reactions: data.reactions ?? {},
           createdAt: data.createdAt ?? null,
           editedAt: data.editedAt ?? null,
           deleted: data.deleted ?? false,
@@ -89,6 +92,26 @@ export async function sendMessage(
     likeCount: 0,
     createdAt: serverTimestamp(),
   });
+}
+
+const EMOJIS = ["👍", "❤️", "😂", "😮", "😢"] as const;
+export type Emoji = (typeof EMOJIS)[number];
+
+export async function toggleReaction(messageId: string, emoji: Emoji, userId: string) {
+  const ref = doc(db, "chat", messageId);
+  const snap = await getDoc(ref);
+  const reactions = snap.data()?.reactions ?? {};
+  const hasReacted = reactions[emoji]?.[userId] === true;
+
+  if (hasReacted) {
+    await updateDoc(ref, {
+      [`reactions.${emoji}.${userId}`]: deleteField(),
+    });
+  } else {
+    await updateDoc(ref, {
+      [`reactions.${emoji}.${userId}`]: true,
+    });
+  }
 }
 
 export async function toggleLike(messageId: string, userId: string, hasLiked: boolean) {
