@@ -38,12 +38,15 @@ export default function ChatClient() {
   const chatUsers = useMemo(() => {
     const map = new Map<string, string>();
     for (const m of messages) {
-      if (!map.has(m.userId) && m.userId !== user?.uid) {
+      if (!map.has(m.userId)) {
         map.set(m.userId, m.userName);
       }
     }
+    if (user && !map.has(user.uid)) {
+      map.set(user.uid, user.displayName || user.email || "User");
+    }
     return Array.from(map.entries()).map(([id, name]) => ({ id, name }));
-  }, [messages, user?.uid]);
+  }, [messages, user]);
 
   const [mentionQuery, setMentionQuery] = useState("");
   const [mentionStart, setMentionStart] = useState(-1);
@@ -133,7 +136,7 @@ export default function ChatClient() {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (mentionStart !== -1) {
       const filtered = chatUsers.filter((u) =>
-        u.name.toLowerCase().includes(mentionQuery.toLowerCase()) && u.id !== user?.uid
+        u.name.toLowerCase().includes(mentionQuery.toLowerCase())
       );
       if (e.key === "ArrowDown") {
         e.preventDefault();
@@ -471,7 +474,7 @@ export default function ChatClient() {
           {mentionStart !== -1 && mentionQuery.length >= 0 && (
             <div className="absolute bottom-full left-0 right-0 mb-1 max-h-40 overflow-y-auto rounded-xl border border-gray-100 bg-white p-1 shadow-lg dark:border-gray-700 dark:bg-gray-800">
               {chatUsers
-                .filter((u) => u.name.toLowerCase().includes(mentionQuery.toLowerCase()) && u.id !== user?.uid)
+                .filter((u) => u.name.toLowerCase().includes(mentionQuery.toLowerCase()))
                 .slice(0, 8)
                 .map((u, i) => (
                   <button
