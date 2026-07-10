@@ -328,7 +328,15 @@
       "apkFileName": "MIDA.apk",
       "apkSizeBytes": 99383219,
       "logoURL": "/images/logo_mida.png",
-      "screenshots": [],
+      "screenshots": [
+        "/images/screenshot_mida_01.png",
+        "/images/screenshot_mida_02.png",
+        "/images/screenshot_mida_03.png",
+        "/images/screenshot_mida_04.png",
+        "/images/screenshot_mida_05.png",
+        "/images/screenshot_mida_06.png",
+        "/images/screenshot_mida_07.png"
+      ],
       "ownerId": "admin",
       "ownerName": "ardhikaxx",
       "isScanned": true,
