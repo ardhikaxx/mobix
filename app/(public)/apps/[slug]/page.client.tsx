@@ -25,7 +25,7 @@ import {
 import { db } from "@/lib/firebase/client";
 import { AppCard } from "@/components/AppCard";
 import { useDownloadCount, incrementDownload } from "@/lib/hooks/useDownloadCount";
-import { ChevronLeft, Star, Download, Shield, Share2, Send, ArrowRight, Flag, BadgeCheck, ShieldCheck } from "lucide-react";
+import { ChevronLeft, Star, Download, Share2, Send, ArrowRight, Flag, BadgeCheck, ShieldCheck } from "lucide-react";
 import { slugify } from "@/lib/utils/slug";
 import toast from "react-hot-toast";
 
@@ -332,11 +332,11 @@ export default function AppDetailPageClient({
           Safety starts with understanding how developers collect and share your data. Data privacy and security practices may vary based on your use, region, and age.
         </p>
         <div className="mb-3 flex items-start gap-3">
-          <Shield className="mt-0.5 size-4 shrink-0 text-green-500" />
+          <ShieldCheck className="mt-0.5 size-4 shrink-0 text-green-500" />
           <p className="text-xs font-medium text-green-600 dark:text-green-400">No data shared with third parties</p>
         </div>
         <div className="mb-3 flex items-start gap-3">
-          <Shield className="mt-0.5 size-4 shrink-0 text-green-500" />
+          <ShieldCheck className="mt-0.5 size-4 shrink-0 text-green-500" />
           <p className="text-xs font-medium text-green-600 dark:text-green-400">Data encrypted in transit</p>
         </div>
         {app.isScanned && (
