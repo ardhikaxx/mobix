@@ -1,6 +1,7 @@
 "use client";
 
 import { useUserCount } from "@/lib/hooks/useUserCount";
+import Image from "next/image";
 
 function AvatarCircle({ url, name }: { url: string; name: string }) {
   return (
@@ -47,7 +48,12 @@ export function TrustBadge() {
 
   return (
     <div className="flex items-center gap-3 rounded-full border border-gray-100 bg-white px-4 py-2 shadow-sm dark:border-gray-700 dark:bg-gray-800/80">
-      <img src="/badge.svg" alt="Mobix" width={150} height={50} className="h-[50px] w-[150px]" />
+      <div className="flex items-center gap-2">
+        <div className="relative size-7 shrink-0 overflow-hidden rounded-md shadow-sm">
+          <Image src="/images/logo_mobix.png" alt="Mobix" fill sizes="28px" className="object-cover" />
+        </div>
+        <span className="text-sm font-bold text-gray-900 dark:text-gray-100">Mobix</span>
+      </div>
       <div className="h-5 w-px bg-gray-200 dark:bg-gray-600" />
       <div className="flex items-center gap-2">
         <div className="flex -space-x-2">
