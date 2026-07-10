@@ -118,8 +118,6 @@ export function AppCard({
               <span>{formatBytes(app.apkSizeBytes)}</span>
               <span className="text-gray-300 dark:text-gray-600">·</span>
               <span>{downloadCount} download</span>
-              <span className="text-gray-300 dark:text-gray-600">·</span>
-              <span>v{app.version}</span>
             </div>
 
             <div className="mt-1 flex items-center justify-center gap-1 rounded-lg bg-store px-3 py-1.5 text-xs font-semibold text-white transition-colors group-hover:bg-store-light">
