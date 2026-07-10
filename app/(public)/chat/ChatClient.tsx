@@ -7,7 +7,7 @@ import { useTranslation } from "@/lib/hooks/useTranslation";
 import { usePublishedApps } from "@/lib/hooks/useApps";
 import {
   Loader2, Send, ThumbsUp, MessageSquare, Reply,
-  MessageCircle, BadgeCheck,
+  MessageCircle, BadgeCheck, Search, X,
 } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
@@ -27,6 +27,8 @@ export default function ChatClient() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
@@ -129,6 +131,28 @@ export default function ChatClient() {
     return ta - tb;
   });
 
+  const q = searchQuery.toLowerCase().trim();
+  const filteredMessages = q
+    ? sortedMessages.filter(
+        (m) =>
+          m.text.toLowerCase().includes(q) ||
+          m.userName.toLowerCase().includes(q)
+      )
+    : sortedMessages;
+
+  const highlightMatch = (text: string, query: string) => {
+    if (!query) return text;
+    const idx = text.toLowerCase().indexOf(query.toLowerCase());
+    if (idx === -1) return text;
+    return (
+      <>
+        {text.slice(0, idx)}
+        <mark className="rounded bg-yellow-200 px-0.5 dark:bg-yellow-700">{text.slice(idx, idx + query.length)}</mark>
+        {text.slice(idx + query.length)}
+      </>
+    );
+  };
+
   return (
     <div className="mx-auto flex max-w-4xl flex-col px-4 py-6" style={{ height: "calc(100vh - 64px)" }}>
       <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Komunitas" }]} />
@@ -136,8 +160,33 @@ export default function ChatClient() {
       <div className="mb-3 flex items-center gap-2">
         <MessageCircle className="size-5 text-store" />
         <h1 className="text-lg font-bold text-gray-900 dark:text-gray-100">Komunitas Developer</h1>
-        <span className="text-xs text-gray-400">({messages.length} pesan)</span>
+        {isSearchOpen ? (
+          <span className="text-xs text-gray-400">
+            {filteredMessages.length} dari {messages.length} pesan
+          </span>
+        ) : (
+          <span className="text-xs text-gray-400">{messages.length} pesan</span>
+        )}
+        <button
+          onClick={() => { setIsSearchOpen(!isSearchOpen); setSearchQuery(""); }}
+          className="ml-auto text-gray-400 hover:text-store transition"
+        >
+          {isSearchOpen ? <X className="size-4" /> : <Search className="size-4" />}
+        </button>
       </div>
+
+      {isSearchOpen && (
+        <div className="mb-3">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Cari pesan atau pengguna..."
+            autoFocus
+            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-store focus:ring-2 focus:ring-store/20 placeholder-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+          />
+        </div>
+      )}
 
       {/* Messages */}
       <div
@@ -148,13 +197,13 @@ export default function ChatClient() {
           <div className="flex items-center justify-center py-20">
             <Loader2 className="size-6 animate-spin text-gray-300" />
           </div>
-        ) : sortedMessages.length === 0 ? (
+        ) : filteredMessages.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-            <MessageSquare className="mb-3 size-12 text-gray-200 dark:text-gray-700" />
-            <p className="text-sm">Belum ada pesan. Jadilah yang pertama!</p>
+            <Search className="mb-3 size-10 text-gray-200 dark:text-gray-700" />
+            <p className="text-sm">Tidak ditemukan untuk &quot;{searchQuery}&quot;</p>
           </div>
         ) : (
-          sortedMessages.map((msg) => {
+          filteredMessages.map((msg) => {
             const isDev = devUserIds.has(msg.userId);
             const isOwner = user?.uid === msg.userId;
             const hasLiked = user ? !!msg.likes?.[user.uid] : false;
@@ -199,7 +248,7 @@ export default function ChatClient() {
                       <div className="mb-1 flex items-center gap-1 text-[11px] text-gray-400 dark:text-gray-500">
                         <Reply className="size-3" />
                         <span className="truncate max-w-[200px]">
-                          {msg.replyTo.userName}: {msg.replyTo.text}
+                          {msg.replyTo.userName}: {searchQuery ? highlightMatch(msg.replyTo.text, searchQuery) : msg.replyTo.text}
                         </span>
                       </div>
                     )}
@@ -230,7 +279,7 @@ export default function ChatClient() {
                       </div>
                     ) : (
                       <p className={`text-sm text-gray-700 dark:text-gray-300 ${msg.deleted ? "italic text-gray-400" : ""}`}>
-                        {msg.text}
+                        {searchQuery ? highlightMatch(msg.text, searchQuery) : msg.text}
                       </p>
                     )}
 
