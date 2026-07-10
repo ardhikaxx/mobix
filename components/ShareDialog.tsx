@@ -171,7 +171,7 @@ export function ShareDialog({ isOpen, onClose, appName, appSlug }: ShareDialogPr
           </button>
         </div>
 
-        <div className="space-y-5 p-5">
+        <div className="max-h-[70vh] overflow-y-auto space-y-5 p-5">
           {tab === "share" ? (
             <>
               <div className="grid grid-cols-2 gap-3">
