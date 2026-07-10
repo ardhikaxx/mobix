@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Star, Download, Share2, Sparkles, Flame, BadgeCheck } from "lucide-react";
 import type { AppDoc } from "@/types/app";
 import { getCategoryLabel } from "@/lib/constants/categories";
-import { formatBytes } from "@/lib/utils/slug";
+import { formatBytes, formatDate } from "@/lib/utils/slug";
 import { useRealtimeRating } from "@/lib/hooks/useRealtimeRating";
 import { useDownloadCount } from "@/lib/hooks/useDownloadCount";
 import type { ReviewStats } from "@/lib/hooks/useAllReviewStats";
@@ -118,6 +118,8 @@ export function AppCard({
               <span>{formatBytes(app.apkSizeBytes)}</span>
               <span className="text-gray-300 dark:text-gray-600">·</span>
               <span>{downloadCount} download</span>
+              <span className="text-gray-300 dark:text-gray-600">·</span>
+              <span>v{app.version}</span>
             </div>
 
             <div className="mt-1 flex items-center justify-center gap-1 rounded-lg bg-store px-3 py-1.5 text-xs font-semibold text-white transition-colors group-hover:bg-store-light">

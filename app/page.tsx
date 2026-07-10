@@ -7,7 +7,8 @@ import { CategoryPill } from "@/components/CategoryPill";
 import { usePublishedApps } from "@/lib/hooks/useApps";
 import { useTranslation } from "@/lib/hooks/useTranslation";
 import { CATEGORIES } from "@/lib/constants/categories";
-import { Loader2, ArrowUpDown } from "lucide-react";
+import { Loader2, ArrowUpDown, ThumbsUp } from "lucide-react";
+import { useTopRequests } from "@/lib/hooks/useTopRequests";
 import { TrustBadge } from "@/components/TrustBadge";
 import { MobixBadge } from "@/components/MobixBadge";
 import { ReviewsCarousel } from "@/components/ReviewsCarousel";
@@ -227,6 +228,9 @@ export default function HomePage() {
       {/* Reviews Carousel */}
       <ReviewsCarousel />
 
+      {/* Most Requested Section */}
+      <MostRequested />
+
       {/* Developer CTA Section */}
       <section className="border-t border-gray-100 bg-gradient-to-b from-gray-50 to-white py-10 sm:py-14 dark:border-gray-800 dark:from-gray-900/50 dark:to-gray-900">
         <div className="mx-auto max-w-3xl px-4 text-center">
@@ -257,5 +261,57 @@ export default function HomePage() {
         </div>
       </section>
     </div>
+  );
+}
+
+function MostRequested() {
+  const { requests, loading } = useTopRequests(5);
+  const { t } = useTranslation();
+
+  if (loading || requests.length === 0) return null;
+
+  return (
+    <section className="border-t border-gray-100 bg-white py-10 sm:py-14 dark:border-gray-800 dark:bg-gray-900">
+      <div className="mx-auto max-w-5xl px-4">
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">
+            <ThumbsUp className="inline size-5 mr-1.5 text-store" />
+            Paling Banyak Diminta
+          </h2>
+          <a
+            href="/requests"
+            className="text-xs font-medium text-store hover:text-store-light transition"
+          >
+            Ajukan Aplikasi &rarr;
+          </a>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {requests.map((req, idx) => (
+            <div
+              key={req.id}
+              className="rounded-xl border border-gray-100 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-800/50"
+            >
+              <div className="flex items-start gap-3">
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-store/10 text-xs font-bold text-store">
+                  {idx + 1}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="truncate text-sm font-semibold text-gray-900 dark:text-gray-100">
+                    {req.title}
+                  </h3>
+                  <p className="mt-0.5 line-clamp-2 text-xs text-gray-500 dark:text-gray-400">
+                    {req.description}
+                  </p>
+                  <div className="mt-2 flex items-center gap-1.5 text-xs font-medium text-store">
+                    <ThumbsUp className="size-3" />
+                    <span>{req.voteCount} suara</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }

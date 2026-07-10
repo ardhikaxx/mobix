@@ -4,7 +4,7 @@ import { use, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useAppBySlug, useRelatedApps } from "@/lib/hooks/useApps";
-import { formatBytes } from "@/lib/utils/slug";
+import { formatBytes, formatDate } from "@/lib/utils/slug";
 import { useAuth } from "@/context/AuthProvider";
 import { useTranslation } from "@/lib/hooks/useTranslation";
 import { AuthDialog } from "@/components/AuthDialog";
@@ -25,7 +25,7 @@ import {
 import { db } from "@/lib/firebase/client";
 import { AppCard } from "@/components/AppCard";
 import { useDownloadCount, incrementDownload } from "@/lib/hooks/useDownloadCount";
-import { ChevronLeft, Star, Download, Share2, Send, ArrowRight, Flag, BadgeCheck, ShieldCheck } from "lucide-react";
+import { ChevronLeft, Star, Download, Share2, Send, ArrowRight, Flag, BadgeCheck, ShieldCheck, RefreshCw } from "lucide-react";
 import { slugify } from "@/lib/utils/slug";
 import toast from "react-hot-toast";
 
@@ -290,6 +290,17 @@ export default function AppDetailPageClient({
         <div className="min-w-0 px-2">
           <div className="text-sm sm:text-base font-bold text-gray-800 dark:text-gray-200">{downloadCount}</div>
           <p className="mt-0.5 text-[10px] sm:text-[11px] text-gray-500 whitespace-nowrap">Downloads</p>
+        </div>
+        <div className="min-w-0 px-2">
+          <div className="text-sm sm:text-base font-bold text-gray-800 dark:text-gray-200">v{app.version}</div>
+          <p className="mt-0.5 text-[10px] sm:text-[11px] text-gray-500 whitespace-nowrap">Versi</p>
+        </div>
+        <div className="min-w-0 px-2">
+          <div className="flex items-center justify-center gap-1 text-sm sm:text-base font-bold text-gray-800 dark:text-gray-200">
+            <RefreshCw className="size-3" />
+            <span className="text-[10px] sm:text-[11px] font-normal">{formatDate(app.lastVersionUpdateAt)}</span>
+          </div>
+          <p className="mt-0.5 text-[10px] sm:text-[11px] text-gray-500 whitespace-nowrap">Terakhir Update</p>
         </div>
       </div>
 

@@ -141,10 +141,18 @@ export default function RequestsPage() {
           voteCount: increment(-1),
         });
       } else {
+        const newCount = (req.voteCount ?? 0) + 1;
+        const milestones = [5, 10, 25, 50, 100];
+        const isMilestone = milestones.includes(newCount);
+
         await updateDoc(ref, {
           [`voters.${user.uid}`]: true,
           voteCount: increment(1),
         });
+
+        if (isMilestone) {
+          toast.success(`🎉 Request "${req.title}" mencapai ${newCount} suara!`, { duration: 5000 });
+        }
       }
     } catch {
       toast.error("Gagal melakukan voting");
