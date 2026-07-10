@@ -3,6 +3,7 @@ export const translations = {
     // Navbar
     navbar: {
       categories: "Kategori",
+      request: "Request",
       about: "Tentang",
       settings: "Pengaturan",
       login: "Login",
@@ -63,6 +64,7 @@ export const translations = {
     // Navbar
     navbar: {
       categories: "Categories",
+      request: "Request",
       about: "About",
       settings: "Settings",
       login: "Login",
