@@ -10,12 +10,15 @@ import {
   onSnapshot,
   doc,
   setDoc,
+  updateDoc,
   deleteDoc,
+  increment,
+  deleteField,
   Timestamp,
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
-import { Loader2, Plus, X, MessageSquare, Trash2 } from "lucide-react";
+import { Loader2, Plus, X, MessageSquare, Trash2, ThumbsUp } from "lucide-react";
 import toast from "react-hot-toast";
 
 interface RequestData {
@@ -25,6 +28,8 @@ interface RequestData {
   title: string;
   description: string;
   createdAt: Timestamp | null;
+  voteCount: number;
+  voters: Record<string, boolean>;
 }
 
 export default function RequestsPage() {
@@ -67,6 +72,8 @@ export default function RequestsPage() {
         title: title.trim(),
         description: description.trim(),
         createdAt: serverTimestamp(),
+        voteCount: 0,
+        voters: {},
       });
       toast.success("Request berhasil ditambahkan!");
       setTitle("");
@@ -86,6 +93,30 @@ export default function RequestsPage() {
       toast.success("Request berhasil dihapus");
     } catch {
       toast.error("Gagal menghapus request");
+    }
+  };
+
+  const handleVote = async (req: RequestData & { id: string }) => {
+    if (!user) {
+      toast.error("Login dulu untuk voting");
+      return;
+    }
+    const ref = doc(db, "requests", req.id);
+    const hasVoted = req.voters?.[user.uid];
+    try {
+      if (hasVoted) {
+        await updateDoc(ref, {
+          [`voters.${user.uid}`]: deleteField(),
+          voteCount: increment(-1),
+        });
+      } else {
+        await updateDoc(ref, {
+          [`voters.${user.uid}`]: true,
+          voteCount: increment(1),
+        });
+      }
+    } catch {
+      toast.error("Gagal melakukan voting");
     }
   };
 
@@ -221,6 +252,17 @@ export default function RequestsPage() {
                   </div>
                   <h3 className="mt-1 text-sm font-bold text-gray-800 dark:text-gray-200">{req.title}</h3>
                   <p className="mt-0.5 text-sm text-gray-600 dark:text-gray-400">{req.description}</p>
+                  <button
+                    onClick={() => handleVote(req)}
+                    className={`mt-2 inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold transition active:scale-95 ${
+                      user && req.voters?.[user.uid]
+                        ? "bg-store/10 text-store"
+                        : "bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600"
+                    }`}
+                  >
+                    <ThumbsUp className="size-3.5" />
+                    {req.voteCount ?? 0}
+                  </button>
                 </div>
               </div>
             </div>
