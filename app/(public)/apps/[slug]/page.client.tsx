@@ -149,12 +149,7 @@ export default function AppDetailPageClient({
   };
 
   const handleShare = () => {
-    if (navigator.share) {
-      const url = `${window.location.origin}/apps/${app.slug}`;
-      navigator.share({ title: app.name, text: `Download ${app.name} di Mobix!`, url });
-    } else {
-      setShareOpen(true);
-    }
+    setShareOpen(true);
   };
 
   const handleSubmitReview = async (e: React.FormEvent) => {
