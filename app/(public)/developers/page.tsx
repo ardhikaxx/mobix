@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Send, Smartphone, DollarSign, Users, Zap, Shield, CheckCircle, ArrowRight, MessageCircle, QrCode } from "lucide-react";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const WA_NUMBER = "085933648537";
 const WA_LINK = `https://wa.me/${WA_NUMBER}`;
@@ -47,6 +48,7 @@ const faqData = [
 export default function DevelopersPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
+      <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Developer" }]} />
       {/* Hero Section */}
       <div className="mb-16 text-center">
         <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl bg-store/15 shadow-sm border border-store/20">

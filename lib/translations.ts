@@ -50,6 +50,16 @@ export const translations = {
       terms: "Syarat & Ketentuan",
       contact: "Hubungi Kami",
     },
+    // Breadcrumb
+    breadcrumb: {
+      home: "Beranda",
+      category: "Kategori",
+      developers: "Developer",
+      requests: "Request",
+      login: "Login",
+      register: "Daftar",
+      about: "Tentang",
+    },
     // Rating & Review
     rating: {
       title: "Rating & Review",
@@ -110,6 +120,16 @@ export const translations = {
       privacy: "Privacy Policy",
       terms: "Terms & Conditions",
       contact: "Contact Us",
+    },
+    // Breadcrumb
+    breadcrumb: {
+      home: "Home",
+      category: "Category",
+      developers: "Developers",
+      requests: "Requests",
+      login: "Login",
+      register: "Register",
+      about: "About",
     },
     // Rating & Review
     rating: {

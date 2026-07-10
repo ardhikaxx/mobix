@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthProvider";
+import { useTranslation } from "@/lib/hooks/useTranslation";
 import Link from "next/link";
 import {
   collection,
@@ -19,6 +20,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
 import { Loader2, Plus, X, MessageSquare, Trash2, ThumbsUp, Pencil } from "lucide-react";
+import Breadcrumb from "@/components/Breadcrumb";
 import toast from "react-hot-toast";
 
 interface RequestData {
@@ -35,6 +37,7 @@ interface RequestData {
 
 export default function RequestsPage() {
   const { user, loading: authLoading } = useAuth();
+  const { t } = useTranslation();
   const [requests, setRequests] = useState<(RequestData & { id: string })[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -150,6 +153,7 @@ export default function RequestsPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
+      <Breadcrumb items={[{ label: t.breadcrumb.home, href: "/" }, { label: t.breadcrumb.requests }]} />
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
         <div>

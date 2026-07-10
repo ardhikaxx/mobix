@@ -6,10 +6,12 @@ import Link from "next/link";
 import { useAppBySlug, useRelatedApps } from "@/lib/hooks/useApps";
 import { formatBytes } from "@/lib/utils/slug";
 import { useAuth } from "@/context/AuthProvider";
+import { useTranslation } from "@/lib/hooks/useTranslation";
 import { AuthDialog } from "@/components/AuthDialog";
 import { ShareDialog } from "@/components/ShareDialog";
 import { DetailSkeleton } from "@/components/Skeleton";
 import { ErrorState } from "@/components/ErrorState";
+import Breadcrumb from "@/components/Breadcrumb";
 import {
   collection,
   query,
@@ -71,6 +73,7 @@ export default function AppDetailPageClient({
   const { data: app, isLoading, error } = useAppBySlug(slug);
   const { data: relatedApps } = useRelatedApps(slug, app?.category ?? "");
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [authOpen, setAuthOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [restrictedOpen, setRestrictedOpen] = useState(false);
@@ -233,12 +236,11 @@ export default function AppDetailPageClient({
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-6">
-      <Link
-        href="/"
-        className="mb-4 inline-flex items-center gap-1 min-h-[40px] rounded-xl px-3 py-1.5 -ml-3 text-sm font-bold text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100 active:scale-95 transition-all"
-      >
-        <ChevronLeft className="size-4 text-store" /> Kembali ke Beranda
-      </Link>
+      <Breadcrumb items={[
+        { label: t.breadcrumb.home, href: "/" },
+        { label: t.breadcrumb.category, href: app ? `/category/${app.category}` : undefined },
+        { label: app?.name || "..." },
+      ]} />
 
       <div className="mb-6 flex flex-col gap-5 sm:flex-row">
         <div className="relative mx-auto size-24 shrink-0 overflow-hidden rounded-2xl shadow-md sm:mx-0 sm:size-[100px]">

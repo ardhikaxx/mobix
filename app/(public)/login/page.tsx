@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthProvider";
+import { useTranslation } from "@/lib/hooks/useTranslation";
+import Breadcrumb from "@/components/Breadcrumb";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "@/lib/firebase/client";
 import { loginSchema, type LoginInput } from "@/lib/validations/appSchema";
@@ -16,6 +18,7 @@ function LoginForm() {
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") || "/";
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const [form, setForm] = useState<LoginInput>({ email: "", password: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof LoginInput, string>>>({});
@@ -85,8 +88,9 @@ function LoginForm() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md rounded-3xl border border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900 p-6 sm:p-8 shadow-[0_20px_50px_rgba(1,135,95,0.08)]">
+    <div className="mx-auto max-w-md px-4 py-12">
+      <Breadcrumb items={[{ label: t.breadcrumb.home, href: "/" }, { label: t.breadcrumb.login }]} />
+      <div className="w-full rounded-3xl border border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900 p-6 sm:p-8 shadow-[0_20px_50px_rgba(1,135,95,0.08)]">
         <div className="mb-8 text-center flex flex-col items-center">
           <div className="relative size-14 mb-3">
             <Image src="/images/logo_mobix.png" alt="Mobix Logo" fill sizes="56px" className="object-contain" />

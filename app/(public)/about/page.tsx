@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Shield, Users, Zap, Heart, Sparkles, ArrowRight } from "lucide-react";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
   title: "Tentang Mobix — Platform Distribusi Aplikasi Android Komunitas",
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
+      <Breadcrumb items={[{ label: "Beranda", href: "/" }, { label: "Tentang" }]} />
       {/* Header Section */}
       <div className="mb-14 text-center">
         <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl bg-store/15 shadow-sm border border-store/20">
