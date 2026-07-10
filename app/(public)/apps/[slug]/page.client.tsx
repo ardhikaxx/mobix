@@ -25,7 +25,7 @@ import {
 import { db } from "@/lib/firebase/client";
 import { AppCard } from "@/components/AppCard";
 import { useDownloadCount, incrementDownload } from "@/lib/hooks/useDownloadCount";
-import { ChevronLeft, Star, Download, Shield, Share2, Send, ArrowRight, Flag } from "lucide-react";
+import { ChevronLeft, Star, Download, Shield, Share2, Send, ArrowRight, Flag, BadgeCheck } from "lucide-react";
 import toast from "react-hot-toast";
 
 interface Review {
@@ -254,7 +254,10 @@ export default function AppDetailPageClient({
           />
         </div>
         <div className="flex min-w-0 flex-1 flex-col justify-center text-center sm:text-left">
-          <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100 md:text-2xl">{app.name}</h1>
+          <div className="flex items-center justify-center gap-1.5 sm:justify-start">
+            <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100 md:text-2xl">{app.name}</h1>
+            {app.isVerified && <BadgeCheck className="size-5 text-blue-500 shrink-0" />}
+          </div>
           <p className="mt-0.5 text-sm font-medium text-store">{app.ownerName}</p>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5 sm:justify-start w-full sm:w-auto">
             <button
