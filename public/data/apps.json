@@ -30,7 +30,12 @@
       "apkFileName": "MySaku.apk",
       "apkSizeBytes": 62815893,
       "logoURL": "/images/logo_mysaku.png",
-      "screenshots": [],
+      "screenshots": [
+        "/images/screenshot_mysaku_01.png",
+        "/images/screenshot_mysaku_02.png",
+        "/images/screenshot_mysaku_03.png",
+        "/images/screenshot_mysaku_04.png"
+      ],
       "ownerId": "admin",
       "ownerName": "ardhikaxx",
       "isScanned": true,
