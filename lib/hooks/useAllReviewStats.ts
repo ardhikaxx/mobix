@@ -7,8 +7,8 @@ export interface ReviewStats {
   totalReviews: number;
 }
 
-export function useAllReviewStats(): Record<string, ReviewStats> {
-  const { data } = useSWR(
+export function useAllReviewStats() {
+  const { data, isLoading } = useSWR(
     "reviewsStats:all",
     async () => {
       const snap = await getDocs(collection(db, "reviewsStats"));
@@ -24,5 +24,5 @@ export function useAllReviewStats(): Record<string, ReviewStats> {
     },
     { revalidateOnFocus: false, dedupingInterval: 30000 }
   );
-  return data ?? {};
+  return { reviewMap: data ?? {}, loading: isLoading };
 }

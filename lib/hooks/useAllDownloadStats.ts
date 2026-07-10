@@ -2,8 +2,8 @@ import useSWR from "swr";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
 
-export function useAllDownloadStats(): Record<string, number> {
-  const { data } = useSWR(
+export function useAllDownloadStats() {
+  const { data, isLoading } = useSWR(
     "downloads:all",
     async () => {
       const snap = await getDocs(collection(db, "downloads"));
@@ -15,5 +15,5 @@ export function useAllDownloadStats(): Record<string, number> {
     },
     { revalidateOnFocus: false, dedupingInterval: 30000 }
   );
-  return data ?? {};
+  return { downloadMap: data ?? {}, loading: isLoading };
 }

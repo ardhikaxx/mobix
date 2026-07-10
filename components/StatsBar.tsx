@@ -5,12 +5,12 @@ import { useAllReviewStats } from "@/lib/hooks/useAllReviewStats";
 import { useAllDownloadStats } from "@/lib/hooks/useAllDownloadStats";
 
 export function StatsBar({ totalApps }: { totalApps: number }) {
-  const reviewStatsMap = useAllReviewStats();
-  const downloadStatsMap = useAllDownloadStats();
+  const { reviewMap, loading: reviewLoading } = useAllReviewStats();
+  const { downloadMap, loading: downloadLoading } = useAllDownloadStats();
 
-  const totalDownloads = Object.values(downloadStatsMap).reduce((a, b) => a + b, 0);
-  const totalReviews = Object.values(reviewStatsMap).reduce((a, b) => a + b.totalReviews, 0);
-  const loading = Object.keys(downloadStatsMap).length === 0 && totalApps > 0;
+  const totalDownloads = Object.values(downloadMap).reduce((a, b) => a + b, 0);
+  const totalReviews = Object.values(reviewMap).reduce((a, b) => a + b.totalReviews, 0);
+  const loading = (reviewLoading || downloadLoading) && totalApps > 0;
 
   const stats = [
     { icon: Smartphone, value: totalApps, label: "Aplikasi" },

@@ -22,8 +22,8 @@ type SortMode = "newest" | "popular";
 export default function HomePage() {
   const { data: allApps, error: publishedErr, isLoading: publishedLoad } = usePublishedApps();
   const { t } = useTranslation();
-  const ratingMap = useAllReviewStats();
-  const downloadMap = useAllDownloadStats();
+  const { reviewMap: ratingMap } = useAllReviewStats();
+  const { downloadMap } = useAllDownloadStats();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
