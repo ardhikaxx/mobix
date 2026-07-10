@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { useChat, sendMessage, toggleLike, editMessage, deleteMessage, type ChatMessage } from "@/lib/hooks/useChat";
 import { useTranslation } from "@/lib/hooks/useTranslation";
@@ -235,17 +235,59 @@ export default function ChatClient() {
     : sortedMessages;
 
   const renderText = (t: string) => {
-    const parts = t.split(/(@\w+)/g);
-    return parts.map((part, i) => {
-      if (part.startsWith("@") && chatUsers.some((u) => u.name.toLowerCase() === part.slice(1).toLowerCase())) {
-        return (
-          <span key={i} className="font-semibold text-store">
-            {part}
+    const elements: React.ReactNode[] = [];
+    let remaining = t;
+
+    while (remaining.length > 0) {
+      const codeBlockMatch = remaining.match(/```([\s\S]*?)```/);
+      const inlineCodeMatch = remaining.match(/`([^`]+)`/);
+      const mentionMatch = remaining.match(/@\w+/);
+
+      const matches: { index: number; type: string; length: number }[] = [];
+      if (codeBlockMatch) matches.push({ index: codeBlockMatch.index!, type: "codeblock", length: codeBlockMatch[0].length });
+      if (inlineCodeMatch) matches.push({ index: inlineCodeMatch.index!, type: "inlinecode", length: inlineCodeMatch[0].length });
+      if (mentionMatch) matches.push({ index: mentionMatch.index!, type: "mention", length: mentionMatch[0].length });
+
+      if (matches.length === 0) {
+        elements.push(remaining);
+        break;
+      }
+
+      matches.sort((a, b) => a.index - b.index);
+      const first = matches[0];
+
+      if (first.index > 0) {
+        elements.push(remaining.slice(0, first.index));
+      }
+
+      if (first.type === "codeblock") {
+        const m = remaining.slice(first.index + 3, first.index + first.length - 3);
+        elements.push(
+          <pre key={elements.length} className="my-1 overflow-x-auto rounded-lg bg-gray-100 p-3 text-xs font-mono text-gray-800 dark:bg-gray-800 dark:text-gray-200">
+            <code>{m}</code>
+          </pre>
+        );
+      } else if (first.type === "inlinecode") {
+        const m = remaining.slice(first.index + 1, first.index + first.length - 1);
+        elements.push(
+          <code key={elements.length} className="rounded-md bg-gray-100 px-1.5 py-0.5 text-xs font-mono text-gray-800 dark:bg-gray-800 dark:text-gray-200">
+            {m}
+          </code>
+        );
+      } else if (first.type === "mention") {
+        const name = remaining.slice(first.index + 1, first.index + first.length);
+        const isUser = chatUsers.some((u) => u.name.toLowerCase() === name.toLowerCase());
+        elements.push(
+          <span key={elements.length} className={`font-semibold ${isUser ? "text-store" : ""}`}>
+            @{name}
           </span>
         );
       }
-      return part;
-    });
+
+      remaining = remaining.slice(first.index + first.length);
+    }
+
+    return elements;
   };
 
   const highlightMatch = (text: string, query: string) => {
