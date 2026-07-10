@@ -28,6 +28,7 @@ export interface ChatMessage {
   likes: Record<string, boolean>;
   likeCount: number;
   createdAt: { seconds: number } | null;
+  editedAt: { seconds: number } | null;
   deleted?: boolean;
 }
 
@@ -54,6 +55,7 @@ export function useChat() {
           likes: data.likes ?? {},
           likeCount: data.likeCount ?? 0,
           createdAt: data.createdAt ?? null,
+          editedAt: data.editedAt ?? null,
           deleted: data.deleted ?? false,
         } as ChatMessage;
       });
@@ -98,6 +100,13 @@ export async function toggleLike(messageId: string, userId: string, hasLiked: bo
       likeCount: increment(1),
     });
   }
+}
+
+export async function editMessage(messageId: string, newText: string) {
+  await updateDoc(doc(db, "chat", messageId), {
+    text: newText.trim(),
+    editedAt: serverTimestamp(),
+  });
 }
 
 export async function deleteMessage(messageId: string) {

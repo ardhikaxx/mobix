@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/context/AuthProvider";
-import { useChat, sendMessage, toggleLike, deleteMessage } from "@/lib/hooks/useChat";
+import { useChat, sendMessage, toggleLike, editMessage, deleteMessage, type ChatMessage } from "@/lib/hooks/useChat";
 import { useTranslation } from "@/lib/hooks/useTranslation";
 import { usePublishedApps } from "@/lib/hooks/useApps";
 import {
@@ -10,6 +10,7 @@ import {
   MessageCircle, BadgeCheck, User as UserIcon,
 } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 import toast from "react-hot-toast";
 import { filterBadWords } from "@/lib/utils/badWords";
 
@@ -21,8 +22,12 @@ export default function ChatClient() {
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
   const [replyTo, setReplyTo] = useState<{ id: string; userName: string; text: string } | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editText, setEditText] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const editInputRef = useRef<HTMLInputElement>(null);
 
   const devUserIds = new Set(publishedApps?.map((a) => a.ownerId) ?? []);
 
@@ -66,6 +71,43 @@ export default function ChatClient() {
       e.preventDefault();
       handleSend();
     }
+  };
+
+  const handleEdit = async (msgId: string) => {
+    const trimmed = editText.trim();
+    if (!trimmed) return;
+
+    const check = filterBadWords(trimmed);
+    if (check.hasBadWords) {
+      toast.error("Pesan mengandung kata tidak pantas!");
+      return;
+    }
+
+    try {
+      await editMessage(msgId, trimmed);
+      setEditingId(null);
+      setEditText("");
+      toast.success("Pesan diedit");
+    } catch {
+      toast.error("Gagal mengedit pesan");
+    }
+  };
+
+  const handleEditKeyDown = (e: React.KeyboardEvent, msgId: string) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleEdit(msgId);
+    }
+    if (e.key === "Escape") {
+      setEditingId(null);
+      setEditText("");
+    }
+  };
+
+  const startEdit = (msg: ChatMessage) => {
+    setEditingId(msg.id);
+    setEditText(msg.text);
+    setTimeout(() => editInputRef.current?.focus(), 0);
   };
 
   if (authLoading) return null;
@@ -151,9 +193,44 @@ export default function ChatClient() {
                       </div>
                     )}
 
-                    <p className={`text-sm text-gray-700 dark:text-gray-300 ${msg.deleted ? "italic text-gray-400" : ""}`}>
-                      {msg.text}
-                    </p>
+                    {editingId === msg.id ? (
+                      <div className="flex gap-2">
+                        <input
+                          ref={editInputRef}
+                          type="text"
+                          value={editText}
+                          onChange={(e) => setEditText(e.target.value)}
+                          onKeyDown={(e) => handleEditKeyDown(e, msg.id)}
+                          className="flex-1 rounded-lg border border-store bg-white px-3 py-1 text-sm text-gray-900 outline-none focus:ring-2 focus:ring-store/20 dark:bg-gray-800 dark:text-gray-100"
+                        />
+                        <button
+                          onClick={() => handleEdit(msg.id)}
+                          disabled={!editText.trim()}
+                          className="text-xs text-store hover:underline disabled:opacity-50"
+                        >
+                          Simpan
+                        </button>
+                        <button
+                          onClick={() => { setEditingId(null); setEditText(""); }}
+                          className="text-xs text-gray-400 hover:text-gray-600"
+                        >
+                          Batal
+                        </button>
+                      </div>
+                    ) : (
+                      <p className={`text-sm text-gray-700 dark:text-gray-300 ${msg.deleted ? "italic text-gray-400" : ""}`}>
+                        {msg.text}
+                      </p>
+                    )}
+
+                    {msg.editedAt && !msg.deleted && (
+                      <span className="mt-0.5 block text-[10px] text-gray-400">
+                        diedit {new Date(msg.editedAt.seconds * 1000).toLocaleString("id-ID", {
+                          day: "numeric", month: "short",
+                          hour: "2-digit", minute: "2-digit",
+                        })}
+                      </span>
+                    )}
 
                     <div className="mt-1.5 flex items-center gap-2">
                       <button
@@ -185,15 +262,20 @@ export default function ChatClient() {
                       )}
 
                       {isOwner && !msg.deleted && (
-                        <button
-                          onClick={() => {
-                            deleteMessage(msg.id);
-                            toast.success("Pesan dihapus");
-                          }}
-                          className="text-[11px] text-gray-400 hover:text-red-500 transition"
-                        >
-                          Hapus
-                        </button>
+                        <>
+                          <button
+                            onClick={() => startEdit(msg)}
+                            className="text-[11px] text-gray-400 hover:text-store transition"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => setDeleteTarget(msg.id)}
+                            className="text-[11px] text-gray-400 hover:text-red-500 transition"
+                          >
+                            Hapus
+                          </button>
+                        </>
                       )}
                     </div>
                   </div>
@@ -243,6 +325,21 @@ export default function ChatClient() {
           <a href="/login" className="font-semibold text-store hover:underline">Login</a> untuk ikut ngobrol
         </div>
       )}
+      <ConfirmDialog
+        isOpen={deleteTarget !== null}
+        title="Hapus Pesan"
+        message="Pesan akan dihapus dan tidak bisa dikembalikan."
+        confirmLabel="Hapus"
+        cancelLabel="Batal"
+        variant="danger"
+        onConfirm={() => {
+          if (deleteTarget) {
+            deleteMessage(deleteTarget);
+            toast.success("Pesan dihapus");
+          }
+        }}
+        onClose={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }
