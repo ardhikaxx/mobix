@@ -175,7 +175,7 @@ export default function AppDetailPageClient({
         rating: reviewRating,
         text: reviewText.trim(),
         createdAt: myReview ? undefined : now,
-        updatedAt: myReview ? now : undefined,
+        updatedAt: now,
       };
 
       const reviewId = `${user.uid}_${slug}`;
