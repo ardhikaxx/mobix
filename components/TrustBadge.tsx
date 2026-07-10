@@ -47,9 +47,7 @@ export function TrustBadge() {
 
   return (
     <div className="flex items-center gap-3 rounded-full border border-gray-100 bg-white px-4 py-2 shadow-sm dark:border-gray-700 dark:bg-gray-800/80">
-      <div className="w-[120px] overflow-hidden">
-        <img src="/badge.svg" alt="Mobix" className="h-[60px] w-[180px] max-w-none" />
-      </div>
+      <img src="/badge.svg" alt="Mobix" width={150} height={50} className="h-[50px] w-[150px]" />
       <div className="h-5 w-px bg-gray-200 dark:bg-gray-600" />
       <div className="flex items-center gap-2">
         <div className="flex -space-x-2">
