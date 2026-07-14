@@ -13,7 +13,7 @@
     "@opentelemetry/api": "^1.9.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
-    "firebase": "^12.15.0",
+    "firebase": "^12.16.0",
     "framer-motion": "^12.42.2",
     "lucide-react": "^1.23.0",
     "nanoid": "^5.1.16",
