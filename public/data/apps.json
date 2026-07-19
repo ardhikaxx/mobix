@@ -1,6 +1,52 @@
 {
   "apps": [
     {
+      "appId": "jago-hitung",
+      "name": "Jago Hitung",
+      "slug": "jago-hitung",
+      "description": "Jago Hitung adalah game edukasi matematika interaktif untuk anak SD Kelas 1-6 berbasis Flutter dengan Firebase. Fitur Autentikasi: login/register dengan Firebase Auth. Materi Belajar: kurikulum penjumlahan, pengurangan, perkalian, pembagian, dan pecahan yang disesuaikan per kelas. Sistem Koin & XP: dapatkan koin dan XP setiap menyelesaikan kuis, XP untuk naik kelas, koin untuk belanja. Toko Avatar: beli stiker avatar keren dengan koin. Roda Keberuntungan Harian (Daily Spin Wheel): bonus koin gratis setiap login pertama hari ini. Daily Streak: dorong anak rajin belajar setiap hari. Leaderboard: bersaing global berdasarkan total XP. Mode Belajar/Topik: selesaikan misi per materi. Mode Bom Waktu: jawab soal sebanyak-banyaknya sebelum bom meledak. Mode Duel (1v1): main berdua dalam 1 perangkat layar terbelah. Desain responsif untuk HP dan Tablet. Audio interaktif dengan musik latar (BGM) dan efek suara.",
+      "category": "education",
+      "tags": [
+        "education",
+        "game",
+        "math",
+        "kids",
+        "learning"
+      ],
+      "searchKeywords": [
+        "jago hitung",
+        "matematika",
+        "sd",
+        "game edukasi",
+        "belajar",
+        "anak",
+        "sekolah dasar",
+        "berhitung",
+        "kuis"
+      ],
+      "status": "published",
+      "version": "1.0.0",
+      "versionCode": 1,
+      "apkURL": "/apk/Jago_Hitung.apk",
+      "apkFileName": "Jago_Hitung.apk",
+      "apkSizeBytes": 97162321,
+      "logoURL": "/images/logo_jago_hitung.png",
+      "screenshots": [
+        "/images/screenshot_jago_hitung_01.png",
+        "/images/screenshot_jago_hitung_02.png",
+        "/images/screenshot_jago_hitung_03.png",
+        "/images/screenshot_jago_hitung_04.png",
+        "/images/screenshot_jago_hitung_05.png"
+      ],
+      "ownerId": "admin",
+      "ownerName": "ardhikaxx",
+      "isScanned": true,
+      "createdAt": "2026-07-19T00:00:00.000Z",
+      "updatedAt": "2026-07-19T00:00:00.000Z",
+      "lastVersionUpdateAt": "2026-07-19T00:00:00.000Z",
+      "isVerified": true
+    },
+    {
       "appId": "mysaku",
       "name": "MySaku",
       "slug": "mysaku",
