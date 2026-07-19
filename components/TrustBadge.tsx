@@ -46,9 +46,9 @@ export function TrustBadge() {
   const items = avatars.slice(0, maxAvatars);
 
   return (
-    <div className="flex items-center gap-3 rounded-full border border-gray-100 bg-white px-4 py-2 shadow-sm dark:border-gray-700 dark:bg-gray-800/80">
+    <div className="flex flex-col items-center gap-2 rounded-2xl border border-gray-100 bg-white px-5 py-3 shadow-sm sm:flex-row sm:gap-3 sm:rounded-full sm:px-4 sm:py-2 dark:border-gray-700 dark:bg-gray-800/80">
       <img src="/badge.svg" alt="Mobix" className="h-[45px] w-auto" />
-      <div className="h-5 w-px bg-gray-200 dark:bg-gray-600" />
+      <div className="hidden h-5 w-px bg-gray-200 sm:block dark:bg-gray-600" />
       <div className="flex items-center gap-2">
         <div className="flex -space-x-2">
           {loading ? (
